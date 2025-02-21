@@ -2,4 +2,4 @@
 
 ---
 
-## [Live]("https://ecommerce-shop332.netlify.app/")
+[Live]("https://shop-co332.netlify.app/")
