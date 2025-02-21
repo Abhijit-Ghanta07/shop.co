@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+html::-webkit-scrollbar {
+  width: 0 !important;
+  display: none !important;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+body {
+  background: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+p,
+a,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+span,
+button {
+  color: black;
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+}
+label,
+input,
+textarea,
+select {
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+  color: inherit;
+  background: transparent !important;
+}
+
+.robo {
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+}
