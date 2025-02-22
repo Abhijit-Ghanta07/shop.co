@@ -12,19 +12,24 @@
       "sizes": "100x100",
       "type": "image/png"
     }
-  
   ],
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#ffffff",
   "background_color": "#678924",
   "shortcuts": [
-  {
-    "name": "Men Shirt",
-    "short_name": "Men shirt",
-    "description": "Men Collections",
-    "url": "/product/category/male",
-    "icons": [{ "src": "/icons/icon-jacket.png", "sizes": "100x100", "type": "image/png" }]
-  }
-]
+    {
+      "name": "Men Shirt",
+      "short_name": "Men shirt",
+      "description": "Men Collections",
+      "url": "/product/category/male",
+      "icons": [
+        {
+          "src": "/icons/icon-jacket.png",
+          "sizes": "100x100",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
 }

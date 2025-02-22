@@ -28,7 +28,7 @@ export default defineConfig({
           },
         ],
         start_url: "/",
-        display: "fullscreen",
+        display: "standalone",
         theme_color: "#ffffff",
         background_color: "#678924",
         shortcuts: [

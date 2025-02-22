@@ -42,7 +42,7 @@ registerRoute(
 
 // Activate new service worker immediately
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
+  event.waitUntil();
 });
 
 self.addEventListener("activate", (event) => {
