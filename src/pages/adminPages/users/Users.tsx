@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoEye } from "react-icons/io5";
@@ -16,13 +15,15 @@ import { AdminPagination } from "../adminPages";
 import { DeleteUserMutation } from "../../../querys/user/userQuery";
 import { DateFormat } from "../../../utils/utils";
 import { AdminBadge } from "../../../components/button/btn";
+import { FcGoogle } from "react-icons/fc";
+import { MdMarkEmailRead } from "react-icons/md";
 
 const UsersTable = () => {
   const deleteMutation = DeleteUserMutation();
   const itemsperpage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading } = useAdminAllUser(currentPage, itemsperpage);
-  const queryClient = useQueryClient();
+
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [deleteSelect, setDelectSelect] = useState("");
   const modalRef = useRef(null);
@@ -115,7 +116,7 @@ const UsersTable = () => {
                       />
                     </TableCell>
 
-                    {/* Product Name */}
+                    {/* user Name */}
                     <TableCell>
                       <div className="inline-flex gap-2">
                         <Link to={eachUser?._id}>
@@ -133,8 +134,17 @@ const UsersTable = () => {
                         </Link>
 
                         <div className="inline-flex flex-col">
-                          <p className="text-gray-800 text-base capitalize">
-                            {eachUser?.username}
+                          <p className="text-gray-800 text-base inline-flex items-center gap-2 capitalize">
+                            <span>{eachUser?.username}</span>
+                            {eachUser?.authProvider === "google" ? (
+                              <span>
+                                <FcGoogle />
+                              </span>
+                            ) : (
+                              <span>
+                                <MdMarkEmailRead />
+                              </span>
+                            )}
                           </p>
                           <span className="text-gray-400 text-sm">
                             {eachUser?.email}

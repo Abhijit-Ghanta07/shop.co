@@ -27,6 +27,10 @@ const LoginPage: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  const handleGoogleAuth = () => {
+    window.open(`${import.meta.env.VITE_API_BASE_URL}/auth/google`, "_self");
+  };
+
   const onSubmit = (data: LoginFormInputs) => {
     loginMutaion.mutate(data as any);
   };
@@ -140,6 +144,7 @@ const LoginPage: React.FC = () => {
           <button
             type="button"
             className="mt-4  gap-2 flex w-full items-center justify-center px-4 py-2 border rounded-lg hover:bg-gray-100 transition duration-200"
+            onClick={handleGoogleAuth}
           >
             <FcGoogle fontSize={30} />
             <span className="text-sm text-gray-600">Login with Google</span>
