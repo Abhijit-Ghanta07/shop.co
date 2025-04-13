@@ -41,18 +41,12 @@ registerRoute(
 );
 
 // Activate new service worker immediately
-self.addEventListener("install", (event) => {
-  event.waitUntil();
+self.addEventListener("install", () => {
+  self.skipWaiting(); // Installs SW immediately
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    self.clients.claim().then(() => {
-      self.clients.matchAll().then((clients) => {
-        clients.forEach((client) => client.navigate(client.url)); // Force refresh
-      });
-    })
-  );
+  event.waitUntil(self.clients.claim()); // Takes control but no auto-reload
 });
 
 // import { BackgroundSyncPlugin } from "workbox-background-sync";

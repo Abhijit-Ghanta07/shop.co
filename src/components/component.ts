@@ -20,9 +20,11 @@ import TableCell from "./table/TableCell";
 import TableBody from "./table/TableBody";
 import SearchProductCard from "./ProductCard/SearchProduct";
 import GridProductCard from "./ProductCard/GridProductCard";
+import PwaBanner from "./pwaBanner/PwaBanner";
 
 // import NewProductDetails from "./Product/NewCodeProduct";
 export {
+  PwaBanner,
   SearchProductCard,
   Hero,
   Product,

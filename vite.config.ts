@@ -8,7 +8,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,jpg,svg}"], // Files to cache
       },
