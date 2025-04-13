@@ -50,7 +50,6 @@ import {
   UserProtected,
 } from "./utils/ProtectedRoute";
 import { SnackBar } from "./includes/includes";
-import { enableFullscreen } from "./utils/utils";
 
 // lazy loadings
 const HomeLayout = lazy(() => import("./layouts/Home"));

@@ -47,7 +47,7 @@ const PwaBanner = () => {
     <>
       {/* Install Prompt Banner */}
       {showInstallPrompt && (
-        <div className="fixed bottom-4 left-4 right-4 md:right-auto md:w-96 bg-white border border-gray-200 shadow-lg rounded-xl p-4 flex items-center justify-between z-50 animate-fade-in-down">
+        <div className="fixed top-4  left-4 right-4 md:right-auto md:w-96 bg-white border border-gray-200 shadow-lg rounded-xl p-4 flex items-center justify-between z-50 animate-fade-in-down">
           <div>
             <h4 className="font-semibold text-gray-800">Install App</h4>
             <p className="text-sm text-gray-500">
@@ -56,7 +56,7 @@ const PwaBanner = () => {
           </div>
           <button
             onClick={handleInstallClick}
-            className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm"
+            className="ml-4 bg-primary hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm"
           >
             Install
           </button>
@@ -65,7 +65,7 @@ const PwaBanner = () => {
 
       {/* Update SW Banner */}
       {showUpdateBanner && (
-        <div className="fixed bottom-20 left-4 right-4 md:right-auto md:w-96 bg-yellow-100 border border-yellow-300 shadow-lg rounded-xl p-4 flex items-center justify-between z-50 animate-fade-in-down">
+        <div className="fixed top-20 left-4 right-4 md:right-auto md:w-96 bg-yellow-100 border border-yellow-300 shadow-lg rounded-xl p-4 flex items-center justify-between z-50 animate-fade-in-down">
           <div>
             <h4 className="font-semibold text-yellow-800">
               New Update Available
