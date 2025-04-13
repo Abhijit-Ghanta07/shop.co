@@ -12,7 +12,7 @@ const List = ({
     <section>
       <div className="wrapper p-2 sm:py-10 sm:px-5">
         {title !== "" && (
-          <h2 className="font-extrabold text-center capitalize py-10 text-center text-4xl">
+          <h2 className="font-extrabold text-center capitalize py-10 text-primary text-4xl">
             {title}
           </h2>
         )}
@@ -29,7 +29,10 @@ const List = ({
         </div>
         <div className="flex justify-center py-7">
           {viewLink !== "" && (
-            <Link to={viewLink} className=" px-7 btn btn-active rounded-badge">
+            <Link
+              to={viewLink}
+              className=" px-5 py-2 text-light bg-primary rounded-badge"
+            >
               View All
             </Link>
           )}

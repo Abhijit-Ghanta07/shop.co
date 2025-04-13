@@ -45,7 +45,7 @@ const Header = () => {
   }, [inputState]);
 
   return (
-    <>
+    <div className="sticky top-0 z-10">
       <Banner />
       <header className="bg-white z-10">
         <div className="lg:container mx-auto md:px-10">
@@ -144,10 +144,10 @@ const Header = () => {
               {/* home logo */}
               <Link
                 to={"/"}
-                className="logo flex items-center justify-center sm:justify-start font-extrabold text-lg sm:text-3xl"
+                className="logo flex items-center justify-center sm:justify-start font-extrabold text-xl sm:text-3xl"
               >
-                <span>SHOP</span>
-                <span>.CO</span>
+                <span>SHOP.</span>
+                <span className="text-primary">CO</span>
               </Link>
               {/* header navbar */}
               <div className="headerNav md:block hidden  leading-loose">
@@ -207,7 +207,7 @@ const Header = () => {
                     }
                   }}
                 >
-                  <span className="flex w-60 gap-2 text-gray-800 bg-gray-100 sm:p-2 p-1 rounded-lg ring-1">
+                  <span className="flex w-60 gap-2 text-gray-800 bg-gray-100 sm:p-2 p-1 rounded-lg border border-black">
                     <RiSearch2Line size={20} />
                     Search
                   </span>
@@ -250,7 +250,7 @@ const Header = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
-            fill="currentColor"
+            fill="green"
             className="h-4 w-4 opacity-70"
           >
             <path
@@ -278,7 +278,7 @@ const Header = () => {
           renderItem={(item) => <SearchProductCard product={item} />}
         />
       </Modal>
-    </>
+    </div>
   );
 };
 

@@ -29,7 +29,7 @@ const GridProductCard = ({ product = {}, style = "", imgStyle = "" }) => {
         <Link to={`/product/${product._id}`}>
           <img
             src={product?.imgurl || product?.firstVariantImages?.[0]?.url || ""}
-            className={cl("size-full")}
+            className={cl("size-full aspect-square")}
             alt="cloth"
             onError={(e: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
               e.target.parentElement.parentElement.parentElement.style.display =

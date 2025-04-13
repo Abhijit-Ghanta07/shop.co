@@ -19,13 +19,13 @@ const Category = () => {
                   <Link to={`/product/category/${ele.categoryName}`}>
                     <img
                       src={ele?.categoryImage}
-                      className="w-full h-full"
+                      className="w-full h-full aspect-square"
                       alt="image"
                     />
                     <div className="flex h-full justify-center items-center">
                       <p
                         className={cl(
-                          "text-5xl absolute top-10 left-0 text-gray-900  font-bold uppercase",
+                          "text-5xl absolute top-10 left-0 text-active font-bold uppercase",
                           style.title
                         )}
                       >

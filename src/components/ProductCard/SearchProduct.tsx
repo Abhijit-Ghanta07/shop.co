@@ -13,7 +13,7 @@ const SearchProductCard = ({ product = {}, style = "", imgStyle }) => {
               src={
                 product?.imgurl || product?.firstVariantImages?.[0]?.url || ""
               }
-              className={cl("rounded-xl size-full")}
+              className={cl("rounded-xl size-full aspect-square")}
               alt="cloth"
               onError={(e: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
                 e.target.parentElement.parentElement.parentElement.style.display =

@@ -5,7 +5,7 @@ function NewsLetter() {
     <section className="py-10 lg:container lg:mx-auto">
       <div className="wrapper  w-[90%] mx-auto rounded-2xl p-10 bg-black ">
         <div className="flex flex-col md:flex-row gap-3 justify-between">
-          <h2 className="uppercase font-extrabold whitespace-normal text-white  md:text-4xl  basis-1/3">
+          <h2 className="uppercase font-extrabold whitespace-normal text-active  md:text-4xl  basis-1/3">
             Stay upto date with about our latest offers
           </h2>
           <div className="flex flex-col justify-center items-center gap-2 basis-1/3">
@@ -13,17 +13,17 @@ function NewsLetter() {
               htmlFor=""
               className="flex items-center gap-2   !bg-white w-fit sm:w-[18rem] py-2 rounded-badge px-2  h-fit"
             >
-              <span>
+              <span className="text-active">
                 <FiMail />
               </span>
               <input
                 type="text"
-                className="outline-none px-2"
+                className="outline-none px-2 text-primary"
                 placeholder="Enter Your Mail"
               />
             </label>
 
-            <button className="capitalize w-fit sm:w-[18rem] bg-white text-black  btn hover:text-white rounded-badge px-7">
+            <button className="capitalize w-fit sm:w-[18rem] bg-active text-light  btn hover:border hover:border-active rounded-badge px-7">
               Subscribe to NewsLetter
             </button>
           </div>

@@ -6,20 +6,22 @@ import DataLoader from "../components/dataLoader/DataLoader";
 
 const Home = () => {
   return (
-    <div className="overflow-auto mb-10 sm:m-0">
-      <section>
-        <Header />
-        <div className="lg:container mx-auto">
-          <Outlet />
-        </div>
-        <div className="bg-white">
-          <NewsLetter />
-          <Footer />
-        </div>
-      </section>
+    <>
+      <Header />
+      <div className="overflow-auto mb-10 sm:m-0">
+        <section>
+          <div className="lg:container mx-auto">
+            <Outlet />
+          </div>
+          <div className="bg-white">
+            <NewsLetter />
+          </div>
+        </section>
+      </div>
+      <Footer />
       <DataLoader />
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

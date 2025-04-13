@@ -21,6 +21,8 @@ body {
   background: #ffffff;
   overflow-x: hidden;
   overflow-y: auto;
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
 }
 
 p,
