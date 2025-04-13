@@ -19,7 +19,6 @@ const Home = () => {
         </section>
       </div>
       <Footer />
-      <DataLoader />
       <ToastContainer />
     </>
   );

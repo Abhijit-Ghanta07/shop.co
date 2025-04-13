@@ -1,34 +1,72 @@
-import { Category, Hero, List, ProductCard } from "../../components/component";
+import {
+  Category,
+  Hero,
+  List,
+  ProductCard,
+  Skeleton,
+} from "../../components/component";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
   const products = useSelector((state) => state.product);
+  const { status } = useSelector((store) => store.loader);
   return (
     <section>
       <div className="lg:container mx-auto">
         <Hero />
         <div className="bg-white">
-          <List
-            title="New Arrivals"
-            exstyle="flex justify-center h-full"
-            data={products?.arivalsProducts?.products}
-            renderItem={(product) => <ProductCard product={product} />}
-            viewLink="/product/slug?query=arrival"
-          />
+          {status ? (
+            <Skeleton count={5}>
+              <div className="flex flex-col  gap-2">
+                <div className="skeleton bg-gray-200  h-44 w-44"></div>
+                <div className="skeleton bg-gray-200  h-4 w-20"></div>
+                <div className="skeleton bg-gray-200  h-4 w-28"></div>
+                <div className="skeleton bg-gray-200  h-8 w-28"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <List
+              title="New Arrivals"
+              exstyle="flex justify-center h-full"
+              data={products?.arivalsProducts?.products}
+              renderItem={(product) => <ProductCard product={product} />}
+              viewLink="/product/slug?query=arrival"
+            />
+          )}
 
           <div className="divider w-full"></div>
-          <List
-            title="TOP SELLING"
-            exstyle="flex justify-center h-full"
-            data={products?.topProducts?.products}
-            renderItem={(item) => <ProductCard product={item} />}
-            viewLink="/product/slug?query=top"
-          />
+          {status ? (
+            <Skeleton count={5}>
+              <div className="flex flex-col  gap-2">
+                <div className="skeleton bg-gray-200  h-44 w-44"></div>
+                <div className="skeleton bg-gray-200  h-4 w-20"></div>
+                <div className="skeleton bg-gray-200  h-4 w-28"></div>
+                <div className="skeleton bg-gray-200  h-8 w-28"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <List
+              title="TOP SELLING"
+              exstyle="flex justify-center h-full"
+              data={products?.topProducts?.products}
+              renderItem={(item) => <ProductCard product={item} />}
+              viewLink="/product/slug?query=top"
+            />
+          )}
+
           <div className="divider w-full"></div>
           {/* browse by category */}
-          <Category />
+          {status ? (
+            <Skeleton count={8}>
+              <div className="flex flex-col  gap-2">
+                <div className="skeleton bg-gray-200  h-60 w-60"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <Category />
+          )}
+
           {/* customers review */}
-          {/* <ReviewSection products={products?.topProducts} /> */}
           {/* newsletter section */}
         </div>
       </div>

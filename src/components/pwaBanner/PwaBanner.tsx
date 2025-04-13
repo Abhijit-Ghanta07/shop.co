@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdClose } from "react-icons/md";
 import { registerSW } from "virtual:pwa-register";
 
 const PwaBanner = () => {
@@ -27,7 +28,10 @@ const PwaBanner = () => {
       });
     }
   };
-
+  const handleCloseBanner = () => {
+    setDeferredPrompt(null);
+    setShowInstallPrompt(false);
+  };
   // Handle SW update prompt
   const updateSW = registerSW({
     onNeedRefresh() {
@@ -37,9 +41,12 @@ const PwaBanner = () => {
       console.log("App is ready to work offline");
     },
   });
-
   const handleUpdateClick = () => {
     updateSW(true);
+    setShowUpdateBanner(false);
+  };
+  const handleCloseUpdate = () => {
+    updateSW(false);
     setShowUpdateBanner(false);
   };
 
@@ -49,6 +56,9 @@ const PwaBanner = () => {
       {showInstallPrompt && (
         <div className="fixed top-4  left-4 right-4 md:right-auto md:w-96 bg-white border border-gray-200 shadow-lg rounded-xl p-4 flex items-center justify-between z-50 animate-fade-in-down">
           <div>
+            <button onClick={handleCloseBanner}>
+              <MdClose size={20} />
+            </button>
             <h4 className="font-semibold text-gray-800">Install App</h4>
             <p className="text-sm text-gray-500">
               Add this app to your home screen
@@ -67,6 +77,9 @@ const PwaBanner = () => {
       {showUpdateBanner && (
         <div className="fixed top-20 left-4 right-4 md:right-auto md:w-96 bg-yellow-100 border border-yellow-300 shadow-lg rounded-xl p-4 flex items-center justify-between z-50 animate-fade-in-down">
           <div>
+            <button onClick={handleCloseUpdate}>
+              <MdClose size={20} />
+            </button>
             <h4 className="font-semibold text-yellow-800">
               New Update Available
             </h4>

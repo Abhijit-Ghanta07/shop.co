@@ -47,7 +47,7 @@ const Header = () => {
   return (
     <div className="sticky top-0 z-10">
       <Banner />
-      <header className="bg-white z-10">
+      <header className="bg-white">
         <div className="lg:container mx-auto md:px-10">
           <div className="wrapper py-4 px-2 md:px-10">
             <div className="flex gap-1 sm:gap-3 items-center sm:justify-between">
@@ -198,7 +198,7 @@ const Header = () => {
               {/* searchbar */}
               <div className="flex h-full items-center justify-end  basis-2/6">
                 <label
-                  className="flex  w-24 sm:w-fit justify-end items-center rounded-badge px-2  sm:py-2 bg-gray-200"
+                  className="flex bg-transparent w-24 sm:w-fit justify-end items-center rounded-badge px-2  sm:py-2 bg-gray-200"
                   onClick={() => {
                     if (searchRef?.current) {
                       searchRef?.current?.showModal();

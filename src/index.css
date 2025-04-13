@@ -46,7 +46,7 @@ select {
   font-family: "Roboto", serif;
   font-optical-sizing: auto;
   color: inherit;
-  background: transparent !important;
+  background: transparent;
 }
 
 .robo {

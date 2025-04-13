@@ -4,7 +4,13 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { GridProductCard, List, Pagintaion, ProductCard } from "../component";
+import {
+  GridProductCard,
+  List,
+  Pagintaion,
+  ProductCard,
+  Skeleton,
+} from "../component";
 import {
   MdKeyboardArrowRight,
   MdKeyboardArrowUp,
@@ -12,7 +18,7 @@ import {
   MdSort,
 } from "react-icons/md";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import cl from "classnames";
 import {
   useGetProductByCategory,
@@ -25,12 +31,12 @@ const CategoryProduct = () => {
   let itemsperpage = 10;
   const [currentPage, setCurrenPage] = useState(1);
   const queryObject = Object.fromEntries(params.entries());
-  const { data: shop } = useShopGetAllProducts(
+  const { data: shop, isLoading: shopLoading } = useShopGetAllProducts(
     currentPage * itemsperpage,
     (currentPage - 1) * itemsperpage,
     queryObject
   );
-  const { data: cate } = useGetProductByCategory(id);
+  const { data: cate, isLoading: cataLoading } = useGetProductByCategory(id);
   const ifCataExisted = (query = "", catedata, shopdata) => {
     if (query !== "") {
       return catedata;
@@ -97,16 +103,28 @@ const CategoryProduct = () => {
                     onClick={() => {
                       setFillterShow((prev) => !prev);
                     }}
+                    className="sm:hidden block"
                   >
                     <MdSort color="black" size={30} />
                   </button>
                 </div>
               </div>
               {/* view productlist */}
-              <List
-                data={allProducts}
-                renderItem={(item) => <GridProductCard product={item} />}
-              />
+              {shopLoading || cataLoading ? (
+                <Skeleton count={5} style={"!justify-start gap-5"}>
+                  <div className="flex flex-col gap-2">
+                    <div className="skeleton bg-gray-200  h-48 w-52"></div>
+                    <div className="skeleton bg-gray-200  h-4 w-20"></div>
+                    <div className="skeleton bg-gray-200  h-4 w-28"></div>
+                    <div className="skeleton bg-gray-200  h-8 w-28"></div>
+                  </div>
+                </Skeleton>
+              ) : (
+                <List
+                  data={allProducts}
+                  renderItem={(item) => <GridProductCard product={item} />}
+                />
+              )}
 
               <Pagintaion
                 currentPage={currentPage}
@@ -156,10 +174,19 @@ function FillterCard({ show, setShow }) {
     setSearchParams(updatedParams);
     setShow(!show);
   };
+
+  useEffect(() => {
+    const updatedParams = { ...params };
+    fillters.forEach((ele) => {
+      updatedParams[ele.key] = ele.value;
+    });
+    setSearchParams(updatedParams);
+    setShow(!show);
+  }, [fillters]);
   return (
     <section
       className={cl(
-        "fixed md:static left-0 w-full md:w-fit bg-white z-[10] duration-200",
+        "fixed md:static left-0 md:w-80 bg-white z-[10] duration-200",
         show ? "top-[5rem]" : "top-[100%]",
         "h-screen md:h-auto", // Make it full-screen height on small screens
         "overflow-y-auto" // Enable scrolling inside the drawer
@@ -169,37 +196,6 @@ function FillterCard({ show, setShow }) {
     >
       <div className="wrapper h-full">
         <div className="card border border-gray-400 p-5 rounded-xl">
-          <div className="flex flex-wrap gap-3">
-            {fillters.map((ele, inx) => {
-              if (inx >= 5) {
-                return;
-              } else {
-                return (
-                  <>
-                    <div
-                      className="badge badge-neutral p-2  gap-2 cursor-pointer"
-                      onClick={() => handleFillterDelete(ele.key)}
-                    >
-                      <span className="text-white capitalize">{ele.value}</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        className="inline-block h-4 w-4 stroke-current"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        ></path>
-                      </svg>
-                    </div>
-                  </>
-                );
-              }
-            })}
-          </div>
           <div className="flex flex-col gap-3">
             {/* heading */}
             <div className="flex justify-between items-center">
@@ -208,6 +204,7 @@ function FillterCard({ show, setShow }) {
                 onClick={() => {
                   setShow((prev) => !prev);
                 }}
+                className="sm:hidden block"
               >
                 <MdOutlineCloseFullscreen fontSize={25} />
               </span>
@@ -221,6 +218,7 @@ function FillterCard({ show, setShow }) {
                   onClick={() => {
                     subCategoryRef.current?.classList?.toggle("h-0");
                   }}
+                  className="cursor-pointer"
                 >
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
@@ -230,17 +228,24 @@ function FillterCard({ show, setShow }) {
                 ref={subCategoryRef}
               >
                 {subCategory.map((ele) => (
-                  <div
+                  <label
                     className={cl(
-                      "flex justify-between items-center cursor-pointer"
+                      "flex justify-start gap-2 items-center cursor-pointer"
                     )}
                     onClick={() =>
                       handleFillterAdd("subcategory", ele?.SubCategoryName)
                     }
                   >
+                    <span>
+                      <input
+                        type="radio"
+                        name="radio-1"
+                        className="radio radio-accent"
+                      />
+                    </span>
                     <span className="capitalize">{ele?.SubCategoryName}</span>
-                    <span>{<MdKeyboardArrowRight fontSize={20} />}</span>
-                  </div>
+                    {/* <span>{<MdKeyboardArrowRight fontSize={20} />}</span> */}
+                  </label>
                 ))}
               </div>
             </div>
@@ -263,24 +268,36 @@ function FillterCard({ show, setShow }) {
             </div> */}
             {/* <div className="outline outline-1 outline-slate-300"></div> */}
             {/* colors */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col overflow-hidden gap-3">
               <div className="flex justify-between items-center">
                 <p className="font-medium text-lg">Colors</p>
                 <span
                   onClick={() => {
                     colorsRef.current?.classList?.toggle("h-0");
                   }}
+                  className="cursor-pointer"
                 >
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
               </div>
-              <div className="flex space-x-3 overflow-hidden" ref={colorsRef}>
+              <div className="flex flex-col gap-4" ref={colorsRef}>
                 {colors.map((ele) => (
-                  <button
-                    style={{ background: ele }}
-                    className={` rounded-full p-4`}
+                  <label
                     onClick={() => handleFillterAdd("color", ele)}
-                  ></button>
+                    className="flex gap-2 items-center"
+                  >
+                    <span>
+                      <input
+                        type="radio"
+                        name="color"
+                        className="radio radio-accent"
+                      />
+                    </span>
+                    <span
+                      style={{ background: ele }}
+                      className="rounded-full w-7 h-7 block"
+                    ></span>
+                  </label>
                 ))}
               </div>
             </div>
@@ -293,6 +310,7 @@ function FillterCard({ show, setShow }) {
                   onClick={() => {
                     sizeRef.current?.classList?.toggle("h-0");
                   }}
+                  className="cursor-pointer"
                 >
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
@@ -302,14 +320,21 @@ function FillterCard({ show, setShow }) {
                 ref={sizeRef}
               >
                 {sizes.map((ele) => (
-                  <button
-                    className="px-3 py-2 whitespace-nowrap rounded-badge  bg-gray-200 uppercase"
+                  <label
+                    className="flex gap-2 whitespace-nowrap rounded-badge  uppercase"
                     onClick={() => {
                       handleFillterAdd("size", ele);
                     }}
                   >
-                    {ele}
-                  </button>
+                    <span>
+                      <input
+                        type="radio"
+                        name="size"
+                        className="radio radio-accent "
+                      />
+                    </span>
+                    <span>{ele}</span>
+                  </label>
                 ))}
               </div>
             </div>
@@ -332,25 +357,25 @@ function FillterCard({ show, setShow }) {
                 ref={categoryRef}
               >
                 {category.map((ele) => (
-                  <div
-                    className="flex justify-between items-center cursor-pointer"
+                  <label
+                    className="flex gap-2 items-center cursor-pointer"
                     onClick={() =>
                       handleFillterAdd("category", ele?.categoryName)
                     }
                   >
+                    <span>
+                      <input
+                        type="radio"
+                        name="catagory"
+                        className="radio radio-accent"
+                      />
+                    </span>
                     <span className="capitalize">{ele?.categoryName}</span>
-                    <span>{<MdKeyboardArrowRight fontSize={20} />}</span>
-                  </div>
+                    {/* <span>{<MdKeyboardArrowRight fontSize={20} />}</span> */}
+                  </label>
                 ))}
               </div>
             </div>
-            {/* button apply */}
-            <button
-              className=" btn btn-active dark:btn-ghost dark:text-black text-white rounded-badge"
-              onClick={handleFillterClick}
-            >
-              Apply Fillters
-            </button>
           </div>
         </div>
       </div>

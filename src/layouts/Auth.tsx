@@ -1,18 +1,20 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { Header } from "../includes/includes";
 
 const Auth = () => {
   return (
     <>
-      <div className="relative  mb-10 sm:m-0">
-        <Link
+      <Header />
+      <>
+        {/* <Link
           to={"/"}
-          className="absolute w-fit p-3 border top-5 left-5 rounded-3xl text-black"
+          className="absolute w-fit p-3 border top-5 left-5 rounded-3xl text-light bg-primary"
         >
           Go Home
-        </Link>
+        </Link> */}
         <Outlet />
-      </div>
+      </>
       <ToastContainer />
     </>
   );

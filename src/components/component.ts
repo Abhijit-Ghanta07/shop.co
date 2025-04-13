@@ -21,9 +21,11 @@ import TableBody from "./table/TableBody";
 import SearchProductCard from "./ProductCard/SearchProduct";
 import GridProductCard from "./ProductCard/GridProductCard";
 import PwaBanner from "./pwaBanner/PwaBanner";
+import Skeleton from "./skeleton/Skeleton";
 
 // import NewProductDetails from "./Product/NewCodeProduct";
 export {
+  Skeleton,
   PwaBanner,
   SearchProductCard,
   Hero,
