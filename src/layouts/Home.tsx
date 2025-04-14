@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="overflow-auto mb-10 sm:m-0">
+      <div className="overflow-auto mb-10 sm:m-0 text-black">
         <section>
           <div className="lg:container mx-auto">
             <Outlet />

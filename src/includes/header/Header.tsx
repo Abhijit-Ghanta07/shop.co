@@ -47,10 +47,10 @@ const Header = () => {
   return (
     <div className="sticky top-0 z-10">
       <Banner />
-      <header className="bg-white">
-        <div className="lg:container mx-auto md:px-10">
+      <header className="bg-white text-black">
+        <div className="lg:container mx-auto">
           <div className="wrapper py-4 px-2 md:px-10">
-            <div className="flex gap-1 sm:gap-3 items-center sm:justify-between">
+            <div className="flex gap-2 sm:gap-3 items-center sm:justify-between">
               <div className="ham md:hidden flex items-center cursor-pointer">
                 {/* responsive side bar */}
                 <div className="drawer">
@@ -150,8 +150,8 @@ const Header = () => {
                 <span className="text-primary">CO</span>
               </Link>
               {/* header navbar */}
-              <div className="headerNav md:block hidden  leading-loose">
-                <ul className="flex h-full gap-6 items-center">
+              <div className="headerNav md:block hidden mx-4 w-fit leading-loose">
+                <ul className="flex h-full gap-6 justify-center items-center">
                   <li className="dropdown">
                     <button
                       tabIndex={0}
@@ -186,7 +186,10 @@ const Header = () => {
                     <Link to={"/product/category/sale"}>On Sale</Link>
                   </li> */}
                   <li>
-                    <Link to={"/product/category/new arrivel"}>
+                    <Link
+                      to={"/product/category/new arrivel"}
+                      className="text-nowrap"
+                    >
                       New Arrival
                     </Link>
                   </li>
@@ -196,7 +199,7 @@ const Header = () => {
                 </ul>
               </div>
               {/* searchbar */}
-              <div className="flex h-full items-center justify-end  basis-2/6">
+              <div className="flex h-full items-center justify-center  basis-3/6">
                 <label
                   className="flex bg-transparent w-24 sm:w-fit justify-end items-center rounded-badge px-2  sm:py-2 bg-gray-200"
                   onClick={() => {
@@ -214,7 +217,7 @@ const Header = () => {
                 </label>
               </div>
               {/* user actions */}
-              <div className="userAction w-fit flex gap-3 sm:gap-8 ms-auto px-2 items-center">
+              <div className="userAction w-fit flex gap-3 sm:gap-8 px-2 items-center">
                 <div className="cart relative">
                   {cartProduct?.products?.length > 0 && (
                     <span className="badge px-1 top-0 left-[100%]">

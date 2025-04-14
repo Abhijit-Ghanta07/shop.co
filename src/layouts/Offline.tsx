@@ -2,7 +2,7 @@ import React from "react";
 
 const Offline = () => {
   return (
-    <section className="bg-white h-screen w-screen">
+    <section className="bg-white h-screen w-screen text-black">
       <div className="wrapper h-full lg:container lg:mx-auto">
         <div className="grid h-full place-items-center">
           <div className=" h-60 w-60 flex flex-col rounded-xl bg-[#00021f] p-8">

@@ -24,7 +24,7 @@ const TableHeader = ({
                     className="checkbox"
                   />
 
-                  <span>{td}</span>
+                  <span className="text-inherit">{td}</span>
                 </div>
               </th>
             );

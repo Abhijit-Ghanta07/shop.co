@@ -15,7 +15,7 @@ const Footer = () => {
   return (
     <>
       <div className="lg:container lg:mx-auto">
-        <footer className="footer bg-white p-5 sm:p-10">
+        <footer className="footer bg-white text-black p-5 sm:p-10">
           <aside>
             <h3 className="w-40 text-ellipsis ">
               <span className="font-extrabold text-2xl  leading-tight">

@@ -35,7 +35,7 @@ h6,
 div,
 span,
 button {
-  color: black;
+  color: inherit;
   font-family: "Roboto", serif;
   font-optical-sizing: auto;
 }

@@ -14,6 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      staleTime: 1000 * 60 * 10,
+      gcTime: 1000 * 60 * 5,
       retry: 2,
     },
   },

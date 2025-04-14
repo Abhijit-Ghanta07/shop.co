@@ -42,7 +42,7 @@ const RegistrationPage = () => {
   }, [newUserMutaion.isSuccess]);
   return (
     <div className="flex h-auto items-center justify-center bg-gray-100">
-      <div className="flex flex-col sm:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="mt-5  flex flex-col sm:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Left Side - Form */}
         <div className="order-2 sm:order-2 sm:w-1/2 p-8">
           <h2 className="text-2xl font-bold text-gray-800">Register</h2>

@@ -46,7 +46,9 @@ const Dashbroad = () => {
       <div className="wrapper grid gap-5 px-5 py-7 text-black">
         {/* greet */}
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold ">Welcome Back Admin</h2>
+          <h2 className="text-2xl font-bold text-primary">
+            Welcome Back Admin
+          </h2>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             necessitatibus?
@@ -148,7 +150,7 @@ function DashCard({
           <span>{icon}</span>
           <span className="text-wrap">{title}</span>
         </div>
-        <div className="stat-value font-medium text-3xl">
+        <div className="stat-value font-medium text-3xl text-primary">
           {currency ? "$" : ""}
           {count}
         </div>
@@ -156,7 +158,7 @@ function DashCard({
           {/* <span className="text-green-500">10%</span> */}
           {today !== "" && (
             <span>
-              <span className={cl(today > 0 ? "text-green-600 py-3" : "")}>
+              <span className={cl(today > 0 ? "text-active py-3" : "")}>
                 {currency ? "+ $" : "+"}
                 {today} today
               </span>
@@ -189,8 +191,8 @@ function SalesChart({ orderStats }) {
         >
           <defs>
             <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+              <stop offset="5%" stopColor="#266dd3" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#266dd3" stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis dataKey={"_id"} />
@@ -207,7 +209,7 @@ function SalesChart({ orderStats }) {
           <Area
             type="monotone"
             dataKey="totalSales"
-            stroke="#82ca9d"
+            stroke="#266dd3"
             fillOpacity={1}
             fill="url(#colorPv)"
           />
@@ -221,8 +223,8 @@ function TopProduct() {
 
   return (
     <div className="p-3">
-      <div className="flex flex-col">
-        <h2 className="text-xl font-bold ">Top Product</h2>
+      <div className="flex flex-col border-b-2">
+        <h2 className="text-xl font-bold text-primary">Top Product</h2>
         {/* <p>Lorem ipsum dolor sit amet consectetur.</p> */}
       </div>
       <div className="flex flex-col gap-3 overflow-y-auto overflow-x-hidden py-2">
@@ -241,11 +243,13 @@ function TopProduct() {
                 >
                   {ele?.name}
                 </span>
-                <span className="text-xs font-medium text-gray-700 capitalize">
+                <span className="text-xs font-medium  capitalize">
                   Sold:{ele?.totalProductSales}
                 </span>
               </p>
-              <p className="ms-auto">${ele?.firstVariantSellPrice}</p>
+              <p className="ms-auto text-primary">
+                ${ele?.firstVariantSellPrice}
+              </p>
             </div>
           </>
         ))}
@@ -259,40 +263,11 @@ function TopCategory() {
     queryFn: adminTopCategories,
   });
   let categoryData = data?.data?.data;
-  // let categoryData = [
-  //   {
-  //     img: "",
-  //     categoryName: "T-shirts",
-  //     totalSales: 234,
-  //     SaleAmount: 23507,
-  //     status: "grow",
-  //     stat: "+12",
-  //     bg: "green",
-  //   },
-  //   {
-  //     img: "",
-  //     categoryName: "Shirts",
-  //     totalSales: 134,
-  //     SaleAmount: 2507,
-  //     status: "loss",
-  //     stat: "-10",
-  //     bg: "red",
-  //   },
-  //   {
-  //     img: "",
-  //     categoryName: "Shorts",
-  //     totalSales: 234,
-  //     SaleAmount: 23507,
-  //     status: "netural",
-  //     stat: "15",
-  //     bg: "gray",
-  //   },
-  // ];
 
   return (
     <div className="p-3">
-      <div className="flex flex-col">
-        <h2 className="font-bold text-xl text-gray-800">Top Category</h2>
+      <div className="flex flex-col border-b-2">
+        <h2 className="font-bold text-xl text-primary">Top Category</h2>
         {/* <p>Lorem ipsum dolor sit amet consectetur.</p> */}
       </div>
       <div className="flex flex-col gap-3 py-3 overflow-y-auto overflow-x-hidden">
@@ -317,17 +292,8 @@ function TopCategory() {
                   Date: {new Date(ele?.createdAt).toLocaleDateString("en-GB")}
                 </span>
               </p>
-              <div className="ms-auto flex items-center gap-2">
-                <p>{ele?.totalSold}</p>
-                {/* <p
-                  className={cl(
-                    "badge badge-sm",
-                    ele?.totalSold>30?
-
-                  )}
-                >
-                  {ele.stat}
-                </p> */}
+              <div className="ms-auto flex items-center gap-2 ">
+                <p className="text-primary">{ele?.totalSold}</p>
               </div>
             </div>
           </>
@@ -342,16 +308,16 @@ function ExpenseChart({ orderStatus = {} }) {
     { name: "Delivered", value: orderStatus?.delivered || 0 },
     { name: "Shipped", value: orderStatus?.shipped || 0 },
   ];
-  const COLORS = ["#FF6384", "#36A2EB", "#FFCE56"];
+  const COLORS = ["#266dd3", "#0cf574", "#FFCE56"];
   if (!orderData) {
     return <div className="w-52 h-52 skeleton"></div>;
   }
 
   return (
-    <div className="wrapper w-full h-[300px]">
-      <div className="flex flex-col">
-        <h2 className="text-lg font-bold">All Order Stats</h2>
-        <p className="text-sm">Lorem ipsum dolor sit amet consectetur.</p>
+    <div className="wrapper w-full h-[300px] p-3">
+      <div className="flex flex-col border-b-2">
+        <h2 className="text-lg font-bold text-primary">Order Stats</h2>
+        {/* <p className="text-sm">Lorem ipsum dolor sit amet consectetur.</p> */}
       </div>
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <PieChart>
@@ -363,7 +329,6 @@ function ExpenseChart({ orderStatus = {} }) {
             cy="50%"
             innerRadius={30}
             outerRadius={80}
-            fill="#8884d8"
             label
           >
             {orderData.map((entry, index) => (
@@ -389,9 +354,9 @@ const RecentOrders = () => {
   return (
     <>
       {/* Header */}
-      <div className="flex  justify-between items-center mb-6">
+      <div className="flex  justify-between items-center mb-6 border-b-2 pb-2">
         <h2 className="text-xl space-x-2 font-bold text-gray-800">
-          <span>Recent Orders</span>
+          <span className="text-primary">Recent Orders</span>
           {/* <span className="rounded-btn text-xs bg-green-200 px-2 py-1">
             +20 Orders
           </span> */}
@@ -415,7 +380,7 @@ const RecentOrders = () => {
           {/* head */}
           <TableHeader
             columns={["Product", "Customer", "Total", "Status", "Action"]}
-            style={"!text-black"}
+            style={"!text-primary"}
           />
 
           <TableBody
@@ -490,7 +455,9 @@ const OrdersByCountry = () => {
     <>
       <div className="p-3 h-fit">
         <div className="flex flex-col">
-          <h2 className="font-bold text-xl">Orders By Country</h2>
+          <h2 className="font-bold text-xl text-primary border-b-2">
+            Orders By Country
+          </h2>
           {/* <p>Lorem ipsum dolor sit amet consectetur.</p> */}
         </div>
         <div className="flex flex-col gap-3 py-3 overflow-y-auto overflow-x-hidden">
@@ -516,7 +483,7 @@ const OrdersByCountry = () => {
                   </span>
                 </p>
                 <div className="ms-auto flex items-center text-inherit gap-2">
-                  <p>${ele?.totalSales}</p>
+                  <p className="text-primary font-medium">${ele?.totalSales}</p>
                   {/* <p
                   className={cl(
                     "badge badge-sm",

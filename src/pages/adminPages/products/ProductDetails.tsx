@@ -5,6 +5,7 @@ import cl from "classnames";
 import {
   DropDown,
   ReviewCard,
+  Skeleton,
   Star,
   TableBody,
   TableCell,
@@ -190,148 +191,154 @@ const ProductDetails = ({ setVariant, setReview }) => {
           <div className="imgCon gap-3 flex-col basis-1/3 p-2 bg-white shadow-lg rounded-xl">
             {/* show current image */}
             <div className="box h-fit">
-              {productLoading && (
-                <div className="skeleton h-[20rem] w-full bg-white "></div>
-              )}
-              <img
-                src={currentProductImage || ""}
-                alt="product image"
-                className={cl(style.product__img__hero)}
-              />
-            </div>
-            {/* map all images */}
-            <div className="flex gap-5 mt-4">
-              {productLoading && (
-                <>
-                  <div className="skeleton bg-white h-40 w-32"></div>
-                  <div className="skeleton bg-white h-40 w-32"></div>
-                  <div className="skeleton bg-white h-40 w-32"></div>
-                </>
-              )}
-              {productImages?.map((img) => (
+              {productLoading ? (
+                <div className="skeleton w-full h-[25rem] bg-gray-100"></div>
+              ) : (
                 <img
-                  src={img?.url || ""}
+                  src={currentProductImage || ""}
                   alt="product image"
-                  className={cl(
-                    style.product__img__slide,
-                    "hover:scale-110 duration-300"
-                  )}
-                  onClick={() => {
-                    setCurrentProductImage(img?.url);
-                  }}
+                  className={cl(style.product__img__hero)}
                 />
-              ))}
+              )}
             </div>
-          </div>
-          <div className="product-dsc basis-2/3 flex flex-col p-2 shadow-lg rounded-xl">
-            {/* loading skeleton */}
-            {productLoading && (
-              <div className="flex flex-col gap-4 w-80">
-                <div className="skeleton bg-white h-4 w-full"></div>
-                <div className="skeleton bg-white h-4 w-full"></div>
-                <div className="skeleton bg-white h-4 w-full"></div>
+            {productLoading ? (
+              <Skeleton
+                count={4}
+                style={
+                  "px-0 !justify-start order-2 md:order-1 flex-nowrap flex-col my-0"
+                }
+              >
+                <div className="skeleton w-28 h-28 bg-gray-100"></div>
+              </Skeleton>
+            ) : (
+              <div className="flex gap-5 mt-4">
+                {productImages?.map((img) => (
+                  <img
+                    src={img?.url || ""}
+                    alt="product image"
+                    className={cl(
+                      style.product__img__slide,
+                      "hover:scale-110 duration-300"
+                    )}
+                    onClick={() => {
+                      setCurrentProductImage(img?.url);
+                    }}
+                  />
+                ))}
               </div>
             )}
-
-            <div className="title">
-              <h2 className="text-2xl font-extrabold capitalize leading-tight">
-                {productData?.name}
-              </h2>
-            </div>
-            <div className="flex space-x-1 items-center pt-2">
-              <p className="flex gap-2 items-center text-sm">
-                Rating:
-                <Star
-                  count={productData?.averageRating || 1}
-                  size={15}
-                  color="orange"
-                />
-                <span className="text-sm font-mono">
-                  {Math.round(productData?.averageRating) || 1}/5
-                </span>
-              </p>
-              <div className="divider divider-horizontal divider-neutral"></div>
-              <p className="text-sm">
-                Stock: {""}
-                {currentProductVariant?.stock <= 0 ? (
-                  <span className="text-red-500">&nbsp; Out Of Stock</span>
-                ) : (
-                  <span>{currentProductVariant?.stock}</span>
-                )}
-              </p>
-            </div>
-            {/* price */}
-            <div className="price flex py-4 font-bold text-2xl  items-center gap-3">
-              <span>{currentProductVariant?.sellPrice || ""}</span>
-              <span className="text-gray-500 line-through">
-                {currentProductVariant?.basePrice || ""}
-              </span>
-              {currentProductVariant?.discount && (
-                <span className="badge p-3 border-none text-red-700 bg-red-200">
-                  -{currentProductVariant?.discount}%
-                </span>
-              )}
-            </div>
-            <div className="dsc py-2">
-              <p className="text-gray-500 capitalize">
-                {productData?.description}
-              </p>
-            </div>
-            <div className="outline outline-1 outline-slate-300"></div>
-            {/* color */}
-            <div className="flex flex-col py-3 gap-3">
-              <p>Colors:</p>
-              <div className="flex space-x-3">
-                {productColors?.map((ele) => (
-                  <button
-                    className={cl(
-                      "flex gap-1 items-center outline  p-1 rounded-btn brightness-50	transition-all",
-                      ele == currentProductColor ? "outline-1" : "outline-0"
-                    )}
-                    onClick={() => {
-                      setCurrentProductColor(ele);
-                    }}
-                  >
-                    <span
-                      style={{ background: ele }}
-                      className={` rounded-full p-3`}
-                    ></span>
-                    <span className="capitalize">{ele}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="outline outline-1 outline-slate-300"></div>
-            {/* size */}
-            <div className="flex flex-col py-3 gap-3">
-              <p>Sizes:</p>
-              <div className="flex space-x-3">
-                {sizes?.map((ele) => (
-                  <button
-                    className={cl(
-                      "px-3 py-2 rounded-badge  bg-gray-200 capitalize",
-                      ele == selectedProductSize ? "bg-primary" : ""
-                    )}
-                    onClick={() => {
-                      setSelectedProductSize(ele);
-                    }}
-                  >
-                    {ele}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="outline outline-1 outline-slate-300"></div>
-            <div className="flex justify-between p-2">
-              <p>
-                <span>SKU:#{productData?.sku}</span>
-              </p>
-              <p>
-                Created At:
-                {DateFormat(productData?.createdAt)}
-              </p>
-            </div>
           </div>
+          {productLoading ? (
+            <Skeleton count={1} style={"flex-col !justify-start gap-5"}>
+              <div className="skeleton w-60 h-8 rounded-lg bg-gray-100"></div>
+              <div className="skeleton w-44 h-4 rounded-lg bg-gray-100"></div>
+              <div className="skeleton w-60 h-4 rounded-lg bg-gray-100"></div>
+              <div className="skeleton w-60 h-8 rounded-lg bg-gray-100"></div>
+            </Skeleton>
+          ) : (
+            <div className="product-dsc basis-2/3 flex flex-col p-2 shadow-lg rounded-xl">
+              {/* loading skeleton */}
+
+              <div className="title">
+                <h2 className="text-2xl font-extrabold capitalize leading-tight">
+                  {productData?.name}
+                </h2>
+              </div>
+              <div className="flex space-x-1 items-center pt-2">
+                <p className="flex gap-2 items-center text-sm">
+                  Rating:
+                  <Star
+                    count={productData?.averageRating || 1}
+                    size={15}
+                    color="orange"
+                  />
+                  <span className="text-sm font-mono">
+                    {Math.round(productData?.averageRating) || 1}/5
+                  </span>
+                </p>
+                <div className="divider divider-horizontal divider-neutral"></div>
+                <p className="text-sm">
+                  Stock: {""}
+                  {currentProductVariant?.stock <= 0 ? (
+                    <span className="text-red-500">&nbsp; Out Of Stock</span>
+                  ) : (
+                    <span>{currentProductVariant?.stock}</span>
+                  )}
+                </p>
+              </div>
+              {/* price */}
+              <div className="price flex py-4 font-bold text-2xl  items-center gap-3">
+                <span>{currentProductVariant?.sellPrice || ""}</span>
+                <span className="text-gray-500 line-through">
+                  {currentProductVariant?.basePrice || ""}
+                </span>
+                {currentProductVariant?.discount && (
+                  <span className="badge p-3 border-none text-red-700 bg-red-200">
+                    -{currentProductVariant?.discount}%
+                  </span>
+                )}
+              </div>
+              <div className="dsc py-2">
+                <p className="text-gray-500 capitalize">
+                  {productData?.description}
+                </p>
+              </div>
+              <div className="outline outline-1 outline-slate-300"></div>
+              {/* color */}
+              <div className="flex flex-col py-3 gap-3">
+                <p>Colors:</p>
+                <div className="flex space-x-3">
+                  {productColors?.map((ele) => (
+                    <button
+                      className={cl(
+                        "flex gap-1 items-center outline  p-1 rounded-btn brightness-50	transition-all",
+                        ele == currentProductColor ? "outline-1" : "outline-0"
+                      )}
+                      onClick={() => {
+                        setCurrentProductColor(ele);
+                      }}
+                    >
+                      <span
+                        style={{ background: ele }}
+                        className={` rounded-full p-3`}
+                      ></span>
+                      <span className="capitalize">{ele}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="outline outline-1 outline-slate-300"></div>
+              {/* size */}
+              <div className="flex flex-col py-3 gap-3">
+                <p>Sizes:</p>
+                <div className="flex space-x-3">
+                  {sizes?.map((ele) => (
+                    <button
+                      className={cl(
+                        "px-3 py-2 rounded-badge  bg-gray-200 capitalize",
+                        ele == selectedProductSize ? "bg-primary" : ""
+                      )}
+                      onClick={() => {
+                        setSelectedProductSize(ele);
+                      }}
+                    >
+                      {ele}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="outline outline-1 outline-slate-300"></div>
+              <div className="flex justify-between p-2">
+                <p>
+                  <span>SKU:#{productData?.sku}</span>
+                </p>
+                <p>
+                  Created At:
+                  {DateFormat(productData?.createdAt)}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

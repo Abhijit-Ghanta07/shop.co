@@ -17,10 +17,11 @@ const AdminDashboardHeader = () => {
   const handleTheme = () => {
     toggleTheme();
   };
+
   return (
     <>
       <Banner />
-      <header className="flex items-center justify-between bg-white dark:bg-slate-900  shadow-md p-2 sm:px-6 sm:py-4 sticky top-0 z-10">
+      <header className="flex items-center justify-between bg-white dark:bg-slate-900 p-2 text-black sticky top-0 z-10 border-b-2">
         {/* Left Section - Search Bar */}
         {/* <div className="flex items-center w-fit  sm:px-5">
         <input
@@ -33,7 +34,7 @@ const AdminDashboardHeader = () => {
       </div> */}
 
         {/* Right Section - Notifications and Profile */}
-        <div className="flex w-full gap-2 px-2 justify-end  items-center">
+        <div className="flex w-full gap-10 px-2 justify-end  items-center">
           {/* theme change  */}
           <div className="flex">
             <span className="cursor-pointer" onClick={handleTheme}>
@@ -54,9 +55,9 @@ const AdminDashboardHeader = () => {
               className="flex items-center space-x-2 cursor-pointer"
               onClick={toggleDropdown}
             >
-              {userDetails?.imageUrl ? (
+              {userDetails?.imgUrl ? (
                 <img
-                  src={userDetails?.imageUrl}
+                  src={userDetails?.imgUrl}
                   alt="Profile"
                   className="h-10 w-10 rounded-full object-cover"
                 />
@@ -87,7 +88,7 @@ const AdminDashboardHeader = () => {
                 </span>
                 Roles
               </button> */}
-                <Logout style={"w-full mt-2 text-white"}>
+                <Logout style={"w-full mt-2 text-white btn-error border-0"}>
                   <span>
                     <IoLogOut color="white" />
                   </span>

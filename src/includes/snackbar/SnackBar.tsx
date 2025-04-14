@@ -5,15 +5,17 @@ import { NavLink, useLocation } from "react-router-dom";
 import cl from "classnames";
 import { useSelector } from "react-redux";
 import useUser from "../../hooks/useUser";
-import { IoBag, IoHomeOutline } from "react-icons/io5";
+import { IoBag } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 
 // style
 import style from "./style.module.scss";
+import usePwa from "../../hooks/usePwa";
 const SnackBar = () => {
   const { pathname } = useLocation();
   const { userDetails } = useSelector((store) => store.user);
   const [isAdmin, setAdmin] = useState(userDetails?.roles?.includes("ADMIN"));
+  const { isPwa } = usePwa();
   const [paths, setPaths] = useState(() => {
     return pathname.split("/");
   });
@@ -27,7 +29,12 @@ const SnackBar = () => {
     setPaths(pathname.split("/"));
   }, [pathname]);
   return (
-    <div className="btm-nav justify-around  py-2 z-50 bg-gray-50 sm:hidden">
+    <div
+      className={cl(
+        "btm-nav justify-around  py-2 z-50 bg-gray-50 sm:hidden",
+        isPwa ? "block" : "hidden"
+      )}
+    >
       <NavLink
         to={"/"}
         className={({ isActive }) =>

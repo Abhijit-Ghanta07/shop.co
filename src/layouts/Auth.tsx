@@ -1,10 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { Header } from "../includes/includes";
 
 const Auth = () => {
   return (
     <>
+      <ScrollRestoration />
       <Header />
       <>
         {/* <Link

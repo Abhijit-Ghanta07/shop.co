@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 const Product = () => {
   return (
     <>
-      <div className="lg:container mx-auto bg-white  mb-10 sm:m-0">
+      <div className="lg:container mx-auto bg-white  mb-10 sm:m-0 text-black">
         <Header />
         <Outlet />
         <NewsLetter />

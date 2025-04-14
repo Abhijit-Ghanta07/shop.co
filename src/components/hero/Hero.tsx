@@ -6,15 +6,14 @@ import prada from "../../assets/svgs/brands/prada.svg";
 import zara from "../../assets/svgs/brands/zara.svg";
 import cl from "classnames";
 import style from "./hero.module.scss";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Hero = () => {
-  const navigate = useNavigate();
   return (
     <main className="overflow-hidden">
       <div className="">
-        <div className="relative h-fit">
-          <div className="flex flex-col bg-[#F2F0F1] sm:bg-transparent">
-            <div className="flex flex-col items-center md:items-start p-5 lg:p-20 z-[1]">
+        <div className="h-fit">
+          <div className="bg-[#F2F0F1] sm:bg-transparent relative">
+            <div className="flex relative flex-col items-center md:items-start p-5 lg:p-20 z-[1]">
               <h2
                 className={cl(
                   "text-center text-3xl font-extrabold mt-6 md:m-0 capitalize md:text-start md:text-5xl md:w-2/4"
@@ -31,25 +30,19 @@ const Hero = () => {
                 garments, designed to bring out your individuality and cater to
                 your sense of style.
               </p>
-              <button
-                className="w-40 text-light font-bold p-3  bg-primary rounded-badge text-lg"
-                onClick={() => {
-                  navigate("/product/category");
-                }}
+              <Link
+                to={"/product/category"}
+                className="w-40 text-light font-bold p-3 text-center bg-primary rounded-badge text-lg"
               >
                 Shop Now
-              </button>
+              </Link>
               <div className="flex  gap-3 flex-wrap my-8">
                 <HeroStats title="International Brands" number="200" />
                 <HeroStats title="High-Quality Products" number="2,000" />
                 <HeroStats title="Happy Coustomers" number="30,000" />
               </div>
             </div>
-            <img
-              src={heroImg}
-              className={cl("relative md:absolute z-0", style.hero__img)}
-              alt=""
-            />
+            <img src={heroImg} className={cl(style.hero__img)} alt="" />
           </div>
         </div>
       </div>

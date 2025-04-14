@@ -11,6 +11,7 @@ import { getadminProductskey } from "../../../querys/admin/adminQuery";
 import {
   DeleteModal,
   DropDown,
+  Skeleton,
   TableBody,
   TableCell,
   TableHeader,
@@ -100,163 +101,176 @@ const AllProductsTable = () => {
         </div>
         {/* Table */}
         <div className="overflow-x-auto">
-          {isLoading && (
-            <div className="skeleton h-96 columns-1 w-full bg-gray-200 dark:bg-white "></div>
-          )}
-          <table className="w-full rounded">
-            <TableHeader
-              columns={productTableHead}
-              input={true}
-              oncheck={
-                selectedProducts.length === productData?.allProducts?.length
-              }
-              onchange={toggleSelectAll}
-            />
-            <TableBody
-              columnsData={productData?.allProducts}
-              renderItem={(item) => {
-                return (
-                  <tr key={item?._id} className="text-gray-800 text-base">
-                    {/* Checkbox */}
+          {isLoading ? (
+            <Skeleton count={5}>
+              <div className="flex w-full justify-between bg-white">
+                <div className="flex gap-2 flex-col ">
+                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
+                  <div className="skeleton bg-inherit h-2 w-14"></div>
+                </div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <table className="w-full rounded">
+              <TableHeader
+                columns={productTableHead}
+                input={true}
+                oncheck={
+                  selectedProducts.length === productData?.allProducts?.length
+                }
+                onchange={toggleSelectAll}
+              />
+              <TableBody
+                columnsData={productData?.allProducts}
+                renderItem={(item) => {
+                  return (
+                    <tr key={item?._id} className="text-gray-800 text-base">
+                      {/* Checkbox */}
 
-                    {/* Product Name */}
-                    <TableCell>
-                      <div className="flex gap-2 items-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedProducts.includes(item?._id)}
-                          onChange={() => toggleSelectProduct(item?._id)}
-                          className="checkbox"
-                        />
-                        <div className="flex space-x-3">
-                          <Link to={`${item?._id}`} className="avatar">
-                            <div className="w-12 rounded-full">
-                              <img
-                                src={
-                                  item?.firstVariant?.images?.[0]?.url ||
-                                  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                                }
-                                alt="Tailwind-CSS-Avatar-component"
-                              />
-                            </div>
-                          </Link>
-                          <p className="inline-flex flex-col">
-                            <span className="capitalize text-sm md:text-base text-gray-800 font-medium">
-                              {item?.name}
-                            </span>
-                            <span className="text-sm text-gray-400">
-                              {item?.totalVariants} variants
-                            </span>
-                          </p>
+                      {/* Product Name */}
+                      <TableCell>
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedProducts.includes(item?._id)}
+                            onChange={() => toggleSelectProduct(item?._id)}
+                            className="checkbox"
+                          />
+                          <div className="flex space-x-3">
+                            <Link to={`${item?._id}`} className="avatar">
+                              <div className="w-12 h-12 rounded-full">
+                                <img
+                                  src={
+                                    item?.firstVariant?.images?.[0]?.url ||
+                                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                                  }
+                                  alt="Tailwind-CSS-Avatar-component"
+                                />
+                              </div>
+                            </Link>
+                            <p className="inline-flex flex-col">
+                              <span className="capitalize text-sm md:text-base text-gray-800 font-medium">
+                                {item?.name}
+                              </span>
+                              <span className="text-sm text-primary">
+                                {item?.totalVariants} variants
+                              </span>
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
+                      </TableCell>
 
-                    {/* SKU */}
-                    <TableCell>#{item?.sku}</TableCell>
+                      {/* SKU */}
+                      <TableCell>#{item?.sku}</TableCell>
 
-                    {/* Category */}
-                    <TableCell>
-                      <Link
-                        to={`/admin/category/${
-                          item?.categoryDetails?.[0]?._id
-                        }?query=${item?.categoryDetails?.[0]?.categoryName.toLowerCase()}`}
-                        className="rounded p-1 capitalize  text-white bg-gray-700"
-                      >
-                        {item?.categoryDetails?.[0]?.categoryName || "category"}
-                      </Link>
-                    </TableCell>
-
-                    {/* Stock */}
-                    <TableCell>
-                      {item?.totalStock > 10 ? (
-                        <span className="text-green-600 font-medium">
-                          {item?.totalStock}
-                        </span>
-                      ) : (
-                        <span className="text-red-500 font-medium">
-                          {item?.totalStock}
-                        </span>
-                      )}
-                    </TableCell>
-
-                    {/* Price */}
-                    <TableCell>
-                      ${item?.firstVariant?.sellPrice || 300}
-                    </TableCell>
-
-                    {/* Status */}
-                    <TableCell>
-                      {item?.totalStock < 10 ? (
-                        <span
-                          className={`px-2 py-1 rounded text-sm ${"bg-red-100 text-red-800"}`}
+                      {/* Category */}
+                      <TableCell>
+                        <Link
+                          to={`/admin/category/${
+                            item?.categoryDetails?.[0]?._id
+                          }?query=${item?.categoryDetails?.[0]?.categoryName.toLowerCase()}`}
+                          className="rounded p-1 capitalize bg-primary text-white"
                         >
-                          Low Stock
-                        </span>
-                      ) : (
-                        <span
-                          className={`px-2 py-1 rounded text-sm ${" bg-green-400"}`}
-                        >
-                          Good
-                        </span>
-                      )}
-                    </TableCell>
+                          {item?.categoryDetails?.[0]?.categoryName ||
+                            "category"}
+                        </Link>
+                      </TableCell>
 
-                    {/* Added Date */}
-                    <TableCell>{DateFormat(item.createdAt)}</TableCell>
+                      {/* Stock */}
+                      <TableCell>
+                        {item?.totalStock > 10 ? (
+                          <span className="text-green-600 font-medium">
+                            {item?.totalStock}
+                          </span>
+                        ) : (
+                          <span className="text-red-500 font-medium">
+                            {item?.totalStock}
+                          </span>
+                        )}
+                      </TableCell>
 
-                    {/* Actions */}
-                    <TableCell>
-                      <DropDown>
-                        <li>
-                          <Link
-                            to={`${item?._id}`}
-                            className="hover:bg-gray-500 text-start font-medium"
+                      {/* Price */}
+                      <TableCell>
+                        ${item?.firstVariant?.sellPrice || 300}
+                      </TableCell>
+
+                      {/* Status */}
+                      <TableCell>
+                        {item?.totalStock < 10 ? (
+                          <span
+                            className={`px-2 py-1 rounded text-sm ${"bg-red-100 text-red-800"}`}
                           >
-                            <IoEye />
-                            View
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to={`variant/add/${item?._id}`}
-                            state={{ sku: item?.sku }}
-                            className="hover:bg-gray-500 text-start font-medium"
+                            Low Stock
+                          </span>
+                        ) : (
+                          <span
+                            className={`px-2 py-1 rounded text-sm ${" bg-green-400"}`}
                           >
-                            <CgAdd />
-                            Add Variant
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to={`edit/${item?._id}`}
-                            className="hover:bg-gray-500 text-start font-medium"
-                          >
-                            <MdModeEdit />
-                            Edit
-                          </Link>
-                        </li>
-                        <li>
-                          <button
-                            className="hover:bg-gray-500 text-start font-medium"
-                            onClick={() => {
-                              if (modalRef?.current) {
-                                setDeleteSelect(item?._id);
-                                modalRef.current?.showModal();
-                              }
-                            }}
-                          >
-                            <FaRegTrashAlt />
-                            Delete
-                          </button>
-                        </li>
-                      </DropDown>
-                    </TableCell>
-                  </tr>
-                );
-              }}
-            />
-          </table>
+                            Good
+                          </span>
+                        )}
+                      </TableCell>
+
+                      {/* Added Date */}
+                      <TableCell>{DateFormat(item.createdAt)}</TableCell>
+
+                      {/* Actions */}
+                      <TableCell>
+                        <DropDown style="bg-light">
+                          <li>
+                            <Link
+                              to={`${item?._id}`}
+                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                            >
+                              <IoEye />
+                              View
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`variant/add/${item?._id}`}
+                              state={{ sku: item?.sku }}
+                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                            >
+                              <CgAdd />
+                              Add Variant
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`edit/${item?._id}`}
+                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                            >
+                              <MdModeEdit />
+                              Edit
+                            </Link>
+                          </li>
+                          <li>
+                            <button
+                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                              onClick={() => {
+                                if (modalRef?.current) {
+                                  setDeleteSelect(item?._id);
+                                  modalRef.current?.showModal();
+                                }
+                              }}
+                            >
+                              <FaRegTrashAlt />
+                              Delete
+                            </button>
+                          </li>
+                        </DropDown>
+                      </TableCell>
+                    </tr>
+                  );
+                }}
+              />
+            </table>
+          )}
         </div>
         <AdminPagination
           totalPage={Math.ceil(productData?.totalProductsLen / itemsPerPage)}

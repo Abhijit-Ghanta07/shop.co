@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className={`flex flex-col h-screen dark:bg-gray-900 dark:text-white bg-gray-200 text-black sm:p-0 pb-10 ${
+      className={`flex flex-col h-screen dark:bg-gray-900  bg-light sm:p-0 pb-10 ${
         isOpen ? "w-64" : "w-15"
       } transition-all duration-300`}
     >
@@ -32,7 +32,8 @@ const Sidebar: React.FC = () => {
           {isOpen && (
             <span className="ml-4 text-2xl font-extrabold">
               <Link to={"/"} title="Home">
-                SHOP.CO
+                SHOP.
+                <span className="text-primary">CO</span>
               </Link>
             </span>
           )}
@@ -49,8 +50,8 @@ const Sidebar: React.FC = () => {
             to={ele.link}
             className={({ isActive }) =>
               cl(
-                `flex items-center  px-4 py-3 mb-2 rounded-lg transition hover:bg-gray-500 hover:text-orange-100`,
-                isActive ? "bg-gray-600 text-white" : ""
+                `flex items-center  px-4 py-3 mb-2 rounded-lg transition hover:bg-slate-200 hover:text-primary`,
+                isActive ? "bg-slate-200 text-primary" : ""
               )
             }
             title={ele.tilte}
