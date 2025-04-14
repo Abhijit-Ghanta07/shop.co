@@ -8,41 +8,78 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      devOptions: {
+        enabled: true,
+      },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,png,jpg,svg}"], // Files to cache
+        globPatterns: ["**/*.{js,css,html,png,jpg,svg}"],
+        clientsClaim: true,
+        skipWaiting: true,
       },
       manifest: {
         name: "Shop.co",
-        short_name: "Shop",
-        icons: [
-          {
-            src: "./icons/icon65.png",
-            sizes: "64x64",
-            type: "image/png",
-          },
-          {
-            src: "./icons/icon-100.png",
-            sizes: "100x100",
-            type: "image/png",
-          },
-        ],
-        start_url: "/",
-        display: "standalone",
+        short_name: "ShopCo",
+        description: "Your one-stop shop for fashion and accessories",
         theme_color: "#ffffff",
         background_color: "#678924",
-        shortcuts: [
+        display: "standalone",
+        start_url: "/",
+        icons: [
           {
-            name: "Men Shirt",
-            short_name: "Men shirt",
-            description: "Men Collections",
-            url: "/product/category/male",
-            icons: [
-              {
-                src: "/icons/icon-jacket.png",
-                sizes: "100x100",
-                type: "image/png",
-              },
-            ],
+            purpose: "maskable",
+            sizes: "125x125",
+            src: "icons/mask_icon.png",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-48x48.png",
+            sizes: "48x48",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-72x72.png",
+            sizes: "72x72",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-96x96.png",
+            sizes: "96x96",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-128x128.png",
+            sizes: "128x128",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-144x144.png",
+            sizes: "144x144",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-152x152.png",
+            sizes: "152x152",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-256x256.png",
+            sizes: "256x256",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-384x384.png",
+            sizes: "384x384",
+            type: "image/png",
+          },
+          {
+            src: "icons/icons-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
           },
         ],
       },
