@@ -14,8 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 2, // Cache for 2 minutes
-      gcTime: 1000 * 60 * 5, // Cache for 5 minutes
+      retry: 2,
     },
   },
 });

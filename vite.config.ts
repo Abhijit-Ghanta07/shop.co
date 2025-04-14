@@ -7,22 +7,22 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.js", // Path to your custom service worker
       registerType: "autoUpdate",
-      devOptions: {
-        enabled: true,
-      },
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,png,jpg,svg}"],
-        clientsClaim: true,
-        skipWaiting: true,
+      injectManifest: {
+        injectionPoint: "self.__WB_MANIFEST",
+        globPatterns: ["**/*.{js,css,html,png,jpg,svg,ico}"],
       },
       manifest: {
         name: "Shop.co",
         short_name: "ShopCo",
         description: "Your one-stop shop for fashion and accessories",
         theme_color: "#ffffff",
-        background_color: "#678924",
+        background_color: "#678925",
         display: "standalone",
+        orientation: "portrait",
         start_url: "/",
         icons: [
           {
