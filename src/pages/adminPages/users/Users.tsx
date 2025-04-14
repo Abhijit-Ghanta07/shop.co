@@ -7,6 +7,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import {
   DropDown,
   Modal,
+  Skeleton,
   TableBody,
   TableCell,
   TableHeader,
@@ -84,136 +85,148 @@ const UsersTable = () => {
 
         {/* Table */}
         <div className="overflow-x-auto">
-          {isLoading && (
-            <div className="skeleton h-96 columns-1 w-full bg-gray-200 dark:bg-white "></div>
-          )}
-          <table className="w-full rounded">
-            <TableHeader
-              columns={[
-                "",
-                "Name",
-                "Access",
-                "Status",
-                "Date Added",
-                "Actions",
-              ]}
-              input={true}
-              oncheck={selectedProducts.length === data?.allUsers?.length}
-              onchange={toggleSelectAll}
-            />
-            <TableBody
-              columnsData={data?.allUsers}
-              renderItem={(eachUser) => {
-                return (
-                  <tr key={eachUser?._id} className="text-gray-800 text-base">
-                    {/* Checkbox */}
-                    <TableCell>
-                      <input
-                        type="checkbox"
-                        checked={selectedProducts.includes(eachUser?._id)}
-                        onChange={() => toggleSelectProduct(eachUser?._id)}
-                        className="checkbox"
-                      />
-                    </TableCell>
+          {isLoading ? (
+            <Skeleton count={5}>
+              <div className="flex w-full justify-between bg-white">
+                <div className="flex gap-2 flex-col ">
+                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
+                  <div className="skeleton bg-inherit h-2 w-14"></div>
+                </div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <table className="w-full rounded">
+              <TableHeader
+                columns={[
+                  "",
+                  "Name",
+                  "Access",
+                  "Status",
+                  "Date Added",
+                  "Actions",
+                ]}
+                input={true}
+                oncheck={selectedProducts.length === data?.allUsers?.length}
+                onchange={toggleSelectAll}
+              />
+              <TableBody
+                columnsData={data?.allUsers}
+                renderItem={(eachUser) => {
+                  return (
+                    <tr key={eachUser?._id} className="text-gray-800 text-base">
+                      {/* Checkbox */}
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          checked={selectedProducts.includes(eachUser?._id)}
+                          onChange={() => toggleSelectProduct(eachUser?._id)}
+                          className="checkbox"
+                        />
+                      </TableCell>
 
-                    {/* user Name */}
-                    <TableCell>
-                      <div className="inline-flex gap-2">
-                        <Link to={eachUser?._id}>
-                          {eachUser?.imgUrl !== "" ? (
-                            <>
-                              <div className="avatar">
-                                <div className="w-14 rounded-full">
-                                  <img src={eachUser?.imgUrl} />
+                      {/* user Name */}
+                      <TableCell>
+                        <div className="inline-flex gap-2">
+                          <Link to={eachUser?._id}>
+                            {eachUser?.imgUrl !== "" ? (
+                              <>
+                                <div className="avatar">
+                                  <div className="w-14 rounded-full">
+                                    <img src={eachUser?.imgUrl} />
+                                  </div>
                                 </div>
-                              </div>
-                            </>
-                          ) : (
-                            <ImageLetter name={eachUser?.username} />
-                          )}
-                        </Link>
-
-                        <div className="inline-flex flex-col">
-                          <p className="text-gray-800 text-base inline-flex items-center gap-2 capitalize">
-                            <span>{eachUser?.username}</span>
-                            {eachUser?.authProvider === "google" ? (
-                              <span>
-                                <FcGoogle />
-                              </span>
+                              </>
                             ) : (
-                              <span>
-                                <MdMarkEmailRead />
-                              </span>
+                              <ImageLetter name={eachUser?.username} />
                             )}
-                          </p>
-                          <span className="text-gray-400 text-sm">
-                            {eachUser?.email}
-                          </span>
-                        </div>
-                      </div>
-                    </TableCell>
-
-                    {/* SKU */}
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {eachUser?.roles?.map((role) => (
-                          <AdminBadge status={role} />
-                        ))}
-                      </div>
-                    </TableCell>
-
-                    {/* active */}
-                    <TableCell>
-                      {eachUser?.isActive ? (
-                        <span className="badge badge-success badge-outline">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="badge badge-neutral">Active</span>
-                      )}
-                    </TableCell>
-
-                    {/* added */}
-                    <TableCell>{DateFormat(eachUser?.createdAt)}</TableCell>
-
-                    {/* Price */}
-
-                    {/* Actions */}
-                    <TableCell>
-                      <DropDown>
-                        <li>
-                          <Link
-                            to={`${eachUser?._id}`}
-                            className="hover:bg-gray-300 font-medium"
-                          >
-                            <IoEye />
-                            View
                           </Link>
-                        </li>
-                        <li>
-                          <button
-                            className="hover:bg-gray-300 font-medium"
-                            onClick={() => {
-                              if (modalRef?.current) {
-                                setDelectSelect(eachUser?._id);
-                                modalRef?.current?.showModal();
-                              }
-                            }}
-                          >
-                            <FaRegTrashAlt />
-                            Delete
-                          </button>
-                        </li>
-                        {/* <button className="btn btn-sm btn-ghost rounded-full">
+
+                          <div className="inline-flex flex-col">
+                            <p className="text-gray-800 text-base inline-flex items-center gap-2 capitalize">
+                              <span>{eachUser?.username}</span>
+                              {eachUser?.authProvider === "google" ? (
+                                <span>
+                                  <FcGoogle />
+                                </span>
+                              ) : (
+                                <span>
+                                  <MdMarkEmailRead />
+                                </span>
+                              )}
+                            </p>
+                            <span className="text-gray-400 text-sm">
+                              {eachUser?.email}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      {/* SKU */}
+                      <TableCell>
+                        <div className="flex gap-2">
+                          {eachUser?.roles?.map((role) => (
+                            <AdminBadge status={role} />
+                          ))}
+                        </div>
+                      </TableCell>
+
+                      {/* active */}
+                      <TableCell>
+                        {eachUser?.isActive ? (
+                          <span className="badge badge-success badge-outline">
+                            Active
+                          </span>
+                        ) : (
+                          <span className="badge badge-neutral">Active</span>
+                        )}
+                      </TableCell>
+
+                      {/* added */}
+                      <TableCell>{DateFormat(eachUser?.createdAt)}</TableCell>
+
+                      {/* Price */}
+
+                      {/* Actions */}
+                      <TableCell>
+                        <DropDown>
+                          <li>
+                            <Link
+                              to={`${eachUser?._id}`}
+                              className="hover:bg-gray-300 font-medium"
+                            >
+                              <IoEye />
+                              View
+                            </Link>
+                          </li>
+                          <li>
+                            <button
+                              className="hover:bg-gray-300 font-medium"
+                              onClick={() => {
+                                if (modalRef?.current) {
+                                  setDelectSelect(eachUser?._id);
+                                  modalRef?.current?.showModal();
+                                }
+                              }}
+                            >
+                              <FaRegTrashAlt />
+                              Delete
+                            </button>
+                          </li>
+                          {/* <button className="btn btn-sm btn-ghost rounded-full">
             <MdModeEdit />
           </button> */}
-                      </DropDown>
-                    </TableCell>
-                  </tr>
-                );
-              }}
-            />
-          </table>
+                        </DropDown>
+                      </TableCell>
+                    </tr>
+                  );
+                }}
+              />
+            </table>
+          )}
         </div>
         <AdminPagination
           currentPage={currentPage}

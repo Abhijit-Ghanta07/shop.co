@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 import {
   LoaderBtn,
+  Skeleton,
   TableBody,
   TableCell,
   TableHeader,
@@ -17,7 +18,7 @@ import { getadminOrdersKey } from "../../../querys/admin/adminQuery";
 const ordersStatus = ["pending", "shipped", "delivered"];
 const OrderDetailsPage = () => {
   const { id } = useParams();
-  const { data: order } = useGetOrderDetails(id);
+  const { data: order, isLoading } = useGetOrderDetails(id);
   const orderUpdateMutaion = UpdateOrderStausMutaion();
   const orderAddress = order?.address;
   const queryClient = useQueryClient();
@@ -54,43 +55,58 @@ const OrderDetailsPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-x-hidden">
         {/* Left Section - Main Card */}
         <div className="md:col-span-2 bg-white overflow-auto p-6 rounded-lg shadow-md text-black">
-          <h3 className="text-xl font-semibold mb-4">Products</h3>
-          <table className="w-full">
-            <TableHeader
-              columns={["Product", "SKU", "Quantity", "Price", "Total"]}
-            />
-            <TableBody
-              columnsData={order?.products}
-              renderItem={(product) => {
-                return (
-                  <tr key={product?.productId?._id}>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <div className="avatar">
-                          <div className="w-12 rounded">
-                            <img
-                              src={product?.variantId?.images[0]?.url || ""}
-                              alt="products image"
-                            />
+          <h3 className="text-xl font-semibold mb-4 border-b-2">Products</h3>
+          {isLoading ? (
+            <Skeleton count={3}>
+              <div className="flex w-full justify-between bg-white">
+                <div className="flex gap-2 flex-col ">
+                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
+                  <div className="skeleton bg-inherit h-2 w-14"></div>
+                </div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <table className="w-full">
+              <TableHeader
+                columns={["Product", "SKU", "Quantity", "Price", "Total"]}
+              />
+              <TableBody
+                columnsData={order?.products}
+                renderItem={(product) => {
+                  return (
+                    <tr key={product?.productId?._id}>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <div className="avatar">
+                            <div className="w-12 rounded">
+                              <img
+                                src={product?.variantId?.images[0]?.url || ""}
+                                alt="products image"
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <p className="capitalize text-sm sm:text-base font-medium">
-                          {product?.productId?.name}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{product?.productId?.sku}</TableCell>
-                    <TableCell>{product?.quantity}</TableCell>
-                    <TableCell>${product?.variantId?.sellPrice}</TableCell>
-                    <TableCell>
-                      ${product?.variantId?.sellPrice * product.quantity}
-                    </TableCell>
-                  </tr>
-                );
-              }}
-            />
-          </table>
+                          <p className="capitalize text-sm sm:text-base font-medium">
+                            {product?.productId?.name}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>{product?.productId?.sku}</TableCell>
+                      <TableCell>{product?.quantity}</TableCell>
+                      <TableCell>${product?.variantId?.sellPrice}</TableCell>
+                      <TableCell>
+                        ${product?.variantId?.sellPrice * product.quantity}
+                      </TableCell>
+                    </tr>
+                  );
+                }}
+              />
+            </table>
+          )}
 
           {/* Order Summary */}
           <div className="mt-6">
@@ -102,7 +118,7 @@ const OrderDetailsPage = () => {
               <span>Shipping Charges:</span>
               <span>${order.shippingCharges}</span>
             </div> */}
-            <div className="flex justify-between text-sm mb-2">
+            <div className="flex justify-between text-sm mb-2 border-b-2">
               <span>Discount:</span>
               <span>-${order?.discount}</span>
             </div>
@@ -117,7 +133,9 @@ const OrderDetailsPage = () => {
         <div className="space-y-6">
           {/* Order Status Card */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Order Status</h3>
+            <h3 className="text-lg font-semibold mb-4 border-b-2">
+              Order Status
+            </h3>
             <select
               className="select select-bordered w-full max-w-xs bg-transparent capitalize"
               onChange={(ev) => setorderStatus(ev.target.value)}
@@ -156,7 +174,9 @@ const OrderDetailsPage = () => {
 
           {/* Payment Details Card */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Payment Details</h3>
+            <h3 className="text-lg font-semibold mb-4 border-b-2">
+              Payment Details
+            </h3>
             <p className="text-gray-600 text-sm mb-2">
               <strong>Transaction Number:</strong> {order?.transactionId}
             </p>
@@ -173,7 +193,9 @@ const OrderDetailsPage = () => {
 
           {/* Billing Address Card */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Billing Address</h3>
+            <h3 className="text-lg font-semibold mb-4 border-b-2">
+              Billing Address
+            </h3>
             <p className="text-gray-600 text-sm flex flex-wrap gap-1 capitalize">
               {order?.addressLine ? (
                 <span>{order?.addressLine}</span>

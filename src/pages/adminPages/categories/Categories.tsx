@@ -19,6 +19,7 @@ import {
   DropDown,
   LoaderBtn,
   Modal,
+  Skeleton,
   TableBody,
   TableCell,
   TableHeader,
@@ -144,111 +145,127 @@ function CategoryTable() {
         )}
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full rounded">
-            <TableHeader
-              columns={tableHeadeData}
-              input={true}
-              oncheck={selectedProducts?.length === catagories?.length}
-              onchange={toggleSelectAll}
-            />
+          {categoryLoading ? (
+            <Skeleton count={5}>
+              <div className="flex w-full justify-between bg-white">
+                <div className="flex gap-2 flex-col ">
+                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
+                  <div className="skeleton bg-inherit h-2 w-14"></div>
+                </div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+                <div className="skeleton bg-inherit h-4 w-14"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <table className="w-full rounded">
+              <TableHeader
+                columns={tableHeadeData}
+                input={true}
+                oncheck={selectedProducts?.length === catagories?.length}
+                onchange={toggleSelectAll}
+                style="!text-primary"
+              />
 
-            <TableBody
-              columnsData={catagories}
-              renderItem={(cata) => {
-                return (
-                  <tr key={cata?._id} className="text-gray-800 text-base">
-                    {/* Product Name */}
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={selectedProducts?.includes(cata?._id)}
-                          onChange={() => toggleSelectProduct(cata?._id)}
-                          className="checkbox"
-                        />
-                        <div className="avatar">
-                          <div className="w-12 rounded-full">
+              <TableBody
+                columnsData={catagories}
+                renderItem={(cata) => {
+                  return (
+                    <tr key={cata?._id} className="text-gray-800 text-base">
+                      {/* Product Name */}
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedProducts?.includes(cata?._id)}
+                            onChange={() => toggleSelectProduct(cata?._id)}
+                            className="checkbox"
+                          />
+                          <div className="avatar">
+                            <div className="w-8 h-8 rounded-full">
+                              <Link
+                                to={`${cata?._id}?query=${cata?.categoryName}`}
+                              >
+                                <img
+                                  src={
+                                    cata?.categoryImage ||
+                                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                                  }
+                                />
+                              </Link>
+                            </div>
+                          </div>
+
+                          <p className="capitalize  text-gray-800 text-sm md:text-base">
+                            {cata?.categoryName}
+                          </p>
+                        </div>
+                      </TableCell>
+
+                      {/* SKU */}
+                      <TableCell>{cata?.totalSales}</TableCell>
+
+                      {/* Category */}
+                      <TableCell>{cata?.totalStock}</TableCell>
+
+                      {/* Stock */}
+                      <TableCell>
+                        {new Date(cata?.addedDate).toLocaleDateString("en-GB")}
+                      </TableCell>
+
+                      {/* Actions */}
+                      <TableCell>
+                        <DropDown>
+                          <li>
                             <Link
                               to={`${cata?._id}?query=${cata?.categoryName}`}
+                              className="font-medium hover:bg-gray-300"
                             >
-                              <img
-                                src={
-                                  cata?.categoryImage ||
-                                  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                                }
-                              />
+                              <IoEye />
+                              View
                             </Link>
-                          </div>
-                        </div>
-
-                        <p className="capitalize  text-gray-800 text-sm md:text-base">
-                          {cata?.categoryName}
-                        </p>
-                      </div>
-                    </TableCell>
-
-                    {/* SKU */}
-                    <TableCell>{cata?.totalSales}</TableCell>
-
-                    {/* Category */}
-                    <TableCell>{cata?.totalStock}</TableCell>
-
-                    {/* Stock */}
-                    <TableCell>
-                      {new Date(cata?.addedDate).toLocaleDateString("en-GB")}
-                    </TableCell>
-
-                    {/* Actions */}
-                    <TableCell>
-                      <DropDown>
-                        <li>
-                          <Link
-                            to={`${cata?._id}?query=${cata?.categoryName}`}
-                            className="font-medium hover:bg-gray-300"
-                          >
-                            <IoEye />
-                            View
-                          </Link>
-                        </li>
-                        <li>
-                          <button
-                            className="font-medium hover:bg-gray-300"
-                            onClick={() => {
-                              if (updateModal?.current) {
-                                setSelectedUpdateCata({
-                                  name: cata?.categoryName,
-                                  image: cata?.categoryImage,
-                                  id: cata?._id,
-                                });
-                                updateModal?.current?.showModal();
-                              }
-                            }}
-                          >
-                            <MdModeEdit />
-                            Edit
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="font-medium hover:bg-gray-300"
-                            onClick={() => {
-                              if (modalRef?.current) {
-                                setDeleteSelect(cata?._id);
-                                modalRef?.current?.showModal();
-                              }
-                            }}
-                          >
-                            <FaRegTrashAlt />
-                            Delete
-                          </button>
-                        </li>
-                      </DropDown>
-                    </TableCell>
-                  </tr>
-                );
-              }}
-            />
-          </table>
+                          </li>
+                          <li>
+                            <button
+                              className="font-medium hover:bg-gray-300"
+                              onClick={() => {
+                                if (updateModal?.current) {
+                                  setSelectedUpdateCata({
+                                    name: cata?.categoryName,
+                                    image: cata?.categoryImage,
+                                    id: cata?._id,
+                                  });
+                                  updateModal?.current?.showModal();
+                                }
+                              }}
+                            >
+                              <MdModeEdit />
+                              Edit
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="font-medium hover:bg-gray-300"
+                              onClick={() => {
+                                if (modalRef?.current) {
+                                  setDeleteSelect(cata?._id);
+                                  modalRef?.current?.showModal();
+                                }
+                              }}
+                            >
+                              <FaRegTrashAlt />
+                              Delete
+                            </button>
+                          </li>
+                        </DropDown>
+                      </TableCell>
+                    </tr>
+                  );
+                }}
+              />
+            </table>
+          )}
         </div>
         {/* <AdminPagination totalPage={5} /> */}
       </div>
@@ -327,114 +344,113 @@ function SubCategoryTable() {
         )}
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full rounded">
-            <TableHeader
-              columns={["Category", "Added", "Actions"]}
-              input={true}
-              onchange={toggleSelectAll}
-              oncheck={selectedProducts?.length === catagories?.length}
-            />
-            {/* <thead className="bg-gray-100 sticky top-0 p-2 z-10">
-              <tr>
-                <th className=" px-4 py-2">
-                  <div className="flex gap-2">
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts?.length === catagories?.length}
-                      onChange={toggleSelectAll}
-                      className="checkbox"
-                    />
+          {categoryLoading ? (
+            <Skeleton count={5}>
+              <div className="flex w-full justify-between bg-white">
+                <div className="flex gap-2 flex-col ">
+                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
+                  <div className="skeleton bg-inherit h-2 w-14"></div>
+                </div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+                <div className="skeleton bg-inherit h-4 w-20"></div>
+              </div>
+            </Skeleton>
+          ) : (
+            <table className="w-full rounded">
+              <TableHeader
+                columns={["Category", "Added", "Actions"]}
+                input={true}
+                onchange={toggleSelectAll}
+                oncheck={selectedProducts?.length === catagories?.length}
+                style="!text-primary"
+              />
 
-                    <span>Category</span>
-                  </div>
-                </th>
-                <th className=" px-4 py-2 text-left">Added</th>
-                <th className=" px-4 py-2 text-left">Actions</th>
-              </tr>
-            </thead> */}
-            <TableBody
-              columnsData={catagories}
-              renderItem={(cata) => {
-                return (
-                  <tr key={cata?._id} className="text-gray-800 text-base">
-                    {/* Product Name */}
-                    <TableCell>
-                      <div className="flex gap-2 items-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedProducts?.includes(cata?._id)}
-                          onChange={() => toggleSelectProduct(cata?._id)}
-                          className="checkbox"
-                        />
+              <TableBody
+                columnsData={catagories}
+                renderItem={(cata) => {
+                  return (
+                    <tr key={cata?._id} className="text-gray-800 text-base">
+                      {/* Product Name */}
+                      <TableCell>
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedProducts?.includes(cata?._id)}
+                            onChange={() => toggleSelectProduct(cata?._id)}
+                            className="checkbox"
+                          />
 
-                        <div className="flex  items-center"></div>
-                        <div className="avatar space-x-2">
-                          <div className="w-10 rounded-xl">
+                          <div className="flex  items-center"></div>
+                          <div className="avatar space-x-2">
+                            <div className="w-10 rounded-xl">
+                              <Link
+                                to={`/admin/subcategory/${cata?._id}?query=${cata?.SubCategoryName}`}
+                              >
+                                <img src={cata?.subCategoryImage} />
+                              </Link>
+                            </div>
+                            <p className="text-gray-800 text-sm md:text-base capitalize">
+                              {cata?.SubCategoryName}
+                            </p>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>{DateFormat(cata?.createdAt)}</TableCell>
+                      {/* Actions */}
+                      <TableCell>
+                        <Dropdown>
+                          <li>
                             <Link
                               to={`/admin/subcategory/${cata?._id}?query=${cata?.SubCategoryName}`}
+                              className="hover:bg-gray-300 font-medium"
                             >
-                              <img src={cata?.subCategoryImage} />
+                              <IoEye />
+                              View
                             </Link>
-                          </div>
-                          <p className="text-gray-800 text-sm md:text-base capitalize">
-                            {cata?.SubCategoryName}
-                          </p>
-                        </div>
-                      </div>
-                    </TableCell>
-
-                    <TableCell>{DateFormat(cata?.createdAt)}</TableCell>
-                    {/* Actions */}
-                    <TableCell>
-                      <Dropdown>
-                        <li>
-                          <Link
-                            to={`/admin/subcategory/${cata?._id}?query=${cata?.SubCategoryName}`}
-                            className="hover:bg-gray-300 font-medium"
-                          >
-                            <IoEye />
-                            View
-                          </Link>
-                        </li>
-                        <li>
-                          <button
-                            className="hover:bg-gray-300 font-medium"
-                            onClick={() => {
-                              if (updateModal?.current) {
-                                setSelectedUpdateCata({
-                                  name: cata?.SubCategoryName,
-                                  image: cata?.subCategoryImage,
-                                  id: cata?._id,
-                                });
-                                updateModal?.current?.showModal();
-                              }
-                            }}
-                          >
-                            <MdModeEdit />
-                            Edit
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="hover:bg-gray-300 font-medium"
-                            onClick={() => {
-                              if (modalRef?.current) {
-                                setDeleteSelect(cata?._id);
-                                modalRef?.current?.showModal();
-                              }
-                            }}
-                          >
-                            <FaRegTrashAlt />
-                            Delete
-                          </button>
-                        </li>
-                      </Dropdown>
-                    </TableCell>
-                  </tr>
-                );
-              }}
-            />
-          </table>
+                          </li>
+                          <li>
+                            <button
+                              className="hover:bg-gray-300 font-medium"
+                              onClick={() => {
+                                if (updateModal?.current) {
+                                  setSelectedUpdateCata({
+                                    name: cata?.SubCategoryName,
+                                    image: cata?.subCategoryImage,
+                                    id: cata?._id,
+                                  });
+                                  updateModal?.current?.showModal();
+                                }
+                              }}
+                            >
+                              <MdModeEdit />
+                              Edit
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="hover:bg-gray-300 font-medium"
+                              onClick={() => {
+                                if (modalRef?.current) {
+                                  setDeleteSelect(cata?._id);
+                                  modalRef?.current?.showModal();
+                                }
+                              }}
+                            >
+                              <FaRegTrashAlt />
+                              Delete
+                            </button>
+                          </li>
+                        </Dropdown>
+                      </TableCell>
+                    </tr>
+                  );
+                }}
+              />
+            </table>
+          )}
         </div>
         {/* <AdminPagination totalPage={5} /> */}
       </div>

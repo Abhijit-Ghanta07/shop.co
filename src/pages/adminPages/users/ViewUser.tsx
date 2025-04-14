@@ -127,7 +127,7 @@ const UserProfilePage = () => {
                   Role
                 </label>
                 <select
-                  className="select select-bordered w-full bg-gray-700"
+                  className="select select-bordered w-full bg-transparent"
                   onChange={(e) => setCurrentRole(e.target.value)}
                 >
                   <option disabled selected>

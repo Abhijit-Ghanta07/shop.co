@@ -8,6 +8,7 @@ import {
 } from "../../../querys/admin/adminQuery";
 import {
   DropDown,
+  Skeleton,
   TableBody,
   TableCell,
   TableHeader,
@@ -44,19 +45,6 @@ const Orders = () => {
       setSelectedProducts(data?.orders.map((product) => product._id));
     }
   };
-  // update order status
-  // const updateOrderMutaion = useMutation({
-  //   mutationKey: ["updateOrderStaus"],
-  //   mutationFn: (data) => updateOrderStatus(selectedOrder, data),
-  //   onSuccess: (data) => {
-  //     toast.success(data?.data?.message);
-  //     queryClient.invalidateQueries([
-  //       getadminOrdersKey,
-  //       "orders",
-  //       selectedOrder,
-  //     ]);
-  //   },
-  // });
   const handleUpdateOrderStatus = () => {
     if (orderStatusstate !== "" && selectedOrder) {
       updateOrderMutaion.mutate({
@@ -98,159 +86,153 @@ const Orders = () => {
 
       {/* Table */}
       <div className="overflow-x-auto">
-        {isLoading && (
-          <div className="skeleton h-96 columns-1 w-full bg-gray-200 dark:bg-white "></div>
-        )}
-        <table className="w-full rounded overflow-y-hidden">
-          <TableHeader
-            columns={[
-              "",
-              "Order ID",
-              "Products",
-              "Dated",
-              "Customer",
-              "Total",
-              "Payment",
-              "Status",
-              "Action",
-            ]}
-            input={true}
-            oncheck={selectedProducts.length === data?.orders?.length}
-            onchange={toggleSelectAll}
-          />
-          {/* <thead className="bg-gray-100 sticky top-0 z-10 p-2">
-            <tr>
-              <th className=" px-4 py-2">
-                <input
-                  type="checkbox"
-                  checked={}
-                  onChange={toggleSelectAll}
-                  className="checkbox"
-                />
-              </th>
-              <th className=" px-4 py-2 text-left">Order Id</th>
-              <th className=" px-4 py-2 text-left">Products</th>
-              <th className=" px-4 py-2 text-left">Date</th>
-              <th className=" px-4 py-2 text-left">Cutstomer</th>
-              <th className=" px-4 py-2 text-left">Total</th>
-              <th className=" px-4 py-2 text-left">Payment</th>
-              <th className=" px-4 py-2 text-left">Status</th>
-              <th className=" px-4 py-2 text-left">Actions</th>
-            </tr>
-          </thead> */}
-          <TableBody
-            columnsData={data?.orders}
-            renderItem={(order) => {
-              return (
-                <tr key={order._id} className="text-gray-800 text-base">
-                  {/* Checkbox */}
-                  <TableCell>
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.includes(order._id)}
-                      onChange={() => toggleSelectProduct(order._id)}
-                      className="checkbox"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Link to={order._id} title={order?._id}>
-                      {order._id.slice(0, 8)}
-                    </Link>
-                  </TableCell>
-                  {/* Products Name */}
-                  <TableCell>
-                    <Link
-                      to={`/admin/products/${order?.firstProduct?.id}`}
-                      className="flex gap-1"
-                    >
-                      <div className="avatar">
-                        <div className="w-12 rounded">
-                          <img
-                            src={order?.firstProduct?.variantImages?.[0]?.url}
-                            alt="variant image"
-                          />
+        {isLoading ? (
+          <Skeleton count={5}>
+            <div className="flex w-full justify-between bg-white">
+              <div className="flex gap-2 flex-col ">
+                <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
+                <div className="skeleton bg-inherit h-2 w-14"></div>
+              </div>
+              <div className="skeleton bg-inherit h-4 w-20"></div>
+              <div className="skeleton bg-inherit h-4 w-20"></div>
+              <div className="skeleton bg-inherit h-4 w-20"></div>
+              <div className="skeleton bg-inherit h-4 w-20"></div>
+            </div>
+          </Skeleton>
+        ) : (
+          <table className="w-full rounded overflow-y-hidden">
+            <TableHeader
+              columns={[
+                "",
+                "Order ID",
+                "Products",
+                "Dated",
+                "Customer",
+                "Total",
+                "Payment",
+                "Status",
+                "Action",
+              ]}
+              input={true}
+              oncheck={selectedProducts.length === data?.orders?.length}
+              onchange={toggleSelectAll}
+              style="!text-primary"
+            />
+
+            <TableBody
+              columnsData={data?.orders}
+              renderItem={(order) => {
+                return (
+                  <tr key={order._id} className="text-gray-800 text-base">
+                    {/* Checkbox */}
+                    <TableCell>
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.includes(order._id)}
+                        onChange={() => toggleSelectProduct(order._id)}
+                        className="checkbox"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Link to={order._id} title={order?._id}>
+                        {order._id.slice(0, 8)}
+                      </Link>
+                    </TableCell>
+                    {/* Products Name */}
+                    <TableCell>
+                      <Link
+                        to={`/admin/products/${order?.firstProduct?.id}`}
+                        className="flex gap-1"
+                      >
+                        <div className="avatar">
+                          <div className="w-8 h-8 rounded">
+                            <img
+                              src={order?.firstProduct?.variantImages?.[0]?.url}
+                              alt="variant image"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="inline-flex flex-col capitalize">
-                        <span className="text-wrap capitalize text-sm md:text-base text-gray-800">
-                          {order?.firstProduct?.productName || "product name"}
-                        </span>
-                        {order?.products?.length - 1 > 0 && (
-                          <span className="text-sm text-gray-600">
-                            +{order?.products?.length - 1} More Products
+                        <div className="inline-flex flex-col capitalize">
+                          <span className="text-wrap capitalize text-sm md:text-base text-gray-800">
+                            {order?.firstProduct?.productName || "product name"}
                           </span>
-                        )}
-                      </div>
-                    </Link>
-                  </TableCell>
+                          {order?.products?.length - 1 > 0 && (
+                            <span className="text-sm text-gray-600">
+                              +{order?.products?.length - 1} More Products
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                    </TableCell>
 
-                  {/* date */}
-                  <TableCell>{DateFormat(order?.createdAt)}</TableCell>
+                    {/* date */}
+                    <TableCell>{DateFormat(order?.createdAt)}</TableCell>
 
-                  {/* Category */}
-                  <TableCell>{order?.userDetails?.username}</TableCell>
+                    {/* Category */}
+                    <TableCell>{order?.userDetails?.username}</TableCell>
 
-                  {/* Stock */}
-                  <TableCell>${order?.totalAmount}</TableCell>
+                    {/* Stock */}
+                    <TableCell>${order?.totalAmount}</TableCell>
 
-                  {/* Price */}
-                  <TableCell>{order?.paymentGateway}</TableCell>
+                    {/* Price */}
+                    <TableCell>{order?.paymentGateway}</TableCell>
 
-                  {/* Status */}
-                  <TableCell>
-                    <Badge status={order?.status} />
-                  </TableCell>
+                    {/* Status */}
+                    <TableCell>
+                      <Badge status={order?.status} />
+                    </TableCell>
 
-                  {/* Actions */}
-                  <TableCell>
-                    <DropDown>
-                      <li>
-                        <Link
-                          to={`${order?._id}`}
-                          className="hover:bg-gray-300 font-medium"
-                        >
-                          <IoEye />
-                          View
-                        </Link>
-                      </li>
-                      <li>
-                        <select
-                          className="select select-bordered  w-full bg-white !text-black"
-                          onChange={(ev) => {
-                            setSelectedOrder(order?._id);
-                            setOrdersStatus(ev.target.value);
-                          }}
-                        >
-                          {/* <option disabled selected className="text-black">
+                    {/* Actions */}
+                    <TableCell>
+                      <DropDown>
+                        <li>
+                          <Link
+                            to={`${order?._id}`}
+                            className="hover:bg-gray-300 font-medium"
+                          >
+                            <IoEye />
+                            View
+                          </Link>
+                        </li>
+                        <li>
+                          <select
+                            className="select select-bordered  w-full bg-white !text-black"
+                            onChange={(ev) => {
+                              setSelectedOrder(order?._id);
+                              setOrdersStatus(ev.target.value);
+                            }}
+                          >
+                            {/* <option disabled selected className="text-black">
                       Update Status
                     </option> */}
-                          {ordersStatus.map((ele) => (
-                            <option
-                              className="capitalize text-black"
-                              value={ele}
-                              selected={order?.status == ele}
-                            >
-                              {ele}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          className="hover:bg-gray-300 btn btn-neutral my-3 font-medium"
-                          onClick={handleUpdateOrderStatus}
-                        >
-                          <div className="flex gap-1">
-                            <MdModeEdit />
-                            <span className="text-white">Update</span>
-                          </div>
-                        </button>
-                      </li>
-                    </DropDown>
-                  </TableCell>
-                </tr>
-              );
-            }}
-          />
-        </table>
+                            {ordersStatus.map((ele) => (
+                              <option
+                                className="capitalize text-black"
+                                value={ele}
+                                selected={order?.status == ele}
+                              >
+                                {ele}
+                              </option>
+                            ))}
+                          </select>
+                          <button
+                            className="hover:bg-gray-300 btn btn-neutral my-3 font-medium"
+                            onClick={handleUpdateOrderStatus}
+                          >
+                            <div className="flex gap-1">
+                              <MdModeEdit />
+                              <span className="text-white">Update</span>
+                            </div>
+                          </button>
+                        </li>
+                      </DropDown>
+                    </TableCell>
+                  </tr>
+                );
+              }}
+            />
+          </table>
+        )}
       </div>
       <AdminPagination
         currentPage={+page}

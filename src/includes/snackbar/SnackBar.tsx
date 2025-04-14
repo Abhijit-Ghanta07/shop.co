@@ -31,8 +31,8 @@ const SnackBar = () => {
   return (
     <div
       className={cl(
-        "btm-nav justify-around  py-2 z-50 bg-gray-50 sm:hidden",
-        isPwa ? "block" : "hidden"
+        isPwa ? "flex" : "hidden",
+        "btm-nav justify-around text-black  py-2 z-50 bg-gray-50 sm:hidden"
       )}
     >
       <NavLink
