@@ -13,7 +13,7 @@ const Hero = () => {
       <div className="">
         <div className="h-fit">
           <div className="bg-[#F2F0F1] sm:bg-transparent relative">
-            <div className="flex relative flex-col items-center md:items-start p-5 lg:p-20 z-[1]">
+            <div className="flex relative flex-col items-center md:items-start p-5 lg:p-10 z-[1]">
               <h2
                 className={cl(
                   "text-center text-3xl font-extrabold mt-6 md:m-0 capitalize md:text-start md:text-5xl md:w-2/4"
@@ -55,14 +55,14 @@ function HeroBanner() {
   const bannerData = [versace, zara, gucci, prada, chanel];
 
   return (
-    <div className="py-4 px-10 bg-base border-b-2">
-      <div className="flex justify-center gap-4  flex-wrap md:justify-between">
+    <div className="py-4 px-5 bg-base border-b-2">
+      <div className="flex justify-around gap-2 flex-wrap sm:justify-between">
         {bannerData.map((ele) => {
           return (
             <img
               src={ele}
               alt="brand img"
-              className={cl(style.hero__brand__img, " size-full max-w-[8rem]")}
+              className={cl(style.hero__brand__img)}
             />
           );
         })}

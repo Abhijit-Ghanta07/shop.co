@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoaderBtn } from "../../../components/component";
@@ -9,6 +9,7 @@ import {
 } from "../../../querys/variant/variantQuery";
 import { getadminProductskey } from "../../../querys/admin/adminQuery";
 import { getProductByIdKey } from "../../../querys/product/productQuery";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
 
 const VariantAddPage = () => {
   const { id } = useParams();
@@ -133,26 +134,7 @@ const VariantAddPage = () => {
   };
   return (
     <section>
-      <div className="wrapper p-6">
-        <div className="flex">
-          <div className=" mb-6">
-            <p className="text-gray-800 text-2xl font-bold">Add Variants</p>
-            {/* breadcrumbs */}
-            <div className="breadcrumbs text-sm">
-              <ul>
-                <li>
-                  <Link to={"/Admin"}>Admin</Link>
-                </li>
-                <li>
-                  <Link to={-1}>Products</Link>
-                </li>
-                <li>Add Variant</li>
-              </ul>
-            </div>
-            {/* bread end */}
-          </div>
-          {/* breadcumbs end */}
-        </div>
+      <AdminTableLayout title={"Add Variants"}>
         <div className="mx-auto p-6">
           {/* Top Section with Product Details and Category */}
           <div className="flex flex-col md:flex-row gap-3 justify-between items-start mb-4">
@@ -334,7 +316,7 @@ const VariantAddPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </AdminTableLayout>
     </section>
   );
 };

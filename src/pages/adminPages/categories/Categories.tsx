@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import { IoEye } from "react-icons/io5";
 import { MdModeEdit } from "react-icons/md";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAdminCategories } from "../../../querys/admin/adminQuery";
 import {
   DeleteCategoryMutaion,
@@ -20,69 +20,53 @@ import {
   LoaderBtn,
   Modal,
   Skeleton,
+  Table,
   TableBody,
   TableCell,
   TableHeader,
+  TableSkeleton,
 } from "../../../components/component";
 import Dropdown from "../../../components/dropdown/Dropdown";
 import { DateFormat } from "../../../utils/utils";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
 
 const Categories = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <div className="flex flex-col">
-        <div className=" mb-6">
-          <p className="text-gray-800 text-2xl font-bold">All Category</p>
-          {/* bread cmubs */}
-          <div className="breadcrumbs text-sm">
-            <ul>
-              <li>
-                <Link to={"/admin/dash"}>Admin</Link>
-              </li>
-              <li>
-                <Link to={-1}>Dashbroad</Link>
-              </li>
-              <li>Categories</li>
-            </ul>
+    <AdminTableLayout title={"Categories"}>
+      {/* tab list */}
+      <div role="tablist" className="tabs tabs-bordered grid-cols-2">
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab text-lg font-medium text-black"
+          aria-label="Category"
+          defaultChecked={page == "category" || true}
+        />
+        <div role="tabpanel" className="tab-content ">
+          <div className="wrapper">
+            <CategoryTable />
           </div>
-          {/* breadcrumbs end */}
         </div>
-        {/* tab list */}
-        <div role="tablist" className="tabs tabs-bordered grid-cols-2">
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab text-lg font-medium text-black"
-            aria-label="Category"
-            defaultChecked={page == "category" || true}
-          />
-          <div role="tabpanel" className="tab-content ">
-            <div className="wrapper">
-              <CategoryTable />
-            </div>
-          </div>
 
-          <input
-            type="radio"
-            name="my_tabs_1"
-            role="tab"
-            className="tab text-lg font-medium text-black"
-            aria-label="Sub Category"
-            defaultChecked={page == "sub"}
-          />
-          <div role="tabpanel" className="tab-content">
-            <div className="wrapper">
-              <SubCategoryTable />
-            </div>
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab text-lg font-medium text-black"
+          aria-label="Sub Category"
+          defaultChecked={page == "sub"}
+        />
+        <div role="tabpanel" className="tab-content">
+          <div className="wrapper">
+            <SubCategoryTable />
           </div>
         </div>
-        {/* end tab list */}
       </div>
-    </div>
+    </AdminTableLayout>
   );
 };
 
@@ -140,132 +124,121 @@ function CategoryTable() {
             </button>
           </Link>
         </div>
-        {categoryLoading && (
-          <div className=" skeleton h-60 w-full bg-gray-100 dark:bg-white"></div>
-        )}
+
         {/* Table */}
         <div className="overflow-x-auto">
-          {categoryLoading ? (
-            <Skeleton count={5}>
-              <div className="flex w-full justify-between bg-white">
-                <div className="flex gap-2 flex-col ">
-                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
-                  <div className="skeleton bg-inherit h-2 w-14"></div>
-                </div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-              </div>
-            </Skeleton>
-          ) : (
-            <table className="w-full rounded">
-              <TableHeader
-                columns={tableHeadeData}
-                input={true}
-                oncheck={selectedProducts?.length === catagories?.length}
-                onchange={toggleSelectAll}
-                style="!text-primary"
-              />
+          <Table
+            loading={categoryLoading}
+            loader={
+              <Skeleton count={5}>
+                <TableSkeleton />
+              </Skeleton>
+            }
+          >
+            <TableHeader
+              columns={tableHeadeData}
+              input={true}
+              oncheck={selectedProducts?.length === catagories?.length}
+              onchange={toggleSelectAll}
+            />
 
-              <TableBody
-                columnsData={catagories}
-                renderItem={(cata) => {
-                  return (
-                    <tr key={cata?._id} className="text-gray-800 text-base">
-                      {/* Product Name */}
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={selectedProducts?.includes(cata?._id)}
-                            onChange={() => toggleSelectProduct(cata?._id)}
-                            className="checkbox"
-                          />
-                          <div className="avatar">
-                            <div className="w-8 h-8 rounded-full">
-                              <Link
-                                to={`${cata?._id}?query=${cata?.categoryName}`}
-                              >
-                                <img
-                                  src={
-                                    cata?.categoryImage ||
-                                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                                  }
-                                />
-                              </Link>
-                            </div>
-                          </div>
-
-                          <p className="capitalize  text-gray-800 text-sm md:text-base">
-                            {cata?.categoryName}
-                          </p>
-                        </div>
-                      </TableCell>
-
-                      {/* SKU */}
-                      <TableCell>{cata?.totalSales}</TableCell>
-
-                      {/* Category */}
-                      <TableCell>{cata?.totalStock}</TableCell>
-
-                      {/* Stock */}
-                      <TableCell>
-                        {new Date(cata?.addedDate).toLocaleDateString("en-GB")}
-                      </TableCell>
-
-                      {/* Actions */}
-                      <TableCell>
-                        <DropDown>
-                          <li>
+            <TableBody
+              columnsData={catagories}
+              renderItem={(cata) => {
+                return (
+                  <tr key={cata?._id} className="text-gray-800 text-base">
+                    {/* Product Name */}
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedProducts?.includes(cata?._id)}
+                          onChange={() => toggleSelectProduct(cata?._id)}
+                          className="checkbox"
+                        />
+                        <div className="avatar">
+                          <div className="w-8 h-8 rounded-full">
                             <Link
                               to={`${cata?._id}?query=${cata?.categoryName}`}
-                              className="font-medium hover:bg-gray-300"
                             >
-                              <IoEye />
-                              View
+                              <img
+                                src={
+                                  cata?.categoryImage ||
+                                  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                                }
+                              />
                             </Link>
-                          </li>
-                          <li>
-                            <button
-                              className="font-medium hover:bg-gray-300"
-                              onClick={() => {
-                                if (updateModal?.current) {
-                                  setSelectedUpdateCata({
-                                    name: cata?.categoryName,
-                                    image: cata?.categoryImage,
-                                    id: cata?._id,
-                                  });
-                                  updateModal?.current?.showModal();
-                                }
-                              }}
-                            >
-                              <MdModeEdit />
-                              Edit
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="font-medium hover:bg-gray-300"
-                              onClick={() => {
-                                if (modalRef?.current) {
-                                  setDeleteSelect(cata?._id);
-                                  modalRef?.current?.showModal();
-                                }
-                              }}
-                            >
-                              <FaRegTrashAlt />
-                              Delete
-                            </button>
-                          </li>
-                        </DropDown>
-                      </TableCell>
-                    </tr>
-                  );
-                }}
-              />
-            </table>
-          )}
+                          </div>
+                        </div>
+
+                        <p className="capitalize  text-gray-800 text-sm md:text-base">
+                          {cata?.categoryName}
+                        </p>
+                      </div>
+                    </TableCell>
+
+                    {/* SKU */}
+                    <TableCell>{cata?.totalSales}</TableCell>
+
+                    {/* Category */}
+                    <TableCell>{cata?.totalStock}</TableCell>
+
+                    {/* Stock */}
+                    <TableCell>
+                      {new Date(cata?.addedDate).toLocaleDateString("en-GB")}
+                    </TableCell>
+
+                    {/* Actions */}
+                    <TableCell>
+                      <DropDown>
+                        <li>
+                          <Link
+                            to={`${cata?._id}?query=${cata?.categoryName}`}
+                            className="font-medium hover:bg-gray-300"
+                          >
+                            <IoEye />
+                            View
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            className="font-medium hover:bg-gray-300"
+                            onClick={() => {
+                              if (updateModal?.current) {
+                                setSelectedUpdateCata({
+                                  name: cata?.categoryName,
+                                  image: cata?.categoryImage,
+                                  id: cata?._id,
+                                });
+                                updateModal?.current?.showModal();
+                              }
+                            }}
+                          >
+                            <MdModeEdit />
+                            Edit
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="font-medium hover:bg-gray-300"
+                            onClick={() => {
+                              if (modalRef?.current) {
+                                setDeleteSelect(cata?._id);
+                                modalRef?.current?.showModal();
+                              }
+                            }}
+                          >
+                            <FaRegTrashAlt />
+                            Delete
+                          </button>
+                        </li>
+                      </DropDown>
+                    </TableCell>
+                  </tr>
+                );
+              }}
+            />
+          </Table>
         </div>
         {/* <AdminPagination totalPage={5} /> */}
       </div>
@@ -339,118 +312,106 @@ function SubCategoryTable() {
             </button>
           </Link>
         </div>
-        {categoryLoading && (
-          <div className=" skeleton h-60 w-full bg-gray-100 dark:bg-white"></div>
-        )}
         {/* Table */}
         <div className="overflow-x-auto">
-          {categoryLoading ? (
-            <Skeleton count={5}>
-              <div className="flex w-full justify-between bg-white">
-                <div className="flex gap-2 flex-col ">
-                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
-                  <div className="skeleton bg-inherit h-2 w-14"></div>
-                </div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-              </div>
-            </Skeleton>
-          ) : (
-            <table className="w-full rounded">
-              <TableHeader
-                columns={["Category", "Added", "Actions"]}
-                input={true}
-                onchange={toggleSelectAll}
-                oncheck={selectedProducts?.length === catagories?.length}
-                style="!text-primary"
-              />
+          <Table
+            loading={categoryLoading}
+            loader={
+              <Skeleton count={5}>
+                <TableSkeleton />
+              </Skeleton>
+            }
+          >
+            <TableHeader
+              columns={["Category", "Added", "Actions"]}
+              input={true}
+              onchange={toggleSelectAll}
+              oncheck={selectedProducts?.length === catagories?.length}
+            />
 
-              <TableBody
-                columnsData={catagories}
-                renderItem={(cata) => {
-                  return (
-                    <tr key={cata?._id} className="text-gray-800 text-base">
-                      {/* Product Name */}
-                      <TableCell>
-                        <div className="flex gap-2 items-center">
-                          <input
-                            type="checkbox"
-                            checked={selectedProducts?.includes(cata?._id)}
-                            onChange={() => toggleSelectProduct(cata?._id)}
-                            className="checkbox"
-                          />
+            <TableBody
+              columnsData={catagories}
+              renderItem={(cata) => {
+                return (
+                  <tr key={cata?._id} className="text-gray-800 text-base">
+                    {/* Product Name */}
+                    <TableCell>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedProducts?.includes(cata?._id)}
+                          onChange={() => toggleSelectProduct(cata?._id)}
+                          className="checkbox"
+                        />
 
-                          <div className="flex  items-center"></div>
-                          <div className="avatar space-x-2">
-                            <div className="w-10 rounded-xl">
-                              <Link
-                                to={`/admin/subcategory/${cata?._id}?query=${cata?.SubCategoryName}`}
-                              >
-                                <img src={cata?.subCategoryImage} />
-                              </Link>
-                            </div>
-                            <p className="text-gray-800 text-sm md:text-base capitalize">
-                              {cata?.SubCategoryName}
-                            </p>
-                          </div>
-                        </div>
-                      </TableCell>
-
-                      <TableCell>{DateFormat(cata?.createdAt)}</TableCell>
-                      {/* Actions */}
-                      <TableCell>
-                        <Dropdown>
-                          <li>
+                        <div className="flex  items-center"></div>
+                        <div className="avatar space-x-2">
+                          <div className="w-10 rounded-xl">
                             <Link
                               to={`/admin/subcategory/${cata?._id}?query=${cata?.SubCategoryName}`}
-                              className="hover:bg-gray-300 font-medium"
                             >
-                              <IoEye />
-                              View
+                              <img src={cata?.subCategoryImage} />
                             </Link>
-                          </li>
-                          <li>
-                            <button
-                              className="hover:bg-gray-300 font-medium"
-                              onClick={() => {
-                                if (updateModal?.current) {
-                                  setSelectedUpdateCata({
-                                    name: cata?.SubCategoryName,
-                                    image: cata?.subCategoryImage,
-                                    id: cata?._id,
-                                  });
-                                  updateModal?.current?.showModal();
-                                }
-                              }}
-                            >
-                              <MdModeEdit />
-                              Edit
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="hover:bg-gray-300 font-medium"
-                              onClick={() => {
-                                if (modalRef?.current) {
-                                  setDeleteSelect(cata?._id);
-                                  modalRef?.current?.showModal();
-                                }
-                              }}
-                            >
-                              <FaRegTrashAlt />
-                              Delete
-                            </button>
-                          </li>
-                        </Dropdown>
-                      </TableCell>
-                    </tr>
-                  );
-                }}
-              />
-            </table>
-          )}
+                          </div>
+                          <p className="text-gray-800 text-sm md:text-base capitalize">
+                            {cata?.SubCategoryName}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+
+                    <TableCell>{DateFormat(cata?.createdAt)}</TableCell>
+                    {/* Actions */}
+                    <TableCell>
+                      <Dropdown>
+                        <li>
+                          <Link
+                            to={`/admin/subcategory/${cata?._id}?query=${cata?.SubCategoryName}`}
+                            className="hover:bg-gray-300 font-medium"
+                          >
+                            <IoEye />
+                            View
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            className="hover:bg-gray-300 font-medium"
+                            onClick={() => {
+                              if (updateModal?.current) {
+                                setSelectedUpdateCata({
+                                  name: cata?.SubCategoryName,
+                                  image: cata?.subCategoryImage,
+                                  id: cata?._id,
+                                });
+                                updateModal?.current?.showModal();
+                              }
+                            }}
+                          >
+                            <MdModeEdit />
+                            Edit
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="hover:bg-gray-300 font-medium"
+                            onClick={() => {
+                              if (modalRef?.current) {
+                                setDeleteSelect(cata?._id);
+                                modalRef?.current?.showModal();
+                              }
+                            }}
+                          >
+                            <FaRegTrashAlt />
+                            Delete
+                          </button>
+                        </li>
+                      </Dropdown>
+                    </TableCell>
+                  </tr>
+                );
+              }}
+            />
+          </Table>
         </div>
         {/* <AdminPagination totalPage={5} /> */}
       </div>

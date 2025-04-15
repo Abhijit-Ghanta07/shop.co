@@ -12,13 +12,16 @@ import {
   DeleteModal,
   DropDown,
   Skeleton,
+  Table,
   TableBody,
   TableCell,
   TableHeader,
+  TableSkeleton,
 } from "../../../components/component";
 import { AdminPagination } from "../adminPages";
 import { DateFormat } from "../../../utils/utils";
 import { DeleteProductMutaion } from "../../../querys/product/productQuery";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
 
 const productTableHead = [
   "Product",
@@ -75,202 +78,175 @@ const AllProductsTable = () => {
   }, [deleteMutation.isSuccess]);
   return (
     <>
-      <div className="p-6 bg-white rounded-lg shadow-md">
-        {/* bread */}
-        <div className="flex">
-          <div className=" mb-6">
-            <p className="text-gray-800 text-2xl font-bold">All Products</p>
-            {/* breadcrumbs */}
-            <div className="breadcrumbs text-sm">
-              <ul>
-                <li>
-                  <Link to={"/admin/dash"}>Admin</Link>
-                </li>
-                <li>
-                  <Link to={-1}>Dashbroad</Link>
-                </li>
-                <li>Products</li>
-              </ul>
-            </div>
-          </div>
-          <div className=" ms-auto flex">
-            <Link to={"add"}>
-              <button className="btn btn-neutral">Add Product</button>
-            </Link>
-          </div>
+      <AdminTableLayout title={"All Products"}>
+        <div className=" ms-auto flex">
+          <Link to={"add"}>
+            <button className="btn btn-primary">Add Product</button>
+          </Link>
         </div>
         {/* Table */}
         <div className="overflow-x-auto">
-          {isLoading ? (
-            <Skeleton count={5}>
-              <div className="flex w-full justify-between bg-white">
-                <div className="flex gap-2 flex-col ">
-                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
-                  <div className="skeleton bg-inherit h-2 w-14"></div>
-                </div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-                <div className="skeleton bg-inherit h-4 w-14"></div>
-              </div>
-            </Skeleton>
-          ) : (
-            <table className="w-full rounded">
-              <TableHeader
-                columns={productTableHead}
-                input={true}
-                oncheck={
-                  selectedProducts.length === productData?.allProducts?.length
-                }
-                onchange={toggleSelectAll}
-              />
-              <TableBody
-                columnsData={productData?.allProducts}
-                renderItem={(item) => {
-                  return (
-                    <tr key={item?._id} className="text-gray-800 text-base">
-                      {/* Checkbox */}
+          <Table
+            loading={isLoading}
+            loader={
+              <Skeleton count={5}>
+                <TableSkeleton />
+              </Skeleton>
+            }
+          >
+            <TableHeader
+              columns={productTableHead}
+              input={true}
+              oncheck={
+                selectedProducts.length === productData?.allProducts?.length
+              }
+              onchange={toggleSelectAll}
+            />
+            <TableBody
+              columnsData={productData?.allProducts}
+              renderItem={(item) => {
+                return (
+                  <tr key={item?._id} className="text-gray-800 text-base">
+                    {/* Checkbox */}
 
-                      {/* Product Name */}
-                      <TableCell>
-                        <div className="flex gap-2 items-center">
-                          <input
-                            type="checkbox"
-                            checked={selectedProducts.includes(item?._id)}
-                            onChange={() => toggleSelectProduct(item?._id)}
-                            className="checkbox"
-                          />
-                          <div className="flex space-x-3">
-                            <Link to={`${item?._id}`} className="avatar">
-                              <div className="w-12 h-12 rounded-full">
-                                <img
-                                  src={
-                                    item?.firstVariant?.images?.[0]?.url ||
-                                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                                  }
-                                  alt="Tailwind-CSS-Avatar-component"
-                                />
-                              </div>
-                            </Link>
-                            <p className="inline-flex flex-col">
-                              <span className="capitalize text-sm md:text-base text-gray-800 font-medium">
-                                {item?.name}
-                              </span>
-                              <span className="text-sm text-primary">
-                                {item?.totalVariants} variants
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-                      </TableCell>
-
-                      {/* SKU */}
-                      <TableCell>#{item?.sku}</TableCell>
-
-                      {/* Category */}
-                      <TableCell>
-                        <Link
-                          to={`/admin/category/${
-                            item?.categoryDetails?.[0]?._id
-                          }?query=${item?.categoryDetails?.[0]?.categoryName.toLowerCase()}`}
-                          className="rounded p-1 capitalize bg-primary text-white"
-                        >
-                          {item?.categoryDetails?.[0]?.categoryName ||
-                            "category"}
-                        </Link>
-                      </TableCell>
-
-                      {/* Stock */}
-                      <TableCell>
-                        {item?.totalStock > 10 ? (
-                          <span className="text-green-600 font-medium">
-                            {item?.totalStock}
-                          </span>
-                        ) : (
-                          <span className="text-red-500 font-medium">
-                            {item?.totalStock}
-                          </span>
-                        )}
-                      </TableCell>
-
-                      {/* Price */}
-                      <TableCell>
-                        ${item?.firstVariant?.sellPrice || 300}
-                      </TableCell>
-
-                      {/* Status */}
-                      <TableCell>
-                        {item?.totalStock < 10 ? (
-                          <span
-                            className={`px-2 py-1 rounded text-sm ${"bg-red-100 text-red-800"}`}
-                          >
-                            Low Stock
-                          </span>
-                        ) : (
-                          <span
-                            className={`px-2 py-1 rounded text-sm ${" bg-green-400"}`}
-                          >
-                            Good
-                          </span>
-                        )}
-                      </TableCell>
-
-                      {/* Added Date */}
-                      <TableCell>{DateFormat(item.createdAt)}</TableCell>
-
-                      {/* Actions */}
-                      <TableCell>
-                        <DropDown style="bg-light">
-                          <li>
-                            <Link
-                              to={`${item?._id}`}
-                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
-                            >
-                              <IoEye />
-                              View
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`variant/add/${item?._id}`}
-                              state={{ sku: item?.sku }}
-                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
-                            >
-                              <CgAdd />
-                              Add Variant
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`edit/${item?._id}`}
-                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
-                            >
-                              <MdModeEdit />
-                              Edit
-                            </Link>
-                          </li>
-                          <li>
-                            <button
-                              className="hover:bg-slate-200 hover:text-primary text-start font-medium"
-                              onClick={() => {
-                                if (modalRef?.current) {
-                                  setDeleteSelect(item?._id);
-                                  modalRef.current?.showModal();
+                    {/* Product Name */}
+                    <TableCell>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedProducts.includes(item?._id)}
+                          onChange={() => toggleSelectProduct(item?._id)}
+                          className="checkbox"
+                        />
+                        <div className="flex space-x-3">
+                          <Link to={`${item?._id}`} className="avatar">
+                            <div className="w-12 h-12 rounded-full">
+                              <img
+                                src={
+                                  item?.firstVariant?.images?.[0]?.url ||
+                                  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
                                 }
-                              }}
-                            >
-                              <FaRegTrashAlt />
-                              Delete
-                            </button>
-                          </li>
-                        </DropDown>
-                      </TableCell>
-                    </tr>
-                  );
-                }}
-              />
-            </table>
-          )}
+                                alt="Tailwind-CSS-Avatar-component"
+                              />
+                            </div>
+                          </Link>
+                          <p className="inline-flex flex-col">
+                            <span className="capitalize text-sm md:text-base text-gray-800 font-medium">
+                              {item?.name}
+                            </span>
+                            <span className="text-sm text-primary">
+                              {item?.totalVariants} variants
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+
+                    {/* SKU */}
+                    <TableCell>#{item?.sku}</TableCell>
+
+                    {/* Category */}
+                    <TableCell>
+                      <Link
+                        to={`/admin/category/${
+                          item?.categoryDetails?.[0]?._id
+                        }?query=${item?.categoryDetails?.[0]?.categoryName.toLowerCase()}`}
+                        className="rounded p-1 capitalize bg-primary text-white"
+                      >
+                        {item?.categoryDetails?.[0]?.categoryName || "category"}
+                      </Link>
+                    </TableCell>
+
+                    {/* Stock */}
+                    <TableCell>
+                      {item?.totalStock > 10 ? (
+                        <span className="text-green-600 font-medium">
+                          {item?.totalStock}
+                        </span>
+                      ) : (
+                        <span className="text-red-500 font-medium">
+                          {item?.totalStock}
+                        </span>
+                      )}
+                    </TableCell>
+
+                    {/* Price */}
+                    <TableCell>
+                      ${item?.firstVariant?.sellPrice || 300}
+                    </TableCell>
+
+                    {/* Status */}
+                    <TableCell>
+                      {item?.totalStock < 10 ? (
+                        <span
+                          className={`px-2 py-1 rounded text-sm ${"bg-red-100 text-red-800"}`}
+                        >
+                          Low Stock
+                        </span>
+                      ) : (
+                        <span
+                          className={`px-2 py-1 rounded text-sm ${" bg-green-400"}`}
+                        >
+                          Good
+                        </span>
+                      )}
+                    </TableCell>
+
+                    {/* Added Date */}
+                    <TableCell>{DateFormat(item.createdAt)}</TableCell>
+
+                    {/* Actions */}
+                    <TableCell>
+                      <DropDown style="bg-light">
+                        <li>
+                          <Link
+                            to={`${item?._id}`}
+                            className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                          >
+                            <IoEye />
+                            View
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to={`variant/add/${item?._id}`}
+                            state={{ sku: item?.sku }}
+                            className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                          >
+                            <CgAdd />
+                            Add Variant
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to={`edit/${item?._id}`}
+                            className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                          >
+                            <MdModeEdit />
+                            Edit
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            className="hover:bg-slate-200 hover:text-primary text-start font-medium"
+                            onClick={() => {
+                              if (modalRef?.current) {
+                                setDeleteSelect(item?._id);
+                                modalRef.current?.showModal();
+                              }
+                            }}
+                          >
+                            <FaRegTrashAlt />
+                            Delete
+                          </button>
+                        </li>
+                      </DropDown>
+                    </TableCell>
+                  </tr>
+                );
+              }}
+            />
+          </Table>
         </div>
         <AdminPagination
           totalPage={Math.ceil(productData?.totalProductsLen / itemsPerPage)}
@@ -279,7 +255,8 @@ const AllProductsTable = () => {
           itemperPage={itemsPerPage}
           totalLen={productData?.totalProductsLen}
         />
-      </div>
+      </AdminTableLayout>
+
       {/* modal */}
       <DeleteModal modalRef={modalRef} func={handleDelete} />
     </>

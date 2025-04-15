@@ -14,6 +14,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { LoaderBtn } from "../../../components/component";
 import { getadminProductskey } from "../../../querys/admin/adminQuery";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
 
 const ProductEdit = () => {
   const { id } = useParams();
@@ -144,24 +145,7 @@ const ProductEdit = () => {
 
   return (
     <section>
-      <div className="p-6">
-        <div className="flex">
-          <div className=" mb-6">
-            <p className="text-gray-800 text-2xl font-bold">Product Edit</p>
-            {/* breadcrumbs */}
-            <div className="breadcrumbs text-sm">
-              <ul>
-                <li>
-                  <Link to={"/Admin"}>Admin</Link>
-                </li>
-                <li>
-                  <Link to={-1}>Products</Link>
-                </li>
-                <li>Edit</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <AdminTableLayout>
         <div className="flex justify-end items-center mb-6">
           <div className="flex justify-end">
             <button
@@ -424,7 +408,7 @@ const ProductEdit = () => {
             Update Product
           </LoaderBtn>
         </div>
-      </div>
+      </AdminTableLayout>
     </section>
   );
 };

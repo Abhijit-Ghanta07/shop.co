@@ -8,6 +8,8 @@ import {
 import {
   DropDown,
   LoaderBtn,
+  Skeleton,
+  Table,
   TableBody,
   TableCell,
   TableHeader,
@@ -18,6 +20,8 @@ import { useGetUserOrders } from "../../../querys/order/orderQuery";
 import { MdModeEdit } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import Badge from "../../../components/button/Badge";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
+import TableDataSkeleton from "../../../components/skeleton/TableDataSkeleton";
 const ordersStatus = ["pending", "shipped", "delivered"];
 const UserProfilePage = () => {
   const { id } = useParams();
@@ -50,25 +54,7 @@ const UserProfilePage = () => {
 
   return (
     <>
-      <div className="p-6 bg-white rounded-lg shadow-md">
-        <div className="flex">
-          <div className=" mb-6">
-            <p className="text-gray-800 text-2xl font-bold">User Details</p>
-            {/* breadcrumbs */}
-            <div className="breadcrumbs text-sm">
-              <ul>
-                <li>
-                  <Link to={"/Admin"}>Admin</Link>
-                </li>
-                <li>
-                  <Link to={-1}>Users</Link>
-                </li>
-                <li>ViewUser</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
+      <AdminTableLayout title={"View User"}>
         {/* main */}
         <div className="wrapper">
           <h2 className="text-2xl font-bold mb-6">User Profile</h2>
@@ -157,11 +143,15 @@ const UserProfilePage = () => {
               <h2 className="text-xl font-bold text-center py-4">
                 Orders Of {user?.username}
               </h2>
-              {orderLoading && (
-                <div className="skeleton h-96 columns-1 w-full bg-gray-200 dark:bg-white "></div>
-              )}
               <div className="table__wrapper w-full overflow-x-auto">
-                <table className="w-full">
+                <Table
+                  loading={orderLoading}
+                  loader={
+                    <Skeleton count={3}>
+                      <TableDataSkeleton />
+                    </Skeleton>
+                  }
+                >
                   <TableHeader
                     columns={[
                       "Order Id",
@@ -286,12 +276,12 @@ const UserProfilePage = () => {
                       );
                     }}
                   />
-                </table>
+                </Table>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </AdminTableLayout>
     </>
   );
 };

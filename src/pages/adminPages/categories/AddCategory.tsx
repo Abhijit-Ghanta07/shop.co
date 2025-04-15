@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createCategory } from "../../../querys/categoryQuery";
 import { toast } from "react-toastify";
 import { LoaderBtn } from "../../../components/component";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
 
 const AddCategory = () => {
   const queryClient = useQueryClient();
@@ -51,27 +52,7 @@ const AddCategory = () => {
     }
   }, [error]);
   return (
-    <div className="p-6">
-      <div className="flex">
-        <div className=" mb-6">
-          <p className="text-gray-800 text-2xl font-bold">Add Category</p>
-          {/* breadcrumbs */}
-          <div className="breadcrumbs text-sm">
-            <ul>
-              <li>
-                <Link to={"/admin/dash"}>Admin</Link>
-              </li>
-              <li>
-                <Link to={-1}>Categories</Link>
-              </li>
-              <li>New</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* add ccata */}
-
+    <AdminTableLayout title={"AddCategory"}>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {/* Left Card - Image Upload */}
         <div className="bg-white p-6  rounded-lg shadow-md flex flex-col items-center">
@@ -137,7 +118,7 @@ const AddCategory = () => {
           </LoaderBtn>
         </div>
       </div>
-    </div>
+    </AdminTableLayout>
   );
 };
 

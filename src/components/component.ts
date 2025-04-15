@@ -18,13 +18,20 @@ import DeleteModal from "./modal/DeleteModal";
 import TableHeader from "./table/TableHeader";
 import TableCell from "./table/TableCell";
 import TableBody from "./table/TableBody";
+import Table from "./table/Table";
 import SearchProductCard from "./ProductCard/SearchProduct";
 import GridProductCard from "./ProductCard/GridProductCard";
 import PwaBanner from "./pwaBanner/PwaBanner";
 import Skeleton from "./skeleton/Skeleton";
+import ProductSkeleton from "./skeleton/ProductSkeleton";
+import CategorySkeleton from "./skeleton/CategorySkeleton";
+import TableSkeleton from "./skeleton/TableDataSkeleton";
 
 // import NewProductDetails from "./Product/NewCodeProduct";
 export {
+  TableSkeleton,
+  CategorySkeleton,
+  ProductSkeleton,
   Skeleton,
   PwaBanner,
   SearchProductCard,
@@ -49,4 +56,5 @@ export {
   TableHeader,
   TableCell,
   TableBody,
+  Table,
 };

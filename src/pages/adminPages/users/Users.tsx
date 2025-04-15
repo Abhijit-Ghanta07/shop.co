@@ -8,16 +8,19 @@ import {
   DropDown,
   Modal,
   Skeleton,
+  Table,
   TableBody,
   TableCell,
   TableHeader,
 } from "../../../components/component";
 import { AdminPagination } from "../adminPages";
 import { DeleteUserMutation } from "../../../querys/user/userQuery";
-import { DateFormat } from "../../../utils/utils";
+import { DateFormat, ImageLetter } from "../../../utils/utils";
 import { AdminBadge } from "../../../components/button/btn";
 import { FcGoogle } from "react-icons/fc";
 import { MdMarkEmailRead } from "react-icons/md";
+import AdminTableLayout from "../../../layouts/AdminTableLayout";
+import TableDataSkeleton from "../../../components/skeleton/TableDataSkeleton";
 
 const UsersTable = () => {
   const deleteMutation = DeleteUserMutation();
@@ -45,188 +48,152 @@ const UsersTable = () => {
   const handleDelete = () => {
     deleteMutation.mutate(deleteSelect);
   };
-  const ImageLetter = ({ name = "" }) => {
-    return (
-      <>
-        <div className="avatar placeholder">
-          <div className="bg-neutral text-neutral-content w-16 rounded-full">
-            <span className="text-3xl text-primary">{name?.charAt(0)}</span>
-          </div>
-        </div>
-      </>
-    );
-  };
 
   return (
     <>
-      <div className="p-6 bg-white rounded-lg shadow-md">
-        <div className="flex">
-          <div className=" mb-6">
-            <p className="text-gray-800 text-2xl font-bold">All Users</p>
-            {/* breadcrumbs */}
-            <div className="breadcrumbs text-sm">
-              <ul>
-                <li>
-                  <Link to={"/admin"}>Admin</Link>
-                </li>
-                <li>
-                  <Link to={-1}>Dashbroad</Link>
-                </li>
-                <li>Users</li>
-              </ul>
-            </div>
-          </div>
-          <div className=" ms-auto flex">
-            <Link to={"add"}>
-              <button className="btn btn-primary">Add User</button>
-            </Link>
-          </div>
+      <AdminTableLayout title={"users"}>
+        <div className=" ms-auto flex">
+          <Link to={"add"}>
+            <button className="btn btn-primary">Add User</button>
+          </Link>
         </div>
 
         {/* Table */}
         <div className="overflow-x-auto">
-          {isLoading ? (
-            <Skeleton count={5}>
-              <div className="flex w-full justify-between bg-white">
-                <div className="flex gap-2 flex-col ">
-                  <div className=" skeleton bg-inherit w-8 h-8 rounded-full"></div>
-                  <div className="skeleton bg-inherit h-2 w-14"></div>
-                </div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-                <div className="skeleton bg-inherit h-4 w-20"></div>
-              </div>
-            </Skeleton>
-          ) : (
-            <table className="w-full rounded">
-              <TableHeader
-                columns={[
-                  "",
-                  "Name",
-                  "Access",
-                  "Status",
-                  "Date Added",
-                  "Actions",
-                ]}
-                input={true}
-                oncheck={selectedProducts.length === data?.allUsers?.length}
-                onchange={toggleSelectAll}
-              />
-              <TableBody
-                columnsData={data?.allUsers}
-                renderItem={(eachUser) => {
-                  return (
-                    <tr key={eachUser?._id} className="text-gray-800 text-base">
-                      {/* Checkbox */}
-                      <TableCell>
-                        <input
-                          type="checkbox"
-                          checked={selectedProducts.includes(eachUser?._id)}
-                          onChange={() => toggleSelectProduct(eachUser?._id)}
-                          className="checkbox"
-                        />
-                      </TableCell>
+          <Table
+            loading={isLoading}
+            loader={
+              <Skeleton count={5}>
+                <TableDataSkeleton />
+              </Skeleton>
+            }
+          >
+            <TableHeader
+              columns={[
+                "",
+                "Name",
+                "Access",
+                "Status",
+                "Date Added",
+                "Actions",
+              ]}
+              input={true}
+              oncheck={selectedProducts.length === data?.allUsers?.length}
+              onchange={toggleSelectAll}
+            />
+            <TableBody
+              columnsData={data?.allUsers}
+              renderItem={(eachUser) => {
+                return (
+                  <tr key={eachUser?._id} className="text-gray-800 text-base">
+                    {/* Checkbox */}
+                    <TableCell>
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.includes(eachUser?._id)}
+                        onChange={() => toggleSelectProduct(eachUser?._id)}
+                        className="checkbox"
+                      />
+                    </TableCell>
 
-                      {/* user Name */}
-                      <TableCell>
-                        <div className="inline-flex gap-2">
-                          <Link to={eachUser?._id}>
-                            {eachUser?.imgUrl !== "" ? (
-                              <>
-                                <div className="avatar">
-                                  <div className="w-14 rounded-full">
-                                    <img src={eachUser?.imgUrl} />
-                                  </div>
+                    {/* user Name */}
+                    <TableCell>
+                      <div className="inline-flex gap-2">
+                        <Link to={eachUser?._id}>
+                          {eachUser?.imgUrl !== "" ? (
+                            <>
+                              <div className="avatar">
+                                <div className="w-14 rounded-full">
+                                  <img src={eachUser?.imgUrl} />
                                 </div>
-                              </>
+                              </div>
+                            </>
+                          ) : (
+                            <ImageLetter name={eachUser?.username} />
+                          )}
+                        </Link>
+
+                        <div className="inline-flex flex-col">
+                          <p className="text-gray-800 text-base inline-flex items-center gap-2 capitalize">
+                            <span>{eachUser?.username}</span>
+                            {eachUser?.authProvider === "google" ? (
+                              <span>
+                                <FcGoogle />
+                              </span>
                             ) : (
-                              <ImageLetter name={eachUser?.username} />
+                              <span>
+                                <MdMarkEmailRead />
+                              </span>
                             )}
-                          </Link>
-
-                          <div className="inline-flex flex-col">
-                            <p className="text-gray-800 text-base inline-flex items-center gap-2 capitalize">
-                              <span>{eachUser?.username}</span>
-                              {eachUser?.authProvider === "google" ? (
-                                <span>
-                                  <FcGoogle />
-                                </span>
-                              ) : (
-                                <span>
-                                  <MdMarkEmailRead />
-                                </span>
-                              )}
-                            </p>
-                            <span className="text-gray-400 text-sm">
-                              {eachUser?.email}
-                            </span>
-                          </div>
-                        </div>
-                      </TableCell>
-
-                      {/* SKU */}
-                      <TableCell>
-                        <div className="flex gap-2">
-                          {eachUser?.roles?.map((role) => (
-                            <AdminBadge status={role} />
-                          ))}
-                        </div>
-                      </TableCell>
-
-                      {/* active */}
-                      <TableCell>
-                        {eachUser?.isActive ? (
-                          <span className="badge badge-success badge-outline">
-                            Active
+                          </p>
+                          <span className="text-gray-400 text-sm">
+                            {eachUser?.email}
                           </span>
-                        ) : (
-                          <span className="badge badge-neutral">Active</span>
-                        )}
-                      </TableCell>
+                        </div>
+                      </div>
+                    </TableCell>
 
-                      {/* added */}
-                      <TableCell>{DateFormat(eachUser?.createdAt)}</TableCell>
+                    {/* SKU */}
+                    <TableCell>
+                      <div className="flex gap-2">
+                        {eachUser?.roles?.map((role) => (
+                          <AdminBadge status={role} />
+                        ))}
+                      </div>
+                    </TableCell>
 
-                      {/* Price */}
+                    {/* active */}
+                    <TableCell>
+                      {eachUser?.isActive ? (
+                        <span className="badge badge-success badge-outline">
+                          Active
+                        </span>
+                      ) : (
+                        <span className="badge badge-neutral">Active</span>
+                      )}
+                    </TableCell>
 
-                      {/* Actions */}
-                      <TableCell>
-                        <DropDown>
-                          <li>
-                            <Link
-                              to={`${eachUser?._id}`}
-                              className="hover:bg-gray-300 font-medium"
-                            >
-                              <IoEye />
-                              View
-                            </Link>
-                          </li>
-                          <li>
-                            <button
-                              className="hover:bg-gray-300 font-medium"
-                              onClick={() => {
-                                if (modalRef?.current) {
-                                  setDelectSelect(eachUser?._id);
-                                  modalRef?.current?.showModal();
-                                }
-                              }}
-                            >
-                              <FaRegTrashAlt />
-                              Delete
-                            </button>
-                          </li>
-                          {/* <button className="btn btn-sm btn-ghost rounded-full">
+                    {/* added */}
+                    <TableCell>{DateFormat(eachUser?.createdAt)}</TableCell>
+
+                    {/* Price */}
+
+                    {/* Actions */}
+                    <TableCell>
+                      <DropDown>
+                        <li>
+                          <Link
+                            to={`${eachUser?._id}`}
+                            className="hover:bg-gray-300 font-medium"
+                          >
+                            <IoEye />
+                            View
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            className="hover:bg-gray-300 font-medium"
+                            onClick={() => {
+                              if (modalRef?.current) {
+                                setDelectSelect(eachUser?._id);
+                                modalRef?.current?.showModal();
+                              }
+                            }}
+                          >
+                            <FaRegTrashAlt />
+                            Delete
+                          </button>
+                        </li>
+                        {/* <button className="btn btn-sm btn-ghost rounded-full">
             <MdModeEdit />
           </button> */}
-                        </DropDown>
-                      </TableCell>
-                    </tr>
-                  );
-                }}
-              />
-            </table>
-          )}
+                      </DropDown>
+                    </TableCell>
+                  </tr>
+                );
+              }}
+            />
+          </Table>
         </div>
         <AdminPagination
           currentPage={currentPage}
@@ -235,7 +202,7 @@ const UsersTable = () => {
           totalLen={data?.totalUsers}
           itemperPage={itemsperpage}
         />
-      </div>
+      </AdminTableLayout>
       {/* modal for confirm delete */}
       <Modal modalRef={modalRef}>
         <div className="card flex justify-center flex-col gap-3 items-center">

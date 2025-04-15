@@ -1,8 +1,10 @@
 import {
   Category,
+  CategorySkeleton,
   Hero,
   List,
   ProductCard,
+  ProductSkeleton,
   Skeleton,
 } from "../../components/component";
 import { useSelector } from "react-redux";
@@ -16,13 +18,8 @@ const HomePage = () => {
         <Hero />
         <div className="bg-white">
           {status ? (
-            <Skeleton count={5}>
-              <div className="flex flex-col  gap-2">
-                <div className="skeleton bg-gray-200  h-44 w-44"></div>
-                <div className="skeleton bg-gray-200  h-4 w-20"></div>
-                <div className="skeleton bg-gray-200  h-4 w-28"></div>
-                <div className="skeleton bg-gray-200  h-8 w-28"></div>
-              </div>
+            <Skeleton count={5} style={"justify-center"}>
+              <ProductSkeleton />
             </Skeleton>
           ) : (
             <List
@@ -36,13 +33,8 @@ const HomePage = () => {
 
           <div className="divider w-full"></div>
           {status ? (
-            <Skeleton count={5}>
-              <div className="flex flex-col  gap-2">
-                <div className="skeleton bg-gray-200  h-44 w-44"></div>
-                <div className="skeleton bg-gray-200  h-4 w-20"></div>
-                <div className="skeleton bg-gray-200  h-4 w-28"></div>
-                <div className="skeleton bg-gray-200  h-8 w-28"></div>
-              </div>
+            <Skeleton count={5} style={"justify-center"}>
+              <ProductSkeleton />
             </Skeleton>
           ) : (
             <List
@@ -57,10 +49,8 @@ const HomePage = () => {
           <div className="divider w-full"></div>
           {/* browse by category */}
           {status ? (
-            <Skeleton count={8}>
-              <div className="flex flex-col  gap-2">
-                <div className="skeleton bg-gray-200  h-60 w-60"></div>
-              </div>
+            <Skeleton count={8} style={"justify-center px-10"}>
+              <CategorySkeleton />
             </Skeleton>
           ) : (
             <Category />
