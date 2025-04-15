@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { MdOutlineStorage } from "react-icons/md";
 import {
   RiShoppingCartLine,
   RiAccountCircleLine,
@@ -17,14 +19,14 @@ import {
   Modal,
   SearchProductCard,
 } from "../../components/component";
-import { useEffect, useRef, useState } from "react";
-import { MdOutlineStorage } from "react-icons/md";
 import { useQueryItems } from "../../querys/product/productQuery";
 import Banner from "./Banner";
+import style from "./header.module.scss";
+import useAdmin from "../../hooks/useAdmin";
 const Header = () => {
   const cartProduct = useSelector((state) => state.cart);
   const { status } = useSelector((store) => store.user);
-  const [inputState, setInputState] = useState("");
+  const [inputState, setInputState] = useState<string>("");
   const [query, setQuery] = useState<string | null>(null);
   const searchRef = useRef<HTMLDialogElement>(null);
 
@@ -45,13 +47,13 @@ const Header = () => {
   }, [inputState]);
 
   return (
-    <div className="sticky top-0 z-10">
+    <>
       <Banner />
-      <header className="bg-white text-black">
-        <div className="lg:container mx-auto">
+      <header className={style.header__main}>
+        <div className="lg:container lg:mx-auto">
           <div className="wrapper py-4 px-2 md:px-10">
-            <div className="flex gap-2 sm:gap-3 items-center sm:justify-between">
-              <div className="ham md:hidden flex items-center cursor-pointer">
+            <div className="flex gap-2  items-center sm:justify-between">
+              <div className="ham md:hidden flex items-center">
                 {/* responsive side bar */}
                 <div className="drawer">
                   <input
@@ -74,69 +76,83 @@ const Header = () => {
                       aria-label="close sidebar"
                       className="drawer-overlay"
                     ></label>
-                    <ul className="flex relative h-full flex-col bg-gray-300 w-80 gap-6 items-center py-10 text-lg">
+                    <div className="flex flex-col relative h-full  bg-light w-80  py-10">
                       <div className="close">
                         <label
                           htmlFor="my-drawer"
                           aria-label="close sidebar"
-                          className="drawer-overlay cursor-pointer absolute top-5 right-5 bg-base-200  p-2 rounded-btn"
+                          className="drawer-overlay hover:bg-gray-200 bg-transparent cursor-pointer absolute top-5 right-5 bg-base-200  p-2 rounded-btn"
                         >
                           <span>
                             <IoClose color="black" size={30} />
                           </span>
                         </label>
                       </div>
-                      <li>
-                        <Link to={"/"}>Home</Link>
-                      </li>
-                      <li>
-                        <div className="collapse bg-transparent w-fit h-fit">
-                          <input type="checkbox" className="!h-[20px]" />
-                          <div className="collapse-title text-center !h-[20px] p-0 flex justify-center items-center gap-1">
-                            <span>Shop</span>
-                            <span>
-                              <IoIosArrowDown />
-                            </span>
+                      <div className="text-center border-b-2 my-2">
+                        <Link
+                          to={"/"}
+                          className="logo text-center font-extrabold text-2xl sm:text-3xl"
+                        >
+                          <span>SHOP.</span>
+                          <span className="text-primary">CO</span>
+                        </Link>
+                      </div>
+
+                      <ul className="flex flex-col items-center gap-2">
+                        <li>
+                          <Link to={"/"}>Home</Link>
+                        </li>
+                        <li>
+                          <div className="collapse bg-transparent w-fit h-fit">
+                            <input type="checkbox" className="!h-[20px]" />
+                            <div className="collapse-title text-center !h-[20px] p-0 flex justify-center items-center gap-1">
+                              <span>Shop</span>
+                              <span>
+                                <IoIosArrowDown />
+                              </span>
+                            </div>
+                            <div className="collapse-content p-0">
+                              <ul className="flex flex-col items-center gap-2 text-lg">
+                                <li className="hover:bg-slate-500 p-2 rounded-lg">
+                                  <Link to={"/product/category/male"}>
+                                    Men's Clothes
+                                  </Link>
+                                </li>
+                                <li className="hover:bg-slate-500 p-2 rounded-lg">
+                                  <Link to={"/product/category/female"}>
+                                    Women's Clothes
+                                  </Link>
+                                </li>
+                                <li className="hover:bg-slate-500 p-2 rounded-lg">
+                                  <Link to={"/product/category/kids"}>
+                                    Kids Collections
+                                  </Link>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
-                          <div className="collapse-content p-0">
-                            <ul className="flex flex-col items-center gap-2 text-lg">
-                              <li className="hover:bg-slate-500 p-2 rounded-lg">
-                                <Link to={"/product/category/male"}>
-                                  Men's Clothes
-                                </Link>
-                              </li>
-                              <li className="hover:bg-slate-500 p-2 rounded-lg">
-                                <Link to={"/product/category/female"}>
-                                  Women's Clothes
-                                </Link>
-                              </li>
-                              <li className="hover:bg-slate-500 p-2 rounded-lg">
-                                <Link to={"/product/category/kids"}>
-                                  Kids Collections
-                                </Link>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      {/* <li>
+                        </li>
+                        {/* <li>
                         <Link to={"/product/category/sale"}>On Sale</Link>
                       </li> */}
-                      <li>
-                        <Link to={"/product/category/new arrivel"}>
-                          New Arrival
-                        </Link>
-                      </li>
-                      {/* <li>
+                        <li>
+                          <Link to={"/product/category/new arrivel"}>
+                            New Arrival
+                          </Link>
+                        </li>
+                        {/* <li>
                         <Link to={"/product/category/brands"}>Brands</Link>
                       </li> */}
 
-                      <li>
-                        {status && (
-                          <Logout style={"btn-error text-white"}>Logout</Logout>
-                        )}
-                      </li>
-                    </ul>
+                        <li>
+                          {status && (
+                            <Logout style={"btn-error text-white"}>
+                              Logout
+                            </Logout>
+                          )}
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 {/* end sidebar */}
@@ -201,7 +217,7 @@ const Header = () => {
               {/* searchbar */}
               <div className="flex h-full items-center justify-center  basis-3/6">
                 <label
-                  className="flex bg-transparent w-24 sm:w-fit justify-end items-center rounded-badge px-2  sm:py-2 bg-gray-200"
+                  className="flex bg-transparent w-24 sm:w-fit justify-end items-center rounded-badge px-2  sm:py-2 "
                   onClick={() => {
                     if (searchRef?.current) {
                       searchRef?.current?.showModal();
@@ -210,7 +226,7 @@ const Header = () => {
                     }
                   }}
                 >
-                  <span className="flex w-60 gap-2 text-gray-800 bg-gray-100 sm:p-2 p-1 rounded-lg border border-black">
+                  <span className="flex w-60 gap-2  sm:p-2 p-1 rounded-lg border border-black">
                     <RiSearch2Line size={20} />
                     Search
                   </span>
@@ -250,18 +266,6 @@ const Header = () => {
             placeholder="Search"
             onChange={(e) => setInputState(e.target.value)}
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="green"
-            className="h-4 w-4 opacity-70"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
         </label>
         {/* <button
           className="btn btn-md btn-neutral my-3 text-white"
@@ -269,25 +273,25 @@ const Header = () => {
         >
           Search
         </button> */}
-        <div className="mt-5">
-          {isLoading && (
-            <span className="loading loading-spinner loading-lg"></span>
-          )}
-        </div>
 
-        <List
-          data={data?.products || []}
-          exstyle="flex flex-nowrap flex-col !gap-2"
-          renderItem={(item) => <SearchProductCard product={item} />}
-        />
+        {isLoading ? (
+          <div className="mt-5">
+            <span className="loading loading-spinner loading-lg"></span>
+          </div>
+        ) : (
+          <List
+            data={data?.products || []}
+            exstyle="flex flex-nowrap flex-col !gap-2"
+            renderItem={(item) => <SearchProductCard product={item} />}
+          />
+        )}
       </Modal>
-    </div>
+    </>
   );
 };
-
 function AuthProfile() {
   const { userDetails } = useSelector((store) => store.user);
-  const [isAdmin, setAdmin] = useState(userDetails?.roles?.includes("ADMIN"));
+  const { isAdmin } = useAdmin();
   return (
     <>
       <div className="profile  cursor-pointer dropdown dropdown-end ">

@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Outlet,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -22,7 +21,6 @@ import {
   Product,
   CategoryProduct,
   ProductsBySlug,
-  PwaBanner,
 } from "./components/component";
 import {
   AddCategory,
@@ -49,7 +47,8 @@ import {
   OfflineStatusProtected,
   UserProtected,
 } from "./utils/ProtectedRoute";
-import { SnackBar } from "./includes/includes";
+
+import RootLayout from "./layouts/RootLayout";
 
 // lazy loadings
 const HomeLayout = lazy(() => import("./layouts/Home"));
@@ -59,108 +58,69 @@ const UserLayout = lazy(() => import("./layouts/User"));
 const AdminLayout = lazy(() => import("./layouts/Admin"));
 const ErrorLayout = lazy(() => import("./layouts/Error"));
 const OfflineLayout = lazy(() => import("./layouts/Offline"));
-// funcs
-function SuspenseLayout() {
-  return (
-    <>
-      <Suspense fallback={<LoaderScreen />}>
-        <PwaBanner />
-        <Outlet />
-        <SnackBar />
-      </Suspense>
-    </>
-  );
-}
+
+// router
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<SuspenseLayout />} errorElement={<ErrorLayout />}>
+    <Route element={<RootLayout />} errorElement={<ErrorLayout />}>
+      {/* guest routes */}
       <Route path="/" element={<HomeLayout />}>
         <Route index element={<HomePage />} />
         <Route path="cart" element={<CartPage />} />
-        <Route
-          path="cart/order"
-          element={
-            <GuestProtected>
-              <CartAddress />
-            </GuestProtected>
-          }
-        />
-        <Route
-          path="payment"
-          element={
-            <GuestProtected>
-              <PaymentPage />
-            </GuestProtected>
-          }
-        />
+        <Route path="product" element={<ProductLayout />}>
+          <Route path=":id" element={<Product />} />
+          <Route path="category/:id?" element={<CategoryProduct />} />
+          <Route path="slug" element={<ProductsBySlug />} />
+        </Route>
+        {/* user routes */}
+        <Route element={<GuestProtected />}>
+          <Route path="cart/order" element={<CartAddress />} />
+          <Route path="payment" element={<PaymentPage />} />
+        </Route>
+        <Route path="/user" element={<UserLayout />}>
+          <Route index element={<ProfilePage />} />
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:id" element={<OrdersItemPage />} />
+        </Route>
       </Route>
-      <Route
-        path="/user"
-        element={
-          <GuestProtected>
-            <UserLayout />
-          </GuestProtected>
-        }
-      >
-        <Route index element={<ProfilePage />} />
-        <Route path="orders" element={<OrdersPage />} />
-        <Route path="orders/:id" element={<OrdersItemPage />} />
+      {/* auth routes */}
+      <Route element={<UserProtected />}>
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route index element={<Login />} />
+          <Route path="signup" element={<Register />} />
+        </Route>
       </Route>
-
-      <Route
-        path="/auth"
-        element={
-          <UserProtected>
-            <AuthLayout />
-          </UserProtected>
-        }
-      >
-        <Route index element={<Login />} />
-        <Route path="signup" element={<Register />} />
+      {/* admin routes */}
+      <Route element={<AdminProtected />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashbroad />} />
+          <Route path="products" element={<AllProducts />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="products/edit/:id" element={<ProductEdit />} />
+          <Route path="products/:id" element={<ProductDetails />} />
+          <Route path="products/variant/add/:id" element={<VariantAddPage />} />
+          <Route path="orders" element={<AllOrders />} />
+          <Route path="orders/:id" element={<ViewOrder />} />
+          <Route path="users" element={<AllUsers />} />
+          <Route path="users/add" element={<AddUser />} />
+          <Route path="users/:id" element={<ViewUser />} />
+          <Route path="category" element={<AllCategory />} />
+          <Route path="category/add" element={<AddCategory />} />
+          <Route path="category/:id" element={<CategoryProducts />} />
+          <Route path="subcategory/add" element={<AddSubCategory />} />
+          <Route path="subcategory/:id" element={<SubCategoryProducts />} />
+        </Route>
       </Route>
-      <Route path="/product" element={<ProductLayout />}>
-        <Route path=":id" element={<Product />} />
-        <Route path="category/:id?" element={<CategoryProduct />} />
-        <Route path="slug" element={<ProductsBySlug />} />
+      {/*  offline */}
+      <Route element={<OfflineStatusProtected />}>
+        <Route path="/offline" element={<OfflineLayout />} />
       </Route>
-      <Route
-        path="/admin"
-        element={
-          <AdminProtected>
-            <AdminLayout />
-          </AdminProtected>
-        }
-      >
-        <Route path="dash" element={<Dashbroad />} />
-        <Route path="products" element={<AllProducts />} />
-        <Route path="products/add" element={<AddProduct />} />
-        <Route path="products/edit/:id" element={<ProductEdit />} />
-        <Route path="products/:id" element={<ProductDetails />} />
-        <Route path="products/variant/add/:id" element={<VariantAddPage />} />
-        <Route path="orders" element={<AllOrders />} />
-        <Route path="orders/:id" element={<ViewOrder />} />
-        <Route path="users" element={<AllUsers />} />
-        <Route path="users/add" element={<AddUser />} />
-        <Route path="users/:id" element={<ViewUser />} />
-        <Route path="category" element={<AllCategory />} />
-        <Route path="category/add" element={<AddCategory />} />
-        <Route path="category/:id" element={<CategoryProducts />} />
-        <Route path="subcategory/add" element={<AddSubCategory />} />
-        <Route path="subcategory/:id" element={<SubCategoryProducts />} />
-      </Route>
-      <Route
-        path="/offline"
-        element={
-          <OfflineStatusProtected>
-            <OfflineLayout />
-          </OfflineStatusProtected>
-        }
-      />
+      {/* route not found */}
       <Route path="/*" element={<ErrorLayout />} />
     </Route>
   )
 );
-
+// app component
 function App() {
   return (
     <Suspense fallback={<LoaderScreen />}>

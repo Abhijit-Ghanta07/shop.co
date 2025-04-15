@@ -1,23 +1,23 @@
 import { useOnlineStatus } from "../hooks/useOnlineStatus";
 import useUser from "../hooks/useUser";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-const GuestProtected = ({ children }) => {
+const GuestProtected = () => {
   const [_, status] = useUser();
-  return status ? children : <Navigate to={"/"} />;
+  return status ? <Outlet /> : <Navigate to={"/"} />;
 };
-const UserProtected = ({ children }) => {
+const UserProtected = () => {
   const [_, status] = useUser();
-  return status ? <Navigate to={"/"} /> : children;
+  return status ? <Navigate to={"/"} /> : <Outlet />;
 };
-const AdminProtected = ({ children }) => {
+const AdminProtected = () => {
   const [user] = useUser();
-  return user?.roles?.includes("ADMIN") ? children : <Navigate to={"/"} />;
+  return user?.roles?.includes("ADMIN") ? <Outlet /> : <Navigate to={"/"} />;
 };
 
-const OfflineStatusProtected = ({ children }) => {
+const OfflineStatusProtected = () => {
   const online = useOnlineStatus();
-  return online ? <Navigate to={"/"} /> : children;
+  return online ? <Navigate to={"/"} /> : <Outlet />;
 };
 
 export {
