@@ -7,24 +7,44 @@ import {
 } from "workbox-strategies";
 import { ExpirationPlugin } from "workbox-expiration";
 import { clientsClaim } from "workbox-core";
+import { CacheableResponsePlugin } from "workbox-cacheable-response";
 
-// Use with precache injection point
+// This will be replaced with a precache manifest at build time
 precacheAndRoute(self.__WB_MANIFEST || []);
 
 // Take control immediately
 self.skipWaiting();
 clientsClaim();
 
-// Cache CSS and JS files
+// Use a version number to bust caches when needed
+const CACHE_VERSION = "v3"; // Increment this when you make significant changes
+
+// CSS files - use NetworkFirst for faster style updates
 registerRoute(
-  ({ request }) =>
-    request.destination === "style" || request.destination === "script",
+  ({ request }) => request.destination === "style",
+  new NetworkFirst({
+    cacheName: `css-cache-${CACHE_VERSION}`,
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 30,
+        maxAgeSeconds: 24 * 60 * 60, // 1 day
+      }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  })
+);
+
+// JS files
+registerRoute(
+  ({ request }) => request.destination === "script",
   new StaleWhileRevalidate({
-    cacheName: "static-resources",
+    cacheName: `js-cache-${CACHE_VERSION}`,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 60,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
       }),
     ],
   })
@@ -34,11 +54,11 @@ registerRoute(
 registerRoute(
   ({ request }) => request.destination === "image",
   new CacheFirst({
-    cacheName: "image-cache",
+    cacheName: `image-cache-${CACHE_VERSION}`,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 50,
-        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
       }),
     ],
   })
@@ -48,7 +68,7 @@ registerRoute(
 registerRoute(
   ({ url }) => url.origin === "https://fonts.googleapis.com",
   new StaleWhileRevalidate({
-    cacheName: "google-fonts-stylesheets",
+    cacheName: `google-fonts-stylesheets-${CACHE_VERSION}`,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 10,
@@ -62,7 +82,7 @@ registerRoute(
 registerRoute(
   ({ url }) => url.origin === "https://fonts.gstatic.com",
   new CacheFirst({
-    cacheName: "google-fonts-webfonts",
+    cacheName: `google-fonts-webfonts-${CACHE_VERSION}`,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 30,
@@ -82,47 +102,66 @@ registerRoute(
     );
   },
   new NetworkFirst({
-    cacheName: "api-cache",
+    cacheName: `api-cache-${CACHE_VERSION}`,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 50,
         maxAgeSeconds: 60 * 60, // 1 hour
       }),
     ],
-    networkTimeoutSeconds: 5, // Fall back to cache if network request takes more than 5 seconds
+    networkTimeoutSeconds: 5,
   })
 );
 
-// Event listeners for installation and activation
-self.addEventListener("install", (event) => {
-  console.log("Service worker installed");
-});
-
+// Clear old caches when activating new service worker
 self.addEventListener("activate", (event) => {
-  console.log("Service worker activated");
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((cacheName) => {
+            // Delete old versioned caches
+            return (
+              cacheName.includes("-cache-") &&
+              !cacheName.includes(`-cache-${CACHE_VERSION}`)
+            );
+          })
+          .map((cacheName) => {
+            return caches.delete(cacheName);
+          })
+      );
+    })
+  );
 });
 
-// Optional: Handle fetch events manually if needed
-// self.addEventListener("fetch", (event) => {
-//   // Custom fetch handling can go here if needed
-// });
+// Optional: explicitly handle navigations to always get fresh HTML
+registerRoute(
+  ({ request }) => request.mode === "navigate",
+  new NetworkFirst({
+    cacheName: `html-cache-${CACHE_VERSION}`,
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 10,
+        maxAgeSeconds: 24 * 60 * 60, // 1 day
+      }),
+    ],
+  })
+);
 
-// Optional: Push notifications handling
-self.addEventListener("push", (event) => {
-  if (event.data) {
-    const data = event.data.json();
-
-    self.registration.showNotification(data.title, {
-      body: data.message,
-      icon: "/icons/icons-192x192.png",
-      badge: "/icons/icons-72x72.png",
-    });
+// Add a message handler for cache busting
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
   }
-});
-
-// Optional: Handle notification clicks
-self.addEventListener("notificationclick", (event) => {
-  event.notification.close();
-
-  event.waitUntil(clients.openWindow("/"));
+  if (event.data && event.data.type === "CLEAR_CACHES") {
+    event.waitUntil(
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            return caches.delete(cacheName);
+          })
+        );
+      })
+    );
+  }
 });
