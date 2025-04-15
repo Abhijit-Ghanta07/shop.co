@@ -61,7 +61,7 @@ export function ProductReviews({
   return (
     <>
       <section>
-        <div className="wrapper">
+        <div className="wrapper my-5">
           <div className="flex flex-col space-y-3">
             <div className="flex space-x-4 justify-between">
               <h3 className="flex space-x-1 items-center">

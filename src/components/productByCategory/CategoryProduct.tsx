@@ -50,7 +50,7 @@ const CategoryProduct = () => {
   return (
     <main>
       <ScrollRestoration />
-      <div className="wrapper px-5 md:px-20">
+      <div className="wrapper px-5 md:px-10">
         <div className="outline outline-1 outline-slate-300"></div>
         <div className="py-3">
           {/* breadcrumbs */}
@@ -68,7 +68,7 @@ const CategoryProduct = () => {
               <FillterCard show={fillterShow} setShow={setFillterShow} />
             </div>
 
-            <div className="flex w-full h-[90%] flex-col py-3 gap-2 overflow-auto">
+            <div className="flex w-full  flex-col py-3 gap-2 overflow-auto overflow-x-hidden ">
               <div className="flex justify-between">
                 <h2 className="font-bold text-2xl capitalize">{id}</h2>
                 <div className="flex gap-4 items-center">
@@ -79,26 +79,6 @@ const CategoryProduct = () => {
                       : currentPage * itemsperpage}
                     of {productsLength}
                   </p>
-                  {/* <div className="flex items-center">
-                    <span
-                      onClick={() => {
-                        setFillterShow((prev) => !prev);
-                      }}
-                    >
-                      Sort By:
-                    </span>
-                    <select className="w-fit bg-transparent rounded font-bold">
-                      <option disabled selected>
-                        Most Popular
-                      </option>
-                      <option>Homer</option>
-                      <option>Marge</option>
-                      <option>Bart</option>
-                      <option>Lisa</option>
-                      <option>Maggie</option>
-                    </select>
-                  </div> */}
-
                   <button
                     onClick={() => {
                       setFillterShow((prev) => !prev);
@@ -187,7 +167,7 @@ function FillterCard({ show, setShow }) {
     <section
       className={cl(
         "fixed md:static left-0 md:w-80 bg-white z-[10] duration-200",
-        show ? "top-[5rem]" : "top-[100%]",
+        show ? "top-[5rem] w-full" : "top-[100%]",
         "h-screen md:h-auto", // Make it full-screen height on small screens
         "overflow-y-auto" // Enable scrolling inside the drawer
       )}

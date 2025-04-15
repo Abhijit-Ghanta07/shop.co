@@ -12,7 +12,7 @@ const Category = () => {
             browse by dress style
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-10">
             {category?.map((ele) => {
               return (
                 <div className=" w-auto rounded-lg relative overflow-hidden">
@@ -25,7 +25,7 @@ const Category = () => {
                     <div className="flex h-full justify-center items-center">
                       <p
                         className={cl(
-                          "text-5xl absolute top-10 left-0 text-active font-bold uppercase",
+                          " sm:text-3xl absolute top-10 left-0 text-active font-bold uppercase",
                           style.title
                         )}
                       >

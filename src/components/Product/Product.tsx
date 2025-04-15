@@ -180,13 +180,13 @@ const Product = () => {
                   <Skeleton
                     count={4}
                     style={
-                      "px-0 !justify-start order-2 md:order-1 flex-nowrap flex-col my-0"
+                      "px-0 !justify-start order-2 md:order-1 flex-nowrap md:flex-col my-0"
                     }
                   >
                     <div className="skeleton w-28 h-28 bg-gray-100"></div>
                   </Skeleton>
                 ) : (
-                  <div className="flex order-2 md:order-1 md:flex-col gap-6">
+                  <div className="flex order-2 md:order-1 overflow-auto md:flex-col gap-6 h-auto">
                     {productImages?.map((img) => (
                       <img
                         src={img?.url || imgUrl}
@@ -224,7 +224,7 @@ const Product = () => {
                   <div className="skeleton w-60 h-8 rounded-lg bg-gray-100"></div>
                 </Skeleton>
               ) : (
-                <div className="product-dsc m-0 md:m-2  basis-1/2 flex flex-col py-2">
+                <div className="product-dsc !m-0 !space-x-0 basis-1/2 flex flex-col py-2">
                   <div className="title">
                     <h2 className="text-3xl font-bold capitalize leading-tight">
                       {productData?.name}
@@ -302,9 +302,9 @@ const Product = () => {
                       {sizes.map((ele) => (
                         <button
                           className={cl(
-                            "px-2 py-1 rounded-full  outline outline-1 capitalize",
+                            "rounded-full outline outline-1 capitalize w-10 h-10",
                             ele == selectedProductSize
-                              ? "bg-primary text-light outline-accent"
+                              ? "bg-primary text-light"
                               : ""
                           )}
                           onClick={() => {

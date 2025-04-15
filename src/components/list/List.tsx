@@ -10,7 +10,7 @@ const List = ({
 }) => {
   return (
     <section>
-      <div className="wrapper p-2 sm:py-10 sm:px-5">
+      <div className="wrapper">
         {title !== "" && (
           <h2 className="font-extrabold text-center capitalize py-10 text-primary text-4xl">
             {title}
@@ -20,7 +20,7 @@ const List = ({
         {/* map the products */}
         <div
           className={cl(
-            "flex gap-5 flex-wrap",
+            "flex gap-4 flex-wrap",
             exstyle == "" ? style.list : "",
             exstyle
           )}

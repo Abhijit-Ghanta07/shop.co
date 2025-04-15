@@ -1,0 +1,14 @@
+@use "../../scss/responsive.scss" as *;
+.card {
+  display: block;
+  width: 7rem;
+  height: auto;
+  @include sm() {
+    width: 10rem;
+  }
+  &__img {
+    border-radius: 2px;
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+}

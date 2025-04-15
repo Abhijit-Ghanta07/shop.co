@@ -5,7 +5,7 @@ export const sidebarMenu = [
   {
     id: 1,
     tilte: "Dashbroad",
-    link: "dash",
+    link: "/admin",
     icon: MdDashboard,
   },
   {

@@ -16,7 +16,6 @@ const Auth = () => {
         </Link> */}
         <Outlet />
       </>
-      <ToastContainer />
     </>
   );
 };

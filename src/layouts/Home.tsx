@@ -1,8 +1,6 @@
 import { Footer, Header } from "../includes/includes";
 import { Outlet } from "react-router-dom";
 import { NewsLetter } from "../components/component";
-import { ToastContainer } from "react-toastify";
-import DataLoader from "../components/dataLoader/DataLoader";
 
 const Home = () => {
   return (
@@ -19,7 +17,6 @@ const Home = () => {
         </section>
       </div>
       <Footer />
-      <ToastContainer />
     </>
   );
 };
