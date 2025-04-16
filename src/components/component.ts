@@ -12,7 +12,6 @@ import { LoaderBtn } from "./button/btn";
 import ProductsBySlug from "./productByCategory/ProductBySlug";
 import Modal from "./modal/Modal";
 import DropDown from "./dropdown/Dropdown";
-import Loader from "./dataLoader/DataLoader";
 import List from "./list/List";
 import DeleteModal from "./modal/DeleteModal";
 import TableHeader from "./table/TableHeader";
@@ -26,11 +25,9 @@ import Skeleton from "./skeleton/Skeleton";
 import ProductSkeleton from "./skeleton/ProductSkeleton";
 import CategorySkeleton from "./skeleton/CategorySkeleton";
 import TableSkeleton from "./skeleton/TableDataSkeleton";
-import Banner from "./banner/Banner";
 import Heading from "./heading/Heading";
 // import NewProductDetails from "./Product/NewCodeProduct";
 export {
-  Banner,
   Heading,
   TableSkeleton,
   CategorySkeleton,
@@ -52,7 +49,6 @@ export {
   ProductsBySlug,
   Modal,
   GridProductCard,
-  Loader,
   DropDown,
   DeleteModal,
   List,

@@ -25,6 +25,7 @@ import {
   useShopGetAllProducts,
 } from "../../querys/product/productQuery";
 import { useSelector } from "react-redux";
+import { IoIosCheckmark, IoMdCheckmark, IoMdClose } from "react-icons/io";
 const CategoryProduct = () => {
   const { id } = useParams();
   const [params] = useSearchParams();
@@ -122,13 +123,32 @@ const CategoryProduct = () => {
 function FillterCard({ show, setShow }) {
   const [params, setSearchParams] = useSearchParams();
   const { category, subCategory } = useSelector((store) => store.category);
-  const colors = ["yellow", "black", "blue"];
+  const colors = [
+    "yellow",
+    "blue",
+    "green",
+    "red",
+    "teal",
+    "purple",
+    "black",
+    "gray",
+  ];
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const categoryRef = useRef(null);
   const subCategoryRef = useRef(null);
   const sizeRef = useRef(null);
   const colorsRef = useRef(null);
   const [fillters, setFillters] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  const handleFilterTypeAdd = (type, value) => {
+    if (type === "size") {
+      return setSelectedSize(value);
+    } else if (type === "color") {
+      return setSelectedColor(value);
+    }
+  };
   const handleFillterAdd = (key: string, value: string) => {
     setFillters((prev) => {
       const existingIndex = prev.findIndex((ele) => ele.key === key);
@@ -184,22 +204,22 @@ function FillterCard({ show, setShow }) {
                 onClick={() => {
                   setShow((prev) => !prev);
                 }}
-                className="sm:hidden block"
+                className="sm:hidden block p-2 rounded cursor-pointer hover:bg-gray-200"
               >
-                <MdOutlineCloseFullscreen fontSize={25} />
+                <IoMdClose fontSize={25} />
               </span>
             </div>
             <div className="outline outline-1 outline-slate-300"></div>
             {/*sub category  */}
             <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => {
+                  subCategoryRef.current?.classList?.toggle("h-0");
+                }}
+              >
                 <p className="font-medium text-lg">Style</p>
-                <span
-                  onClick={() => {
-                    subCategoryRef.current?.classList?.toggle("h-0");
-                  }}
-                  className="cursor-pointer"
-                >
+                <span>
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
               </div>
@@ -220,7 +240,7 @@ function FillterCard({ show, setShow }) {
                       <input
                         type="radio"
                         name="radio-1"
-                        className="radio radio-accent"
+                        className="radio outline outline-1 checked:bg-dark"
                       />
                     </span>
                     <span className="capitalize">{ele?.SubCategoryName}</span>
@@ -249,34 +269,49 @@ function FillterCard({ show, setShow }) {
             {/* <div className="outline outline-1 outline-slate-300"></div> */}
             {/* colors */}
             <div className="flex flex-col overflow-hidden gap-3">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => {
+                  colorsRef.current?.classList?.toggle("h-0");
+                }}
+              >
                 <p className="font-medium text-lg">Colors</p>
-                <span
-                  onClick={() => {
-                    colorsRef.current?.classList?.toggle("h-0");
-                  }}
-                  className="cursor-pointer"
-                >
+                <span>
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
               </div>
-              <div className="flex flex-col gap-4" ref={colorsRef}>
+              <div
+                className="flex overflow-hidden flex-wrap gap-4"
+                ref={colorsRef}
+              >
                 {colors.map((ele) => (
                   <label
-                    onClick={() => handleFillterAdd("color", ele)}
-                    className="flex gap-2 items-center"
+                    key={ele}
+                    onClick={() => {
+                      handleFilterTypeAdd("color", ele);
+                      handleFillterAdd("color", ele);
+                    }}
+                    className="flex gap-2 items-center cursor-pointer"
                   >
-                    <span>
-                      <input
-                        type="radio"
-                        name="color"
-                        className="radio radio-accent"
-                      />
-                    </span>
+                    <input
+                      type="radio"
+                      name="color"
+                      checked={selectedColor === ele}
+                      onChange={() => {}}
+                      className="hidden" // Hide default radio style
+                    />
+
                     <span
-                      style={{ background: ele }}
-                      className="rounded-full w-7 h-7 block"
-                    ></span>
+                      style={{
+                        background: ele,
+                        opacity: selectedColor === ele ? 1 : 0.7,
+                      }}
+                      className="rounded-full w-7 h-7 grid place-items-center transition-opacity duration-300"
+                    >
+                      {selectedColor === ele && (
+                        <IoMdCheckmark size={20} color="white" />
+                      )}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -284,14 +319,14 @@ function FillterCard({ show, setShow }) {
             <div className="outline outline-1 outline-slate-300"></div>
             {/* size */}
             <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => {
+                  sizeRef.current?.classList?.toggle("h-0");
+                }}
+              >
                 <p className="font-medium text-lg">Size</p>
-                <span
-                  onClick={() => {
-                    sizeRef.current?.classList?.toggle("h-0");
-                  }}
-                  className="cursor-pointer"
-                >
+                <span>
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
               </div>
@@ -301,18 +336,28 @@ function FillterCard({ show, setShow }) {
               >
                 {sizes.map((ele) => (
                   <label
-                    className="flex gap-2 whitespace-nowrap rounded-badge  uppercase"
+                    key={ele}
                     onClick={() => {
+                      handleFilterTypeAdd("size", ele);
                       handleFillterAdd("size", ele);
                     }}
+                    className={`
+                    flex gap-2 items-center px-4 py-1 cursor-pointer rounded-badge uppercase border
+                    ${
+                      selectedSize === ele
+                        ? "bg-black text-white border-black"
+                        : "border-gray-400"
+                    }
+                    transition duration-200
+                  `}
                   >
-                    <span>
-                      <input
-                        type="radio"
-                        name="size"
-                        className="radio radio-accent "
-                      />
-                    </span>
+                    <input
+                      type="radio"
+                      name="size"
+                      checked={selectedSize === ele}
+                      onChange={() => {}}
+                      className="hidden"
+                    />
                     <span>{ele}</span>
                   </label>
                 ))}
@@ -321,13 +366,14 @@ function FillterCard({ show, setShow }) {
             <div className="outline outline-1 outline-slate-300"></div>
             {/* category */}
             <div className="flex flex-col gap-3">
-              <p className="font-medium text-lg flex justify-between">
+              <p
+                className="font-medium text-lg flex justify-between cursor-pointer"
+                onClick={() => {
+                  categoryRef.current?.classList?.toggle("h-0");
+                }}
+              >
                 <span>Category</span>
-                <span
-                  onClick={() => {
-                    categoryRef.current?.classList?.toggle("h-0");
-                  }}
-                >
+                <span>
                   <MdKeyboardArrowUp fontSize={25} />
                 </span>
               </p>

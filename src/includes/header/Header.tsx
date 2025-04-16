@@ -273,7 +273,7 @@ const Header = () => {
         <label className="input input-bordered flex items-center bg-transparent gap-2">
           <input
             type="text"
-            className="grow"
+            className="grow text-black"
             value={inputState}
             placeholder="Search"
             onChange={(e) => setInputState(e.target.value)}
@@ -293,7 +293,7 @@ const Header = () => {
         ) : (
           <List
             data={data?.products || []}
-            exstyle="flex flex-nowrap flex-col !gap-2"
+            exstyle="flex flex-nowrap flex-col !gap-2 my-5"
             renderItem={(item) => <SearchProductCard product={item} />}
           />
         )}

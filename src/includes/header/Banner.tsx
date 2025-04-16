@@ -9,7 +9,7 @@ const Banner = () => {
       id="offline-banner"
       className={cl(
         "duration-200 transition-all py-1",
-        !isOnline ? "bg-primary block backdrop-blur-md" : "hidden"
+        !isOnline ? "bg-dark block backdrop-blur-md" : "hidden"
       )}
     >
       <p className="text-light text-center">

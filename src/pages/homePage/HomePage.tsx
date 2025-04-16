@@ -1,18 +1,14 @@
 import {
-  Banner,
   Category,
   CategorySkeleton,
   Heading,
   Hero,
-  List,
-  ProductCard,
-  ProductSkeleton,
   ReviewCard,
   Skeleton,
 } from "../../components/component";
 import { useSelector } from "react-redux";
-import heroImg from "../../assets/images/hero/hero.png";
 import HomeProduct from "../../components/homeProductList/HomeProduct";
+import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 const HomePage = () => {
   const products = useSelector((state) => state.product);
   const { status } = useSelector((store) => store.loader);
@@ -88,16 +84,23 @@ function ReviewSection() {
       star: 3,
       customer: "abhijt",
       verified: true,
-      text: "good product",
+      text: "very good product. i am using this product for last 2 yeays no damge or color fade yet",
     },
   ];
   return (
     <div className="px-4 py-5">
       <div className="flex justify-between gap-3  items-center">
         <Heading title={"Our Happy customers"} />
-        {/* scroller */}
+        <div className="flex mx-5 gap-4">
+          <button className="hover:bg-gray-200 rounded p-2">
+            <IoIosArrowRoundBack size={30} />
+          </button>
+          <button className="hover:bg-gray-200 rounded p-2">
+            <IoIosArrowRoundForward size={30} />
+          </button>
+        </div>
       </div>
-      <div className="overflow-auto my-4">
+      <div className="overflow-auto my-4 py-2">
         <div className="flex gap-5">
           {reviews.map((rev) => (
             <ReviewCard

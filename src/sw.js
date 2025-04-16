@@ -17,7 +17,7 @@ self.skipWaiting();
 clientsClaim();
 
 // Use a version number to bust caches when needed
-const CACHE_VERSION = "v3"; // Increment this when you make significant changes
+const CACHE_VERSION = "v4"; // Increment this when you make significant changes
 
 // CSS files - use NetworkFirst for faster style updates
 registerRoute(

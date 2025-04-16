@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useGetUserOrders } from "../../querys/order/orderQuery";
 import { DateFormat } from "../../utils/utils";
 import Badge from "../../components/button/Badge";
+import { Heading } from "../../components/component";
 
 const OrdersPage = () => {
   const { userDetails } = useSelector((store) => store.user);
@@ -28,9 +29,7 @@ const OrdersPage = () => {
 
           {/* order history */}
           <div className="p-2 sm:p-8">
-            <h2 className="text-2xl text-center font-bold text-gray-800 mb-6">
-              Your Orders
-            </h2>
+            <Heading title={" Your Orders"} style={"text-center"} />
             <div className="space-y-4 flex flex-col items-center">
               {products?.map((order) => (
                 <div

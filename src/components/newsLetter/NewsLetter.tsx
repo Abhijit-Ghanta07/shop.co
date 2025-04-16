@@ -8,7 +8,7 @@ function NewsLetter() {
         <div className="flex flex-col md:flex-row gap-3 justify-between">
           <Heading
             title={"  Stay upto date with about our latest offers"}
-            style={"text-light text-center"}
+            style={"text-light text-center basis-2/3"}
           />
           <div className="flex flex-col justify-center items-center gap-2 basis-1/3">
             <label

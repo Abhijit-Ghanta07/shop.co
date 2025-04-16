@@ -11,7 +11,7 @@ import {
   useGetUserAddress,
 } from "../../querys/address/addressQuery";
 import { IoMdAdd } from "react-icons/io";
-import { LoaderBtn, Modal } from "../../components/component";
+import { Heading, LoaderBtn, Modal } from "../../components/component";
 import { FaLocationArrow } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -123,9 +123,8 @@ const ProfilePage = () => {
             </div>
             {/* profile  */}
             <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Your Profile
-              </h2>
+              <Heading title={" Your Profile"} />
+
               <form onSubmit={handleSubmit(updateSubmit)} className="space-y-6">
                 {/* Profile Image */}
                 <div className="flex items-center space-x-6">
@@ -221,9 +220,7 @@ const ProfilePage = () => {
             </div>
             {/* user other details */}
             <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg my-4">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                More Info
-              </h2>
+              <Heading title={" More Info"} />
 
               <div className="flex flex-col gap-2">
                 <p className="font-medium text-lg text-gray-800 ">Roles</p>

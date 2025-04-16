@@ -5,7 +5,7 @@ import cl from "classnames";
 import customStyle from "./card.module.scss";
 const GridProductCard = ({ product = {}, style = "", imgStyle = "" }) => {
   return (
-    <Link to={`/product/${product._id}`} className={customStyle.card}>
+    <Link to={`/product/${product._id}`}>
       <div className={cl(style)}>
         <figure className={cl(imgStyle)}>
           <img
@@ -39,21 +39,7 @@ const GridProductCard = ({ product = {}, style = "", imgStyle = "" }) => {
           </p> */}
           </div>
 
-          {/* <p className="text-gray-800">{product.description?.slice(0, 70)}</p> */}
-          {/* <div className="card-actions justify-center pt-5">
-          {cartProduct?.productsArr.includes(product?.id) ? (
-            <button className="btn btn-base-200" onClick={handleRemoveCart}>
-              remove cart
-            </button>
-          ) : (
-            <button className="btn btn-base-200" onClick={handleAddCart}>
-              Add Cart
-            </button>
-          )}
-        </div> */}
-
-          <p className="flex gap-2 text-xs md:text-2xl font-bold">
-            {/* <span>${product?.price}</span> */}
+          <p className="flex gap-2 items-center text-xs md:text-2xl font-bold">
             <span>${product?.firstVariantSellPrice}</span>
             {product?.firstVariantDiscount &&
             product?.firstVariantDiscount > 0 ? (

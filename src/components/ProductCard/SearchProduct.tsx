@@ -1,32 +1,31 @@
 import { SyntheticEvent, useState } from "react";
-import { Star } from "../component";
+import { Heading, Star } from "../component";
 import { Link } from "react-router-dom";
 import cl from "classnames";
 
 const SearchProductCard = ({ product = {}, style = "", imgStyle }) => {
   return (
     <>
-      <div className={cl("w-full md:w-60 flex gap-1 overflow-hidden", style)}>
+      <Link
+        to={`/product/${product._id}`}
+        className={cl("grow flex gap-1 overflow-hidden text-black", style)}
+      >
         <figure className={cl("h-16 w-14", imgStyle)}>
-          <Link to={`/product/${product._id}`} className="w-full">
-            <img
-              src={
-                product?.imgurl || product?.firstVariantImages?.[0]?.url || ""
-              }
-              className={cl("rounded-xl size-full aspect-square")}
-              alt="cloth"
-              onError={(e: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
-                e.target.parentElement.parentElement.parentElement.style.display =
-                  "none";
-              }}
-            />
-          </Link>
+          <img
+            src={product?.imgurl || product?.firstVariantImages?.[0]?.url || ""}
+            className={cl("rounded size-full aspect-square")}
+            alt="cloth"
+            onError={(e: SyntheticEvent<HTMLImageElement, ErrorEvent>) => {
+              e.target.parentElement.parentElement.parentElement.style.display =
+                "none";
+            }}
+          />
         </figure>
-        <div className="sm:p-2  p-1 gap-1 flex flex-col">
-          <h2 className="text-gray-900 text-xs sm:text-sm  font-medium capitalize  overflow-hidden">
-            {product?.name}
-            {/* <div className="badge badge-seconday">{product.category.name}</div> */}
-          </h2>
+        <div className="gap-1 px-2 flex flex-col">
+          <Heading
+            title={product?.name}
+            style={"!text-sm !my-0 text-start !font-medium"}
+          />
           <div className="w-fit">
             <span>
               <Star
@@ -38,7 +37,7 @@ const SearchProductCard = ({ product = {}, style = "", imgStyle }) => {
             {/* <span>{Math.round(product?.averageRating)}/5</span> */}
           </div>
 
-          <p className="flex gap-2 text-xs md:text-2xl font-bold">
+          <p className="flex gap-2 items-center text-xs md:text-2xl font-bold">
             {/* <span>${product?.price}</span> */}
             <span className="text-base">${product?.firstVariantSellPrice}</span>
             {product?.firstVariantDiscount &&
@@ -51,7 +50,7 @@ const SearchProductCard = ({ product = {}, style = "", imgStyle }) => {
             )}
           </p>
         </div>
-      </div>
+      </Link>
       <div className="divider m-0"></div>
     </>
   );

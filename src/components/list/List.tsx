@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import cl from "classnames";
 import style from "./list.module.scss";
+import { Heading } from "../component";
 const List = ({
   title = "",
   data = [],
@@ -11,11 +12,7 @@ const List = ({
   return (
     <section>
       <div className="wrapper">
-        {title !== "" && (
-          <h2 className="font-extrabold text-center capitalize py-10 text-primary text-4xl">
-            {title}
-          </h2>
-        )}
+        {title !== "" && <Heading title={title} style={"text-center"} />}
 
         {/* map the products */}
         <div

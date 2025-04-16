@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
-import { IoStarSharp, IoStarOutline, IoHandLeftSharp } from "react-icons/io5";
 import { FaCheckCircle, FaRegCheckCircle } from "react-icons/fa";
 import { Star } from "../component";
 import { FiTrash } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 const Review = ({
   id = "",
@@ -19,23 +19,23 @@ const Review = ({
     handleDelete(id);
   };
   return (
-    <div className="outline outline-1 rounded-2xl p-3 w-full sm:w-[15rem]">
-      <div className="wrapper text-black relative">
+    <div className="outline outline-1 rounded-md p-3 min-w-60  max-w-sm">
+      <div className="wrapper h-full text-black relative">
         {isAdmin && (
-          <span
+          <button
             className="p-2 border absolute right-5 top-3 bg-red-500 cursor-pointer hover:scale-110 duration-300 rounded-full"
             onClick={handleDeleteClick}
           >
             <FiTrash color="white" />
-          </span>
+          </button>
         )}
 
-        <div className="flex flex-col gap-1">
-          <p className="flex gap-2">
-            {/* {stars?.map(() => (
-              <IoStarSharp color="orange" />
-            ))} */}
+        <div className="flex h-full flex-col gap-1">
+          <p className="flex gap-2 justify-between">
             <Star count={stats} size={15} color="orange" />
+            <span className="inline-block hover:bg-gray-300 p-1 cursor-pointer rounded">
+              <HiOutlineDotsHorizontal />
+            </span>
           </p>
           <div className="flex items-center gap-2">
             <p className="capitalize text-lg font-medium">{customerName}</p>
@@ -47,9 +47,14 @@ const Review = ({
               )}
             </span>
           </div>
-          <p className="text-sm text-slate-700 leading-snug  text-ellipsis">
+          <p className=" flex-1 text-sm text-gray-800 overflow-hidden whitespace-nowrap text-ellipsis">
             {reviewText}
           </p>
+          <div className="mt-auto">
+            <p className="text-sm text-gray-700">
+              Posted On: <span>Auguest 23th 2024</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
-import { Skeleton, Star } from "../component";
+import { Heading, Skeleton, Star } from "../component";
 import cl from "classnames";
 import style from "./product.module.scss";
 import { FaMinus, FaPlus } from "react-icons/fa";
@@ -157,7 +157,7 @@ const Product = () => {
     <>
       <ScrollRestoration />
       <section className="bg-white overflow-hidden">
-        <div className="lg:container lg:mx-auto px-5 md:px-20">
+        <div className="lg:container lg:mx-auto px-5">
           <div className="divider m-0 w-full"></div>
           <div className="py-3">
             {/* bread crumbs */}
@@ -173,8 +173,8 @@ const Product = () => {
               </ul>
             </div>
             {/* bradcrumbs end */}
-            <div className="flex flex-col md:flex-row py-2 space-x-5">
-              <div className="imgCon gap-5 flex flex-col md:flex-row basis-1/2 overflow-clip">
+            <div className="flex flex-col md:flex-row py-2 gap-5">
+              <div className="imgCon gap-5 flex flex-col md:flex-row basis-1/2">
                 {/* map all images */}
                 {getproductLoadding ? (
                   <Skeleton
@@ -186,15 +186,12 @@ const Product = () => {
                     <div className="skeleton w-28 h-28 bg-gray-100"></div>
                   </Skeleton>
                 ) : (
-                  <div className="flex order-2 md:order-1 overflow-auto md:flex-col gap-6 h-auto">
+                  <div className="flex order-2 md:order-1 overflow-x-auto md:flex-col gap-6 h-auto">
                     {productImages?.map((img) => (
                       <img
                         src={img?.url || imgUrl}
                         alt="product image"
-                        className={cl(
-                          style.product__img__slide,
-                          "hover:scale-110 duration-300"
-                        )}
+                        className={cl(style.product__img__slide)}
                         onClick={() => {
                           setCurrentProductImage(img?.url);
                         }}
@@ -224,12 +221,9 @@ const Product = () => {
                   <div className="skeleton w-60 h-8 rounded-lg bg-gray-100"></div>
                 </Skeleton>
               ) : (
-                <div className="product-dsc !m-0 !space-x-0 basis-1/2 flex flex-col py-2">
-                  <div className="title">
-                    <h2 className="text-3xl font-bold capitalize leading-tight">
-                      {productData?.name}
-                    </h2>
-                  </div>
+                <div className="product-dsc !m-0 !space-x-0 basis-1/2 flex flex-col">
+                  <Heading title={productData?.name} style={"!my-0"} />
+
                   <div className="flex space-x-1 items-center pt-2">
                     <Star
                       count={productData?.averageRating || 1}
@@ -251,7 +245,7 @@ const Product = () => {
                   {/* price */}
                   <div className="price flex py-4 font-bold text-2xl  items-center gap-3">
                     <span>${currentProductVariant?.sellPrice}</span>
-                    <span className="text-gray-500  text-sm line-through">
+                    <span className="text-gray-500  line-through">
                       ${currentProductVariant?.basePrice}
                     </span>
                     {currentProductVariant?.discount &&
@@ -304,7 +298,7 @@ const Product = () => {
                           className={cl(
                             "rounded-full outline outline-1 capitalize w-10 h-10",
                             ele == selectedProductSize
-                              ? "bg-primary text-light"
+                              ? "bg-dark text-light"
                               : ""
                           )}
                           onClick={() => {
@@ -322,16 +316,16 @@ const Product = () => {
                   </p>
                   {/* quantity and cart */}
                   <div className="flex gap-2 py-3 w-full">
-                    <div className="flex items-center gap-4 py-2 w-32">
+                    <div className="flex items-center justify-between px-3 py-1 rounded-badge max-w-md w-32 bg-gray-200">
                       <button
-                        className=" bg-slate-900 p-2 text-white rounded-full"
+                        className="p-2 rounded-full hover:bg-gray-300"
                         onClick={minusClick}
                       >
                         <FaMinus size={15} />
                       </button>
                       <p className="font-medium">{quantity}</p>
                       <button
-                        className=" bg-slate-900 p-2 text-white rounded-full"
+                        className="p-2 rounded-full hover:bg-gray-300"
                         onClick={addClick}
                       >
                         <FaPlus size={15} />
