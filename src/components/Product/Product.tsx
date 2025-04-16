@@ -12,7 +12,6 @@ import ProductDetails from "./ProductDetails";
 import { toast } from "react-toastify";
 import { useGetProductById } from "../../querys/product/productQuery";
 import { AddToCartMutaion } from "../../querys/cart/cartQuery";
-import { removeLoading, setLoading } from "../../services/store/loader/loader";
 
 // default img url
 const imgUrl =
@@ -47,7 +46,7 @@ const Product = () => {
   }, [productData, cart]);
   // handle add cart
   const handleCartAdd = () => {
-    if (!selectedProductSize) {
+    if (!selectedProductSize && !!userDetails) {
       return toast.info("Please Select an size!!");
     }
     let product = {

@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import cl from "classnames";
 import style from "./category.module.scss";
-import { Heading } from "../component";
-const Category = () => {
+import { CategorySkeleton, Heading, Skeleton } from "../component";
+const Category = ({ loading }) => {
   const { category } = useSelector((store) => store.category);
   return (
     <section>
@@ -12,6 +12,9 @@ const Category = () => {
           <Heading title={"browse by dress style"} style={"text-center"} />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 py-10">
+            {loading
+              ? Array.from({ length: 4 }).map((ele) => <CategorySkeleton />)
+              : ""}
             {category?.map((ele, inx) => {
               return (
                 <div

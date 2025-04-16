@@ -25,7 +25,13 @@ const HomeProduct = ({ title, products, loading, link }) => {
               )}
             >
               {loading ? (
-                <Skeleton count={4}>
+                <Skeleton
+                  count={4}
+                  style={cl(
+                    "!flex-nowrap",
+                    !isOverflowing ? "justify-center" : ""
+                  )}
+                >
                   <ProductSkeleton />
                 </Skeleton>
               ) : (

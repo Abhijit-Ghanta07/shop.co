@@ -34,14 +34,7 @@ const HomePage = () => {
           />
           <div className="divider w-full"></div>
           {/* browse by category */}
-          {status ? (
-            <Skeleton count={4} style={"justify-center px-10"}>
-              <CategorySkeleton />
-            </Skeleton>
-          ) : (
-            <Category />
-          )}
-
+          <Category loading={status} />
           {/* customers review */}
           <ReviewSection />
         </div>
@@ -101,7 +94,7 @@ function ReviewSection() {
         </div>
       </div>
       <div className="overflow-auto my-4 py-2">
-        <div className="flex gap-5">
+        <div className="flex gap-5 px-2">
           {reviews.map((rev) => (
             <ReviewCard
               stats={rev.star}

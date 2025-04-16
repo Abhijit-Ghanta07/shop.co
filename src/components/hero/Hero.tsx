@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="">
         <div className="h-fit">
           <div className="bg-light relative flex flex-col sm:flex-row overflow-hidden">
-            <div className="flex flex-col items-center md:items-start px-10 pt-5 z-[1]">
+            <div className="flex flex-col items-center md:items-start px-5 sm:px-10 pt-5 z-[1]">
               <h2
                 className={cl(
                   "text-4xl integral font-extrabold mt-6 md:m-0 capitalize md:text-5xl md:w-2/4"

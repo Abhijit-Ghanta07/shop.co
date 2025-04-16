@@ -9,6 +9,7 @@ import { ImageLetter } from "../../utils/utils";
 import { useTheme } from "../../services/providers/ThemeProvider";
 import Banner from "./Banner";
 
+import { RiSearch2Line } from "react-icons/ri";
 const AdminDashboardHeader = () => {
   const [_, toggleTheme] = useTheme();
   const { userDetails } = useSelector((store) => store.user);
@@ -23,15 +24,14 @@ const AdminDashboardHeader = () => {
       <Banner />
       <header className="flex items-center justify-between bg-white dark:bg-slate-900 p-2 text-black sticky top-0 z-10 border-b-2">
         {/* Left Section - Search Bar */}
-        {/* <div className="flex items-center w-fit  sm:px-5">
-        <input
-          type="text"
-          placeholder="Search..."
-          className={cl(
-            "md:w-96 w-auto sm:px-4 py-2 border bg-transparent rounded-lg transition-all focus:ring-2 focus:ring-slate-500"
-          )}
-        />
-      </div> */}
+        <div className="">
+          <label className="hidden  sm:flex items-center gap-2 grow max-w-sm text-gray-700 px-4 py-2 bg-gray-200 rounded-badge">
+            <span>
+              <RiSearch2Line size={20} />
+            </span>
+            <span>Search For Products</span>
+          </label>
+        </div>
 
         {/* Right Section - Notifications and Profile */}
         <div className="flex w-full gap-10 px-2 justify-end  items-center">

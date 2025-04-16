@@ -52,119 +52,122 @@ const Header = () => {
       <header className={style.header__main}>
         <div className="lg:container lg:mx-auto">
           <div className="wrapper py-4 px-2 md:px-10">
-            <div className="flex gap-2  items-center sm:justify-between">
-              <div className="ham md:hidden flex items-center">
-                {/* responsive side bar */}
-                <div className="drawer">
-                  <input
-                    type="checkbox"
-                    id="my-drawer"
-                    className="drawer-toggle"
-                  ></input>
-                  <span className="drawer-content">
-                    <label
-                      htmlFor="my-drawer"
-                      className="btn btn-ghost drawer-button"
-                    >
-                      <GiHamburgerMenu size={20} className="drawer-button" />
-                    </label>
-                  </span>
+            <div className="flex gap-2  items-center  justify-between">
+              <div className="flex">
+                {/* ham and logo */}
+                <div className="ham md:hidden flex items-center ">
+                  {/* responsive side bar */}
+                  <div className="drawer">
+                    <input
+                      type="checkbox"
+                      id="my-drawer"
+                      className="drawer-toggle"
+                    ></input>
+                    <span className="drawer-content">
+                      <label
+                        htmlFor="my-drawer"
+                        className="btn btn-ghost drawer-button"
+                      >
+                        <GiHamburgerMenu size={20} className="drawer-button" />
+                      </label>
+                    </span>
 
-                  <div className="drawer-side z-10">
-                    <label
-                      htmlFor="my-drawer"
-                      aria-label="close sidebar"
-                      className="drawer-overlay"
-                    ></label>
-                    <div className="flex flex-col relative h-full  bg-light w-80  py-10">
-                      <div className="close">
-                        <label
-                          htmlFor="my-drawer"
-                          aria-label="close sidebar"
-                          className="drawer-overlay hover:bg-gray-200 bg-transparent cursor-pointer absolute top-5 right-5 bg-base-200  p-2 rounded-btn"
-                        >
-                          <span>
-                            <IoClose color="black" size={30} />
-                          </span>
-                        </label>
-                      </div>
-                      <div className="text-center border-b-2 my-2">
-                        <Link
-                          to={"/"}
-                          className="logo text-center font-extrabold text-2xl sm:text-3xl"
-                        >
-                          <span>SHOP.</span>
-                          <span className="text-primary">CO</span>
-                        </Link>
-                      </div>
+                    <div className="drawer-side z-10">
+                      <label
+                        htmlFor="my-drawer"
+                        aria-label="close sidebar"
+                        className="drawer-overlay"
+                      ></label>
+                      <div className="flex flex-col relative h-full  bg-light w-80  py-10">
+                        <div className="close">
+                          <label
+                            htmlFor="my-drawer"
+                            aria-label="close sidebar"
+                            className="drawer-overlay hover:bg-gray-200 bg-transparent cursor-pointer absolute top-5 right-5 bg-base-200  p-2 rounded-btn"
+                          >
+                            <span>
+                              <IoClose color="black" size={30} />
+                            </span>
+                          </label>
+                        </div>
+                        <div className="text-center border-b-2 my-2">
+                          <Link
+                            to={"/"}
+                            className="logo text-center font-extrabold text-2xl sm:text-3xl"
+                          >
+                            <span>SHOP.</span>
+                            <span className="text-primary">CO</span>
+                          </Link>
+                        </div>
 
-                      <ul className="flex flex-col items-center gap-2">
-                        <li>
-                          <Link to={"/"}>Home</Link>
-                        </li>
-                        <li>
-                          <div className="collapse bg-transparent w-fit h-fit">
-                            <input type="checkbox" className="!h-[20px]" />
-                            <div className="collapse-title text-center !h-[20px] p-0 flex justify-center items-center gap-1">
-                              <span>Shop</span>
-                              <span>
-                                <IoIosArrowDown />
-                              </span>
+                        <ul className="flex flex-col items-center gap-2">
+                          <li>
+                            <Link to={"/"}>Home</Link>
+                          </li>
+                          <li>
+                            <div className="collapse bg-transparent w-fit h-fit">
+                              <input type="checkbox" className="!h-[20px]" />
+                              <div className="collapse-title text-center !h-[20px] p-0 flex justify-center items-center gap-1">
+                                <span>Shop</span>
+                                <span>
+                                  <IoIosArrowDown />
+                                </span>
+                              </div>
+                              <div className="collapse-content p-0">
+                                <ul className="flex flex-col items-center gap-2 text-lg">
+                                  <li className="hover:bg-slate-500 p-2 rounded-lg">
+                                    <Link to={"/product/category/male"}>
+                                      Men's Clothes
+                                    </Link>
+                                  </li>
+                                  <li className="hover:bg-slate-500 p-2 rounded-lg">
+                                    <Link to={"/product/category/female"}>
+                                      Women's Clothes
+                                    </Link>
+                                  </li>
+                                  <li className="hover:bg-slate-500 p-2 rounded-lg">
+                                    <Link to={"/product/category/kids"}>
+                                      Kids Collections
+                                    </Link>
+                                  </li>
+                                </ul>
+                              </div>
                             </div>
-                            <div className="collapse-content p-0">
-                              <ul className="flex flex-col items-center gap-2 text-lg">
-                                <li className="hover:bg-slate-500 p-2 rounded-lg">
-                                  <Link to={"/product/category/male"}>
-                                    Men's Clothes
-                                  </Link>
-                                </li>
-                                <li className="hover:bg-slate-500 p-2 rounded-lg">
-                                  <Link to={"/product/category/female"}>
-                                    Women's Clothes
-                                  </Link>
-                                </li>
-                                <li className="hover:bg-slate-500 p-2 rounded-lg">
-                                  <Link to={"/product/category/kids"}>
-                                    Kids Collections
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                        {/* <li>
+                          </li>
+                          {/* <li>
                         <Link to={"/product/category/sale"}>On Sale</Link>
                       </li> */}
-                        <li>
-                          <Link to={"/product/category/new arrivel"}>
-                            New Arrival
-                          </Link>
-                        </li>
-                        {/* <li>
+                          <li>
+                            <Link to={"/product/category/new arrivel"}>
+                              New Arrival
+                            </Link>
+                          </li>
+                          {/* <li>
                         <Link to={"/product/category/brands"}>Brands</Link>
                       </li> */}
 
-                        <li>
-                          {status && (
-                            <Logout style={"btn-error text-white"}>
-                              Logout
-                            </Logout>
-                          )}
-                        </li>
-                      </ul>
+                          <li>
+                            {status && (
+                              <Logout style={"btn-error text-white"}>
+                                Logout
+                              </Logout>
+                            )}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
+                  {/* end sidebar */}
                 </div>
-                {/* end sidebar */}
+                {/* home logo */}
+                <Link
+                  to={"/"}
+                  className="flex items-center justify-center sm:justify-start font-semibold text-2xl sm:text-3xl integral"
+                >
+                  <span className="-mt-1">SHOP.</span>
+                  <span className="-mt-1">CO</span>
+                </Link>
               </div>
-              {/* home logo */}
-              <Link
-                to={"/"}
-                className="flex items-center justify-center sm:justify-start mx-2 font-semibold text-2xl sm:text-3xl integral"
-              >
-                <span className="-mt-1">SHOP.</span>
-                <span className="-mt-1">CO</span>
-              </Link>
               {/* header navbar */}
               <div className="headerNav md:block hidden mx-4 w-fit leading-loose">
                 <ul className="flex h-full gap-6 justify-center items-center">
@@ -215,7 +218,7 @@ const Header = () => {
                 </ul>
               </div>
               {/* searchbar */}
-              <div className="flex h-full items-center justify-center  basis-3/6">
+              <div className="flex h-full items-center justify-center  sm:basis-3/6">
                 <label
                   className="hidden  sm:flex items-center gap-2 grow max-w-sm text-gray-700 px-4 py-2 bg-gray-200 rounded-badge"
                   onClick={() => {

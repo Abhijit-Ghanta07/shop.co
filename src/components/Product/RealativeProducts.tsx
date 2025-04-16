@@ -15,7 +15,10 @@ export function RealativeProducts({
             {title}
           </h2>
           {isLoading ? (
-            <Skeleton count={5}>
+            <Skeleton
+              count={5}
+              style={"!flex-nowrap !overflow-auto py-5 px-2 !justify-start"}
+            >
               <div className="flex flex-col  gap-2">
                 <div className="skeleton bg-gray-200  h-44 w-44"></div>
                 <div className="skeleton bg-gray-200  h-4 w-20"></div>
@@ -24,13 +27,14 @@ export function RealativeProducts({
               </div>
             </Skeleton>
           ) : (
-            <div className="flex gap-7 flex-wrap justify-center">
-              {products?.map((ele) => (
-                <ProductCard product={ele} />
-              ))}
+            <div className="my-5 overflow-auto">
+              <div className="flex gap-7 py-4 px-2">
+                {products?.map((ele) => (
+                  <ProductCard product={ele} />
+                ))}
+              </div>
             </div>
           )}
-          {/* map the products */}
         </div>
       </div>
     </section>
