@@ -1,14 +1,18 @@
 import {
+  Banner,
   Category,
   CategorySkeleton,
+  Heading,
   Hero,
   List,
   ProductCard,
   ProductSkeleton,
+  ReviewCard,
   Skeleton,
 } from "../../components/component";
 import { useSelector } from "react-redux";
-
+import heroImg from "../../assets/images/hero/hero.png";
+import HomeProduct from "../../components/homeProductList/HomeProduct";
 const HomePage = () => {
   const products = useSelector((state) => state.product);
   const { status } = useSelector((store) => store.loader);
@@ -17,39 +21,25 @@ const HomePage = () => {
       <div className="lg:container mx-auto">
         <Hero />
         <div className="bg-white">
-          {status ? (
-            <Skeleton count={5} style={"justify-center"}>
-              <ProductSkeleton />
-            </Skeleton>
-          ) : (
-            <List
-              title="New Arrivals"
-              exstyle="flex justify-center h-full"
-              data={products?.arivalsProducts?.products}
-              renderItem={(product) => <ProductCard product={product} />}
-              viewLink="/product/slug?query=arrival"
-            />
-          )}
+          <HomeProduct
+            title={"New Arrivals"}
+            loading={status}
+            products={products?.arivalsProducts?.products}
+            link={"/product/slug?query=arrival"}
+          />
 
           <div className="divider w-full"></div>
-          {status ? (
-            <Skeleton count={5} style={"justify-center"}>
-              <ProductSkeleton />
-            </Skeleton>
-          ) : (
-            <List
-              title="TOP SELLING"
-              exstyle="flex justify-center h-full"
-              data={products?.topProducts?.products}
-              renderItem={(item) => <ProductCard product={item} />}
-              viewLink="/product/slug?query=top"
-            />
-          )}
 
+          <HomeProduct
+            title={"TOP SELLING"}
+            loading={status}
+            products={products?.topProducts?.products}
+            link={"/product/slug?query=top"}
+          />
           <div className="divider w-full"></div>
           {/* browse by category */}
           {status ? (
-            <Skeleton count={8} style={"justify-center px-10"}>
+            <Skeleton count={4} style={"justify-center px-10"}>
               <CategorySkeleton />
             </Skeleton>
           ) : (
@@ -57,36 +47,69 @@ const HomePage = () => {
           )}
 
           {/* customers review */}
-          {/* newsletter section */}
+          <ReviewSection />
         </div>
       </div>
     </section>
   );
 };
-function ReviewSection({ products = [] }) {
+function ReviewSection() {
+  const reviews = [
+    {
+      id: 1,
+      star: 3,
+      customer: "abhijt",
+      verified: true,
+      text: "good product",
+    },
+    {
+      id: 1,
+      star: 3,
+      customer: "abhijt",
+      verified: true,
+      text: "good product",
+    },
+    {
+      id: 1,
+      star: 3,
+      customer: "abhijt",
+      verified: true,
+      text: "good product",
+    },
+    {
+      id: 1,
+      star: 3,
+      customer: "abhijt",
+      verified: true,
+      text: "good product",
+    },
+    {
+      id: 1,
+      star: 3,
+      customer: "abhijt",
+      verified: true,
+      text: "good product",
+    },
+  ];
   return (
-    <section>
-      <div className="wrapper px-5 md:px-20 py-10">
-        <div className="flex flex-col gap-7">
-          <div className="flex py-7 gap-3 flex-col items-center">
-            <h2 className="uppercase font-extrabold text-black  text-3xl">
-              our happy customers
-            </h2>
-            {/* scroller */}
-          </div>
-          <div className="flex flex-col md:flex-row gap-5">
-            {/* {reviews.map((rev) => (
-              <ReviewCard
-                stats={rev.star}
-                customerName={rev.customer}
-                verified={rev.verified}
-                reviewText={rev.text}
-              />
-            ))} */}
-          </div>
+    <div className="px-4 py-5">
+      <div className="flex justify-between gap-3  items-center">
+        <Heading title={"Our Happy customers"} />
+        {/* scroller */}
+      </div>
+      <div className="overflow-auto my-4">
+        <div className="flex gap-5">
+          {reviews.map((rev) => (
+            <ReviewCard
+              stats={rev.star}
+              customerName={rev.customer}
+              verified={rev.verified}
+              reviewText={rev.text}
+            />
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

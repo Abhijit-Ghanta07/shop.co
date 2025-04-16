@@ -7,23 +7,24 @@ import zara from "../../assets/svgs/brands/zara.svg";
 import cl from "classnames";
 import style from "./hero.module.scss";
 import { Link } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
 const Hero = () => {
   return (
     <main className="overflow-hidden">
       <div className="">
         <div className="h-fit">
-          <div className="bg-[#F2F0F1] sm:bg-transparent relative">
-            <div className="flex relative flex-col items-center md:items-start p-5 lg:p-10 z-[1]">
+          <div className="bg-light relative flex flex-col sm:flex-row overflow-hidden">
+            <div className="flex flex-col items-center md:items-start px-10 pt-5 z-[1]">
               <h2
                 className={cl(
-                  "text-center text-3xl font-extrabold mt-6 md:m-0 capitalize md:text-start md:text-5xl md:w-2/4"
+                  "text-4xl integral font-extrabold mt-6 md:m-0 capitalize md:text-5xl md:w-2/4"
                 )}
               >
                 find Clothes that matches your style
               </h2>
               <p
                 className={cl(
-                  "text-center text-balance text-sm capitalize md:text-start my-5  md:w-1/3"
+                  "text-balance text-sm text-gray-700 capitalize my-5  md:w-1/3"
                 )}
               >
                 Browse through our diverse range of meticulously crafted
@@ -32,17 +33,21 @@ const Hero = () => {
               </p>
               <Link
                 to={"/product/category"}
-                className="w-40 text-light font-bold p-3 text-center bg-primary rounded-badge text-lg"
+                className=" w-full satoshi bg-dark sm:w-40 text-light font-bold p-3 text-center rounded-badge text-lg"
               >
                 Shop Now
               </Link>
-              <div className="flex  gap-3 flex-wrap my-8">
+              <div className="flex  gap-3 justify-center flex-wrap my-8">
                 <HeroStats title="International Brands" number="200" />
                 <HeroStats title="High-Quality Products" number="2,000" />
                 <HeroStats title="Happy Coustomers" number="30,000" />
               </div>
             </div>
-            <img src={heroImg} className={cl(style.hero__img)} alt="" />
+            <img
+              src={heroImg}
+              className={cl("sm:absolute", style.hero__img)}
+              alt=""
+            />
           </div>
         </div>
       </div>
@@ -55,8 +60,8 @@ function HeroBanner() {
   const bannerData = [versace, zara, gucci, prada, chanel];
 
   return (
-    <div className="py-4 px-5 bg-base border-b-2">
-      <div className="flex justify-around gap-2 flex-wrap sm:justify-between">
+    <div className="px-5 py-2 bg-gray-200">
+      <div className="flex justify-around gap-2 flex-wrap ">
         {bannerData.map((ele) => {
           return (
             <img
@@ -74,10 +79,13 @@ function HeroStats({ title = "", number = "" }) {
   return (
     <>
       <div className="flex flex-col">
-        <div className="font-semibold md:text-3xl">
-          <span className="text-primary">{number}+</span>
+        <div className="font-semibold flex items-center gap-1 text-2xl">
+          <span className="satoshi">{number}</span>
+          <span>
+            <FaPlus size={18} />
+          </span>
         </div>
-        <div className=" text-xs md:text-sm leading-4">
+        <div className="satoshi text-gray-600 text-xs md:text-sm leading-4">
           <span>{title}</span>
         </div>
       </div>

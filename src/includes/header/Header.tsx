@@ -160,10 +160,10 @@ const Header = () => {
               {/* home logo */}
               <Link
                 to={"/"}
-                className="logo flex items-center justify-center sm:justify-start font-extrabold text-xl sm:text-3xl"
+                className="flex items-center justify-center sm:justify-start mx-2 font-semibold text-2xl sm:text-3xl integral"
               >
-                <span>SHOP.</span>
-                <span className="text-primary">CO</span>
+                <span className="-mt-1">SHOP.</span>
+                <span className="-mt-1">CO</span>
               </Link>
               {/* header navbar */}
               <div className="headerNav md:block hidden mx-4 w-fit leading-loose">
@@ -217,7 +217,7 @@ const Header = () => {
               {/* searchbar */}
               <div className="flex h-full items-center justify-center  basis-3/6">
                 <label
-                  className="flex bg-transparent w-24 sm:w-fit justify-end items-center rounded-badge px-2  sm:py-2 "
+                  className="hidden  sm:flex items-center gap-2 grow max-w-sm text-gray-700 px-4 py-2 bg-gray-200 rounded-badge"
                   onClick={() => {
                     if (searchRef?.current) {
                       searchRef?.current?.showModal();
@@ -226,14 +226,26 @@ const Header = () => {
                     }
                   }}
                 >
-                  <span className="flex w-60 gap-2  sm:p-2 p-1 rounded-lg border border-black">
+                  <span>
                     <RiSearch2Line size={20} />
-                    Search
                   </span>
+                  <span>Search For Products</span>
                 </label>
               </div>
               {/* user actions */}
-              <div className="userAction w-fit flex gap-3 sm:gap-8 px-2 items-center">
+              <div className="userAction w-fit flex gap-4 sm:gap-8 px-2 items-center">
+                <span
+                  className="block sm:hidden"
+                  onClick={() => {
+                    if (searchRef?.current) {
+                      searchRef?.current?.showModal();
+                    } else {
+                      return;
+                    }
+                  }}
+                >
+                  <RiSearch2Line size={20} />
+                </span>
                 <div className="cart relative">
                   {cartProduct?.products?.length > 0 && (
                     <span className="badge px-1 top-0 left-[100%]">

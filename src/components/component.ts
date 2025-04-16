@@ -26,9 +26,12 @@ import Skeleton from "./skeleton/Skeleton";
 import ProductSkeleton from "./skeleton/ProductSkeleton";
 import CategorySkeleton from "./skeleton/CategorySkeleton";
 import TableSkeleton from "./skeleton/TableDataSkeleton";
-
+import Banner from "./banner/Banner";
+import Heading from "./heading/Heading";
 // import NewProductDetails from "./Product/NewCodeProduct";
 export {
+  Banner,
+  Heading,
   TableSkeleton,
   CategorySkeleton,
   ProductSkeleton,
