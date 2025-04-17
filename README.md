@@ -4,7 +4,7 @@
 
 [Live]("https://shop-co332.netlify.app/")
 
-`scripts`
+## scripts
 
 ```
 npm install

@@ -1,12 +1,19 @@
 import { Link, ScrollRestoration, useParams } from "react-router-dom"; // Assuming React Router is used
 import { useGetOrderDetails } from "../../querys/order/orderQuery";
-import { TableBody, TableCell, TableHeader } from "../../components/component";
+import {
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+} from "../../components/component";
 import { DateFormat } from "../../utils/utils";
 import Badge from "../../components/button/Badge";
+import TableDataSkeleton from "../../components/skeleton/TableDataSkeleton";
 
 const OrderDetails = () => {
   const { id } = useParams();
-  const { data: orderDetails } = useGetOrderDetails(id || "");
+  const { data: orderDetails, isLoading } = useGetOrderDetails(id || "");
   return (
     <section>
       <ScrollRestoration />
@@ -29,7 +36,7 @@ const OrderDetails = () => {
           </div>
           {/* order details */}
           <div className=" p-2 sm:p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl integral font-bold text-gray-800 mb-4">
               Order Details
             </h2>
             <div className="mb-4 flex flex-col gap-2">
@@ -48,7 +55,14 @@ const OrderDetails = () => {
             </div>
             {/* Items Table */}
             <div className="overflow-x-auto shadow-lg bg-white rounded-xl p-2">
-              <table className="w-full">
+              <Table
+                loading={isLoading}
+                loader={
+                  <Skeleton count={3}>
+                    <TableDataSkeleton />
+                  </Skeleton>
+                }
+              >
                 <TableHeader
                   columns={[
                     "Image",
@@ -80,7 +94,7 @@ const OrderDetails = () => {
                     );
                   }}
                 />
-              </table>
+              </Table>
             </div>
             {/* dicount  */}
             <div className="mt-4 text-right">

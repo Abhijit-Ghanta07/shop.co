@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import CartProduct from "./CartProduct";
 import { IoArrowForward } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const { products, totalAmount } = useSelector((state) => state.cart);
@@ -21,7 +21,7 @@ const CartPage = () => {
               <li>Cart</li>
             </ul>
           </div>
-          <h2 className="font-extrabold  text-3xl py-7 ">YOUR CART</h2>
+          <h2 className="font-extrabold integral text-3xl py-7 ">YOUR CART</h2>
           {/* map products */}
           <div className="flex flex-col md:flex-row  gap-4">
             <div className="flex  w-full flex-col rounded-2xl outline outline-1 p-2 sm:p-4">
@@ -42,7 +42,6 @@ const CartPage = () => {
           </div>
         </div>
       </section>
-      <ToastContainer />
     </>
   );
 };
@@ -114,7 +113,6 @@ function CartCheckOut({ subTotal }) {
           </span>
         </button>
       </div>
-      <ToastContainer style={{ zIndex: 30 }} />
     </>
   );
 }

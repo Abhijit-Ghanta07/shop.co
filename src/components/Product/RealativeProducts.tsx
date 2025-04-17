@@ -11,7 +11,7 @@ export function RealativeProducts({
     <section>
       <div className="wrapper py-5 px-1 md:py-10 md:px-5">
         <div className="flex flex-col">
-          <h2 className="font-extrabold py-10 text-center uppercase text-3xl">
+          <h2 className="font-extrabold integral py-10 text-center uppercase text-3xl">
             {title}
           </h2>
           {isLoading ? (

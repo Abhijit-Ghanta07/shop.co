@@ -9,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import HomeProduct from "../../components/homeProductList/HomeProduct";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
+import { useRef, useState } from "react";
 const HomePage = () => {
   const products = useSelector((state) => state.product);
   const { status } = useSelector((store) => store.loader);
@@ -80,21 +81,44 @@ function ReviewSection() {
       text: "very good product. i am using this product for last 2 yeays no damge or color fade yet",
     },
   ];
+  const [slideInx, setSlideInx] = useState(1);
+  const slideRef = useRef(null);
+  const HandleSliderClick = ({ type }) => {
+    if (type == "back") {
+      slideRef.current.style.transform = `translateX(-${slideInx * 100}px)`;
+      setSlideInx(slideInx + 1);
+    } else {
+      slideRef.current.style.transform = `translateX(-${
+        slideInx * 100 - 100
+      }px)`;
+      setSlideInx(slideInx - 1);
+    }
+  };
   return (
     <div className="px-4 py-5">
       <div className="flex justify-between gap-3  items-center">
         <Heading title={"Our Happy customers"} />
         <div className="flex mx-5 gap-4">
-          <button className="hover:bg-gray-200 rounded p-2">
+          <button
+            className="hover:bg-gray-200 rounded p-2"
+            onClick={() => {
+              HandleSliderClick({ type: "back" });
+            }}
+          >
             <IoIosArrowRoundBack size={30} />
           </button>
-          <button className="hover:bg-gray-200 rounded p-2">
+          <button
+            className="hover:bg-gray-200 rounded p-2"
+            onClick={() => {
+              HandleSliderClick({ type: "next" });
+            }}
+          >
             <IoIosArrowRoundForward size={30} />
           </button>
         </div>
       </div>
       <div className="overflow-auto my-4 py-2">
-        <div className="flex gap-5 px-2">
+        <div className="flex gap-5 px-2" ref={slideRef}>
           {reviews.map((rev) => (
             <ReviewCard
               stats={rev.star}

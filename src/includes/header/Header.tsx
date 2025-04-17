@@ -90,17 +90,17 @@ const Header = () => {
                             </span>
                           </label>
                         </div>
-                        <div className="text-center border-b-2 my-2">
+                        <div className="text-center border-b-2 py-2">
                           <Link
                             to={"/"}
-                            className="logo text-center font-extrabold text-2xl sm:text-3xl"
+                            className="logo text-center integral leading-tight font-extrabold text-2xl sm:text-3xl"
                           >
                             <span>SHOP.</span>
-                            <span className="text-primary">CO</span>
+                            <span>CO</span>
                           </Link>
                         </div>
 
-                        <ul className="flex flex-col items-center gap-2">
+                        <ul className="flex flex-col items-center gap-2 my-2">
                           <li>
                             <Link to={"/"}>Home</Link>
                           </li>

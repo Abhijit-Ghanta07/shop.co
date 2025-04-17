@@ -97,7 +97,9 @@ const ProfilePage = () => {
       modalRef.current?.close();
       reset();
       toast.success(
-        addressAddMutation.data?.message || addressDelMutaion.data?.message
+        addressAddMutation.data?.message ||
+          addressDelMutaion.data?.message ||
+          "Successfull"
       );
       queryClient.invalidateQueries(["getuseraddress", userId]);
     }

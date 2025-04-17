@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import cl from "classnames";
 import style from "./category.module.scss";
-import { CategorySkeleton, Heading, Skeleton } from "../component";
+import { CategorySkeleton, Heading } from "../component";
 const Category = ({ loading }) => {
   const { category } = useSelector((store) => store.category);
   return (
@@ -26,7 +26,7 @@ const Category = ({ loading }) => {
                   <Link to={`/product/category/${ele.categoryName}`}>
                     <img
                       src={ele?.categoryImage}
-                      className={cl("size-full aspect-square")}
+                      className={cl("size-full aspect-square bg-gray-300")}
                       alt="image"
                     />
                     <div className="flex h-full justify-center items-center">

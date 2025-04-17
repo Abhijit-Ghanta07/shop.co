@@ -27,7 +27,7 @@ const PaymentPage = () => {
     sessionId: string,
     checkoutWindow: Window | null
   ) => {
-    const timeoutDuration = 60 * 1000; // 2 minutes
+    const timeoutDuration = 3 * 60 * 1000; // 3 minutes
     const pollingInterval = 3000; // Poll every 3 seconds
     let interval;
     // Auto-close after 2 minutes

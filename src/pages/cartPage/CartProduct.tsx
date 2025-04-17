@@ -99,7 +99,7 @@ const CartProduct = ({ product }) => {
               </span>
             </LoaderBtn>
 
-            <div className=" flex items-center justify-end gap-4 py-2 w-32">
+            <div className=" flex items-center justify-end gap-4 py-2 max-w-sm">
               <button
                 className=" bg-slate-900 p-2 text-white rounded-full"
                 onClick={minusQuantityClick}
